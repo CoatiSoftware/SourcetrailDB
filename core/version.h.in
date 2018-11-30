@@ -1,0 +1,12 @@
+#ifndef SOURCETRAIL_VERSION_H
+#define SOURCETRAIL_VERSION_H
+
+// This file is (re-)generated when running CMake on this project.
+
+#define INTERFACE_VERSION @INTERFACE_VERSION@
+#define DATABASE_VERSION @DATABASE_VERSION@
+#define COMMIT_VERSION @COMMIT_VERSION@
+
+#define VERSION_STRING "@VERSION_STRING@"
+
+#endif // SOURCETRAIL_VERSION_H

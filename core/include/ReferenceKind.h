@@ -1,0 +1,32 @@
+#ifndef SOURCETRAIL_REFERENCE_KIND_H
+#define SOURCETRAIL_REFERENCE_KIND_H
+
+namespace sourcetrail
+{
+	enum EdgeKind;
+
+	/**
+	* Enum providing all possible values for kinds of references that can be recorded using the SourcetrailDBWriter interface.
+	*/
+	enum ReferenceKind
+	{
+		REFERENCE_TYPE_USAGE,
+		REFERENCE_USAGE,
+		REFERENCE_CALL,
+		REFERENCE_INHERITANCE,
+		REFERENCE_OVERRIDE,
+		REFERENCE_TEMPLATE_ARGUMENT,
+		REFERENCE_TYPE_ARGUMENT,
+		REFERENCE_TEMPLATE_DEFAULT_ARGUMENT,
+		REFERENCE_TEMPLATE_SPECIALIZATION,
+		REFERENCE_TEMPLATE_MEMBER_SPECIALIZATION,
+		REFERENCE_INCLUDE,
+		REFERENCE_IMPORT,
+		REFERENCE_MACRO_USAGE,
+		REFERENCE_ANNOTATION_USAGE
+	};
+
+	EdgeKind referenceKindToEdgeKind(ReferenceKind referenceKind);
+}
+
+#endif // SOURCETRAIL_REFERENCE_KIND_H
