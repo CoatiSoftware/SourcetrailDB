@@ -1,6 +1,6 @@
-# SourcetrailDBWriter
+# SourcetrailDB
 
-[![Build status](https://ci.appveyor.com/api/projects/status/gbblx1l790vm952c/branch/master?svg=true)](https://ci.appveyor.com/project/mlangkabel/sourcetraildb/branch/master)
+Windows Builds: [![Build status](https://ci.appveyor.com/api/projects/status/gbblx1l790vm952c/branch/master?svg=true)](https://ci.appveyor.com/project/mlangkabel/sourcetraildb/branch/master)
 
 
 TODO: write short description here with code example and sourcetrail screenshorts of resulting graph
@@ -15,29 +15,16 @@ TODO: write short description here with code example and sourcetrail screenshort
 
 
 ## Requirements Python Bindings:
-* install SWIG
-* Set environment variable "SWIG_DIR" to the Swig install directory
-* Python
-* if you want to use a specific python version, define variables for cmake
+* __SourcetrailDB Core__. Is contained within this repository.
+* __Python__. Usually CMake will auto-detect your Python installation. If you want to use a specific version of Python, please define the `PYTHON_INCLUDE_DIRS` and `PYTHON_LIBRARIES` variables accordingly when running CMake. Make sure to link to a 32 bit version of Python when building this target for a 32 bit architecture and use a 64 bit Python when bulding this target for a 64 bit architecture.
+* __SWIG 3.0.12__ is used to automatically generate python binding code. Make sure that SWIG is added to your path environment variable.
 
 
 ## TODO
 * add documentation to code
-* write this readme file
-* add sample calls here to readme file
-* add "how to build" section to readme file
+* add "How to Build" section to readme file
+* add tests and add section "Running the Tests" here
 * improve name hierarchy and name element types
-
-
-## TODO for Sourcetrail
-* rename NodeType::NODE_SYMBOL to UNKNOWN
-
-* versioning in package name: lalala_v1_db21_c684
-* add license info to source files
+* versioning in package name (e.g. SourcetrailDB_v1_db21_c684)
 * add 3rd party license references
-* debug vs release (may need to disable something in cmake)
 * add cmake packaging and use find_package
-* add sample project
-
-
-	 
