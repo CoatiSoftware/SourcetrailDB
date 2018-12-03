@@ -28,7 +28,7 @@ namespace sourcetrail
 		SYMBOL_TEMPLATE_PARAMETER,
 		SYMBOL_TYPE_PARAMETER,
 		SYMBOL_MACRO,
-		SYMBOL_UNION,
+		SYMBOL_UNION
 	};
 
 	NodeKind symbolKindToNodeKind(SymbolKind v);
