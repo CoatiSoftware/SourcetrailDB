@@ -92,7 +92,7 @@ set_target_properties(${LIB_NAME} PROPERTIES SUFFIX ".pyd")
 add_custom_command(
 	TARGET ${LIB_NAME}
 	PRE_BUILD
-	COMMAND if not exist \"${GENERATED_SRC_DIR}\" mkdir \"${GENERATED_SRC_DIR}\" \n swig -c++ -python -I${RESOURCES_SWIG_DIR}/include -o ${GENERATED_WRAPPER_FILE} -outdir ${CMAKE_BINARY_DIR}/$(CONFIGURATION) ${SWIG_INTERFACE_FILE}
+	COMMAND if not exist \"${GENERATED_SRC_DIR}\" mkdir \"${GENERATED_SRC_DIR}\" \n swig -c++ -python -I${RESOURCES_SWIG_DIR}/include -o ${GENERATED_WRAPPER_FILE} -outdir ${CMAKE_SOURCE_DIR}/build/${ARCH}bit/$(CONFIGURATION) ${SWIG_INTERFACE_FILE}
 	COMMENT "Generating wrapper code file."
 )
 
