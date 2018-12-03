@@ -1,5 +1,8 @@
 # SourcetrailDBWriter
 
+[![Build status](https://ci.appveyor.com/api/projects/status/gbblx1l790vm952c/branch/master?svg=true)](https://ci.appveyor.com/project/mlangkabel/sourcetraildb/branch/master)
+
+
 TODO: write short description here with code example and sourcetrail screenshorts of resulting graph
 
 
@@ -30,7 +33,6 @@ TODO: write short description here with code example and sourcetrail screenshort
 * rename NodeType::NODE_SYMBOL to UNKNOWN
 
 * versioning in package name: lalala_v1_db21_c684
-* add own license info as license file to repo
 * add license info to source files
 * add 3rd party license references
 * debug vs release (may need to disable something in cmake)

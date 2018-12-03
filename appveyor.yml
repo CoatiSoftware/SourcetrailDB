@@ -1,0 +1,59 @@
+version: 0.0.0.{build}
+image: Visual Studio 2017
+
+# TODO use "Visual Studio 15 2017 Win64" for 64 bit builds 
+
+artifacts:
+    - path: artifacts_core
+      name: sourcetraildb_core_windows_32bit_$(appveyor_build_version)
+      type: Zip
+    - path: artifacts_bindings_python
+      name: sourcetrailbd_python_windows_32bit_$(appveyor_build_version)
+      type: Zip
+      
+install:
+    - ps: |
+        # Install SWIG by Choco
+        choco install -y --no-progress swig
+
+before_build:
+    # Setup core project
+    - cd core
+    - mkdir build
+    - cd build
+    - mkdir 32bit
+    - cd 32bit
+    - cmake -G "Visual Studio 15 2017" ../..
+    - cd ../../..
+    # Setup bindings_python project
+    - cd bindings_python
+    - mkdir build
+    - cd build
+    - mkdir 32bit
+    - cd 32bit
+    - cmake -G "Visual Studio 15 2017" ../.. -DPYTHON_INCLUDE_DIRS="C:/Python37/include" -DPYTHON_LIBRARIES="C:/Python37/libs/python37.lib"
+    - cd ../../..
+    
+build_script:
+    - cd core/build/32bit
+    - msbuild /p:configuration=Release /v:m ALL_BUILD.vcxproj
+    - cd ../../..
+    - cd bindings_python/build/32bit
+    - msbuild /p:configuration=Release /v:m ALL_BUILD.vcxproj
+    - cd ../../..
+    
+after_build:
+    - mkdir artifacts_core
+    - cd artifacts_core
+    - mkdir lib
+    - mkdir include
+    - cd ..        
+    - ps: |
+        copy core/build/32bit/release/sourcetraildb.lib artifacts_core/lib/
+        copy core/build/32bit/include/version.h artifacts_core/include/
+        copy core/include/* artifacts_core/include/
+    - mkdir artifacts_bindings_python
+    - ps: |
+        copy bindings_python/build/32bit/release/_sourcetraildb.pyd artifacts_bindings_python/
+        copy bindings_python/build/32bit/release/sourcetraildb.py artifacts_bindings_python/
+    - echo All done!

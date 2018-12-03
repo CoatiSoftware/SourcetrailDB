@@ -5,9 +5,9 @@
 #include "SymbolKind.h"
 #include "SourceLocation.h"
 #include "SourceRange.h"
+#include "SourcetrailDBWriter.h"
 #include "ReferenceKind.h"
 
-#include "SrctrldbWriter.h"
 
 namespace
 {
@@ -71,71 +71,71 @@ namespace
 	}
 }
 
-sourcetrail::SrctrldbWriter srctrldbWriter;
+sourcetrail::SourcetrailDBWriter dbWriter;
 
 int getSupportedDatabaseVersion()
 {
-	return srctrldbWriter.getSupportedDatabaseVersion();
+	return dbWriter.getSupportedDatabaseVersion();
 }
 
 std::string getLastError()
 {
-	return srctrldbWriter.getLastError();
+	return dbWriter.getLastError();
 }
 
 void clearLastError()
 {
-	srctrldbWriter.clearLastError();
+	dbWriter.clearLastError();
 }
 
 bool openProject(std::string projectDirectory, std::string projectName)
 {
-	return srctrldbWriter.openProject(projectDirectory, projectName);
+	return dbWriter.openProject(projectDirectory, projectName);
 }
 
 bool closeProject()
 {
-	return srctrldbWriter.closeProject();
+	return dbWriter.closeProject();
 }
 
 bool clearProject()
 {
-	return srctrldbWriter.clearProject();
+	return dbWriter.clearProject();
 }
 
 bool isEmpty()
 {
-	return srctrldbWriter.isEmpty();
+	return dbWriter.isEmpty();
 }
 
 bool isCompatible()
 {
-	return srctrldbWriter.isCompatible();
+	return dbWriter.isCompatible();
 }
 
 int getLoadedDatabaseVersion()
 {
-	return srctrldbWriter.getLoadedDatabaseVersion();
+	return dbWriter.getLoadedDatabaseVersion();
 }
 
 bool beginTransaction()
 {
-	return srctrldbWriter.beginTransaction();
+	return dbWriter.beginTransaction();
 }
 
 bool commitTransaction()
 {
-	return srctrldbWriter.commitTransaction();
+	return dbWriter.commitTransaction();
 }
 
 bool rollbackTransaction()
 {
-	return srctrldbWriter.rollbackTransaction();
+	return dbWriter.rollbackTransaction();
 }
 
 bool optimizeDatabaseMemory()
 {
-	return srctrldbWriter.optimizeDatabaseMemory();
+	return dbWriter.optimizeDatabaseMemory();
 }
 
 int recordSymbol(std::string serializedNameHierarchy)
@@ -144,68 +144,68 @@ int recordSymbol(std::string serializedNameHierarchy)
 	if (nameHierarchy.nameElements.empty())
 	{
 		// TODO: handle this case!
-		//srctrldbWriter.setLastError("Unable to deserialize name hierarchy \"" + serializedNameHierarchy + "\".");
+		//dbWriter.setLastError("Unable to deserialize name hierarchy \"" + serializedNameHierarchy + "\".");
 		return 0;
 	}
-	return srctrldbWriter.recordSymbol(nameHierarchy);
+	return dbWriter.recordSymbol(nameHierarchy);
 }
 
 bool recordSymbolDefinitionKind(int symbolId, DefinitionKind symbolDefinitionKind)
 {
-	return srctrldbWriter.recordSymbolDefinitionKind(symbolId, convertDefinitionKind(symbolDefinitionKind));
+	return dbWriter.recordSymbolDefinitionKind(symbolId, convertDefinitionKind(symbolDefinitionKind));
 }
 
 bool recordSymbolKind(int symbolId, SymbolKind symbolKind)
 {
-	return srctrldbWriter.recordSymbolKind(symbolId, convertSymbolKind(symbolKind));
+	return dbWriter.recordSymbolKind(symbolId, convertSymbolKind(symbolKind));
 }
 
 bool recordSymbolLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return srctrldbWriter.recordSymbolLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordSymbolLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
 }
 
 bool recordSymbolScopeLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return srctrldbWriter.recordSymbolScopeLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordSymbolScopeLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
 }
 
 bool recordSymbolSignatureLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return srctrldbWriter.recordSymbolSignatureLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordSymbolSignatureLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
 }
 
 int recordReference(int contextSymbolId, int referencedSymbolId, ReferenceKind referenceKind)
 {
-	return srctrldbWriter.recordReference(contextSymbolId, referencedSymbolId, convertReferenceKind(referenceKind));
+	return dbWriter.recordReference(contextSymbolId, referencedSymbolId, convertReferenceKind(referenceKind));
 }
 
 bool recordReferenceLocation(int referenceId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return srctrldbWriter.recordReferenceLocation(referenceId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordReferenceLocation(referenceId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
 }
 
 int recordFile(std::string filePath)
 {
-	return srctrldbWriter.recordFile(filePath);
+	return dbWriter.recordFile(filePath);
 }
 
 int recordLocalSymbol(std::string name)
 {
-	return srctrldbWriter.recordLocalSymbol(name);
+	return dbWriter.recordLocalSymbol(name);
 }
 
 bool recordLocalSymbolLocation(int localSymbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return srctrldbWriter.recordLocalSymbolLocation(localSymbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordLocalSymbolLocation(localSymbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
 }
 
 bool recordCommentLocation(std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return srctrldbWriter.recordCommentLocation(sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordCommentLocation(sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
 }
 
 bool recordError(std::string message, bool fatal, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return srctrldbWriter.recordError(message, fatal, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordError(message, fatal, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
 }
