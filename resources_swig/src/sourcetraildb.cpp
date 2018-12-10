@@ -27,6 +27,7 @@ namespace
 		{
 		case SYMBOL_TYPE: return sourcetrail::SYMBOL_TYPE;
 		case SYMBOL_BUILTIN_TYPE: return sourcetrail::SYMBOL_BUILTIN_TYPE;
+		case SYMBOL_MODULE: return sourcetrail::SYMBOL_MODULE;
 		case SYMBOL_NAMESPACE: return sourcetrail::SYMBOL_NAMESPACE;
 		case SYMBOL_PACKAGE: return sourcetrail::SYMBOL_PACKAGE;
 		case SYMBOL_STRUCT: return sourcetrail::SYMBOL_STRUCT;

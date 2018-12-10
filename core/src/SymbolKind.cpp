@@ -28,6 +28,8 @@ namespace sourcetrail
 			return NODE_TYPE;
 		case SYMBOL_BUILTIN_TYPE:
 			return NODE_BUILTIN_TYPE;
+		case SYMBOL_MODULE:
+			return NODE_MODULE;
 		case SYMBOL_NAMESPACE:
 			return NODE_NAMESPACE;
 		case SYMBOL_PACKAGE:

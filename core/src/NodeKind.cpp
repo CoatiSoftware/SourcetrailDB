@@ -28,6 +28,7 @@ namespace sourcetrail
 		if (v == nodeKindToInt(NODE_UNKNOWN)) { return NODE_UNKNOWN; }
 		if (v == nodeKindToInt(NODE_TYPE)) { return NODE_TYPE; }
 		if (v == nodeKindToInt(NODE_BUILTIN_TYPE)) { return NODE_BUILTIN_TYPE; }
+		if (v == nodeKindToInt(NODE_MODULE)) { return NODE_MODULE; }
 		if (v == nodeKindToInt(NODE_NAMESPACE)) { return NODE_NAMESPACE; }
 		if (v == nodeKindToInt(NODE_PACKAGE)) { return NODE_PACKAGE; }
 		if (v == nodeKindToInt(NODE_STRUCT)) { return NODE_STRUCT; }
