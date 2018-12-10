@@ -20,18 +20,17 @@
 #include <memory>
 #include <string>
 
+#include "DefinitionKind.h"
+#include "EdgeKind.h"
+#include "LocationKind.h"
+#include "NameHierarchy.h"
+#include "ReferenceKind.h"
+#include "SourceRange.h"
+#include "SymbolKind.h"
+
 namespace sourcetrail
 {
-	class DatabaseStorage;
-
-	struct SourceRange;
-	struct NameHierarchy;
-
-	enum DefinitionKind;
-	enum EdgeKind;
-	enum LocationKind;
-	enum ReferenceKind;
-	enum SymbolKind;
+	class DatabaseStorage; // forward declaration prevents leakage of sqlite include dependency to users of the SourcetrailDBWriter
 
 	/**
 	 * Class wrapping the main interface for writing data to a Sourcetrail project database.
@@ -89,8 +88,6 @@ namespace sourcetrail
 
 	private:
 		static std::string serializeNameHierarchy(const NameHierarchy& nameHierarchy);
-		std::string getProjectFilePath() const;
-		std::string getDatabaseFilePath() const;
 		void openDatabase();
 		void closeDatabase();
 		void setupDatabaseTables();

@@ -32,6 +32,7 @@
 #include "SourceRange.h"
 #include "SourcetrailException.h"
 #include "SymbolKind.h"
+#include "utility.h"
 #include "version.h"
 
 namespace sourcetrail
@@ -67,7 +68,7 @@ namespace sourcetrail
 	{
 		m_databaseFilePath = databaseFilePath;
 
-		m_projectFilePath = databaseFilePath;
+		m_projectFilePath = databaseFilePath; //FIXME: only find dot after last slash/backslash! otherwise it may be part of the file path
 		const size_t pos = m_projectFilePath.rfind('.');
 		if (pos != std::string::npos)
 		{
@@ -329,7 +330,7 @@ namespace sourcetrail
 
 		try
 		{
-			m_storage->addSymbol(symbolId, definitionKindToInt(definitionKind));
+			m_storage->addSymbol(StorageSymbol(symbolId, definitionKindToInt(definitionKind)));
 		}
 		catch (const SourcetrailException e)
 		{
@@ -489,7 +490,7 @@ namespace sourcetrail
 
 		try
 		{
-			return m_storage->addLocalSymbol(name);
+			return m_storage->addLocalSymbol(StorageLocalSymbolData(name));
 		}
 		catch (const SourcetrailException e)
 		{
@@ -529,14 +530,14 @@ namespace sourcetrail
 		try
 		{
 			const int fileId = addFile(location.filePath);
-			const int sourceLocationId = m_storage->addSourceLocation(
+			const int sourceLocationId = m_storage->addSourceLocation(StorageSourceLocationData(
 				fileId,
 				location.startLine,
 				location.startColumn,
 				location.endLine,
 				location.endColumn,
-				LOCATION_COMMENT
-			);
+				locationKindToInt(LOCATION_COMMENT)
+			));
 
 			return true;
 		}
@@ -557,7 +558,7 @@ namespace sourcetrail
 
 		try
 		{
-			const int errorId = m_storage->addError(message, fatal);
+			const int errorId = m_storage->addError(StorageErrorData(message, "", fatal, true));
 			addSourceLocation(errorId, location, LOCATION_ERROR);
 			return true;
 		}
@@ -671,7 +672,7 @@ namespace sourcetrail
 		{
 			currentNameHierarchy.nameElements.push_back(nameHierarchy.nameElements[i]);
 
-			int nodeId = m_storage->addNode(serializeNameHierarchy(currentNameHierarchy));
+			int nodeId = m_storage->addNode(StorageNodeData(nodeKindToInt(NODE_UNKNOWN), serializeNameHierarchy(currentNameHierarchy)));
 
 			if (parentNodeId != 0)
 			{
@@ -693,7 +694,8 @@ namespace sourcetrail
 
 		const int nodeId = addNodeHierarchy(nameHierarchy);
 		m_storage->setNodeType(nodeId, nodeKindToInt(NODE_FILE));
-		m_storage->addFile(nodeId, filePath);
+
+		m_storage->addFile(StorageFile(nodeId, filePath, utility::getDateTimeString(time(0)), true, true));
 
 		return nodeId;
 	}
@@ -713,25 +715,25 @@ namespace sourcetrail
 			throw SourcetrailException("Unable to add edge, because target id is invalid.");
 		}
 
-		return m_storage->addEdge(sourceId, targetId, edgeKindToInt(edgeKind));
+		return m_storage->addEdge(StorageEdgeData(sourceId, targetId, edgeKindToInt(edgeKind)));
 	}
 
 	void SourcetrailDBWriter::addSourceLocation(int elementId, const SourceRange& location, LocationKind kind)
 	{
 		const int fileId = addFile(location.filePath);
 
-		const int sourceLocationId = m_storage->addSourceLocation(
+		const int sourceLocationId = m_storage->addSourceLocation(StorageSourceLocationData(
 			fileId,
 			location.startLine,
 			location.startColumn,
 			location.endLine,
 			location.endColumn,
 			locationKindToInt(kind)
-		);
+		));
 
-		m_storage->addOccurrence(
+		m_storage->addOccurrence(StorageOccurrence(
 			elementId,
 			sourceLocationId
-		);
+		));
 	}
 }

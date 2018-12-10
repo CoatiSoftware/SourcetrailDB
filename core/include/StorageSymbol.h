@@ -14,21 +14,28 @@
 * limitations under the License.
 */
 
-#ifndef SOURCETRAIL_UTILITY_H
-#define SOURCETRAIL_UTILITY_H
+#ifndef SOURCETRAIL_STORAGE_SYMBOL_H
+#define SOURCETRAIL_STORAGE_SYMBOL_H
 
-#include <string>
-#include <time.h>
+#include "DefinitionKind.h"
 
 namespace sourcetrail
 {
-	namespace utility
+	struct StorageSymbol
 	{
-		bool getFileExists(const std::string& filePath);
-		std::string getFileContent(const std::string& filePath);
-		std::string getDateTimeString(const time_t& time);
-		int getLineCount(const std::string s);
-	}
+		StorageSymbol()
+			: id(0)
+			, definitionKind(definitionKindToInt(DEFINITION_EXPLICIT))
+		{}
+
+		StorageSymbol(int id, int definitionKind)
+			: id(id)
+			, definitionKind(definitionKind)
+		{}
+
+		int id;
+		int definitionKind;
+	};
 }
 
-#endif // SOURCETRAIL_UTILITY_H
+#endif // SOURCETRAIL_STORAGE_SYMBOL_H

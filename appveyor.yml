@@ -72,6 +72,10 @@ after_build:
         copy bindings_python/build/$env:ARCHITECTURE/release/sourcetraildb.py artifacts_bindings_python/
 
 
+test_script:
+    - "core\\build\\%ARCHITECTURE%\\release\\test.exe"
+
+
 artifacts:
     - path: artifacts_core
       name: sourcetraildb_core_windows_%ARCHITECTURE%_$(appveyor_build_version)

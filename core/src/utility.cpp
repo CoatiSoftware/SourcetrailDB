@@ -16,8 +16,8 @@
 
 #include "utility.h"
 
+#include <ctime>
 #include <fstream>
-#include <filesystem>
 
 #include "SourcetrailException.h"
 
@@ -51,16 +51,6 @@ namespace sourcetrail
 			file.close();
 
 			return content;
-		}
-
-		time_t getFileModificationTime(const std::string& filePath)
-		{
-			std::experimental::filesystem::path p(filePath);
-			auto ftime = std::experimental::filesystem::last_write_time(p);
-
-			// assuming system_clock for this demo
-			// note: not true on MSVC; C++20 will allow portable output
-			return decltype(ftime)::clock::to_time_t(ftime);
 		}
 
 		std::string getDateTimeString(const time_t& time)

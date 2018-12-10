@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 
 set(PROJECT_NAME "SourcetrailDBCore")
 set(LIB_NAME "sourcetraildb")
+set(TEST_NAME "test")
 
 set(INTERFACE_VERSION 0)
 set(DATABASE_VERSION 22)
@@ -41,7 +42,7 @@ configure_file(
 	${GENERATED_VERSION_FILE}
 )
 
-set(SRC_FILES 
+set(LIB_SRC_FILES 
 	external/sqlite/CppSQLite3.cpp
 	external/sqlite/sqlite3.c
 	src/DatabaseStorage.cpp
@@ -56,7 +57,7 @@ set(SRC_FILES
 	src/utility.cpp
 )
 
-set(HDR_FILES 
+set(LIB_HDR_FILES 
 	external/json/json.hpp
 	external/sqlite/CppSQLite3.h
 	external/sqlite/sqlite3.h
@@ -70,17 +71,40 @@ set(HDR_FILES
 	include/ReferenceKind.h
 	include/SourceLocation.h
 	include/SourceRange.h
-	include/SourcetrailException.h
 	include/SourcetrailDBWriter.h
+	include/SourcetrailException.h
+	include/StorageEdge.h
+	include/StorageError.h
+	include/StorageFile.h
+	include/StorageLocalSymbol.h
+	include/StorageNode.h
+	include/StorageOccurrence.h
+	include/StorageSourceLocation.h
+	include/StorageSymbol.h
 	include/SymbolKind.h
 	include/utility.h
 	${GENERATED_VERSION_FILE}
 )
 
-add_library(${LIB_NAME} STATIC ${SRC_FILES} ${HDR_FILES})
+add_library(${LIB_NAME} STATIC ${LIB_SRC_FILES} ${LIB_HDR_FILES})
 
 target_include_directories(${LIB_NAME} PUBLIC
 	"${CMAKE_SOURCE_DIR}/include"
 	"${CMAKE_SOURCE_DIR}/external"
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
+
+
+set(TEST_SRC_FILES 
+	test/test.cpp
+)
+
+add_executable(${TEST_NAME} ${TEST_SRC_FILES})
+
+target_include_directories(${TEST_NAME} PUBLIC
+	"${CMAKE_SOURCE_DIR}/include"
+	"${CMAKE_SOURCE_DIR}/external"
+	"${GENERATED_INCLUDE_DIRECTORY}"
+)
+
+target_link_libraries(${TEST_NAME} ${LIB_NAME})

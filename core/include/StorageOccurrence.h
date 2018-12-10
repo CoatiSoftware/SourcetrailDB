@@ -14,21 +14,26 @@
 * limitations under the License.
 */
 
-#ifndef SOURCETRAIL_UTILITY_H
-#define SOURCETRAIL_UTILITY_H
-
-#include <string>
-#include <time.h>
+#ifndef SOURCETRAIL_STORAGE_OCCURRENCE_H
+#define SOURCETRAIL_STORAGE_OCCURRENCE_H
 
 namespace sourcetrail
 {
-	namespace utility
+	struct StorageOccurrence
 	{
-		bool getFileExists(const std::string& filePath);
-		std::string getFileContent(const std::string& filePath);
-		std::string getDateTimeString(const time_t& time);
-		int getLineCount(const std::string s);
-	}
+		StorageOccurrence()
+			: elementId(0)
+			, sourceLocationId(0)
+		{}
+
+		StorageOccurrence(int elementId, int sourceLocationId)
+			: elementId(elementId)
+			, sourceLocationId(sourceLocationId)
+		{}
+
+		int elementId;
+		int sourceLocationId;
+	};
 }
 
-#endif // SOURCETRAIL_UTILITY_H
+#endif // SOURCETRAIL_STORAGE_OCCURRENCE_H

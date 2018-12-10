@@ -19,6 +19,9 @@
 #include <vector>
 
 #include "SourcetrailException.h"
+#include "StorageFile.h"
+#include "StorageNode.h"
+#include "StorageSymbol.h"
 #include "NodeKind.h"
 #include "utility.h"
 #include "version.h"
@@ -34,10 +37,17 @@ namespace sourcetrail
 
 	std::shared_ptr<DatabaseStorage> DatabaseStorage::openDatabase(const std::string& dbFilePath)
 	{
-		std::shared_ptr<DatabaseStorage> storage = std::shared_ptr<DatabaseStorage>(new DatabaseStorage());
-		storage->m_database.open(dbFilePath.c_str());
-		storage->executeStatement("PRAGMA foreign_keys=ON;");
-		return storage;
+		try
+		{
+			std::shared_ptr<DatabaseStorage> storage = std::shared_ptr<DatabaseStorage>(new DatabaseStorage());
+			storage->m_database.open(dbFilePath.c_str());
+			storage->executeStatement("PRAGMA foreign_keys=ON;");
+			return storage;
+		}
+		catch (CppSQLite3Exception e)
+		{
+			throw SourcetrailException(e.errorMessage());
+		}
 	}
 
 	DatabaseStorage::~DatabaseStorage()
@@ -269,7 +279,7 @@ namespace sourcetrail
 		executeStatement("VACUUM;");
 	}
 
-	int DatabaseStorage::addNode(const std::string& serializedNameHierarchy)
+	int DatabaseStorage::addNode(const StorageNodeData& storageNodeData)
 	{
 		int id = 0;
 
@@ -277,13 +287,15 @@ namespace sourcetrail
 			CppSQLite3Statement stmt = m_database.compileStatement(
 				"SELECT id FROM node WHERE serialized_name == ? LIMIT 1;"
 			);
-			stmt.bind(1, serializedNameHierarchy.c_str());
+			stmt.bind(1, storageNodeData.serializedName.c_str());
 			CppSQLite3Query q = executeQuery(stmt);
 			if (!q.eof())
 			{
 				id = q.getIntField(0, 0);
 			}
 		}
+
+		// FIXME: update node nodeKind here
 
 		if (id == 0)
 		{
@@ -299,35 +311,42 @@ namespace sourcetrail
 					"INSERT INTO node(id, type, serialized_name) VALUES(?, ?, ?);"
 				);
 				stmt.bind(1, id);
-				stmt.bind(2, nodeKindToInt(NODE_UNKNOWN));
-				stmt.bind(3, serializedNameHierarchy.c_str());
+				stmt.bind(2, storageNodeData.nodeKind);
+				stmt.bind(3, storageNodeData.serializedName.c_str());
 				executeStatement(stmt);
 			}
 		}
 		return id;
 	}
 
-	void DatabaseStorage::addSymbol(int nodeId, int definitionKind)
+	void DatabaseStorage::addSymbol(const StorageSymbol& storageSymbol)
 	{
 		CppSQLite3Statement stmt = m_database.compileStatement(
 			"INSERT OR IGNORE INTO symbol(id, definition_kind) VALUES(?, ?);"
 		);
-		stmt.bind(1, nodeId);
-		stmt.bind(2, definitionKind);
+		stmt.bind(1, storageSymbol.id);
+		stmt.bind(2, storageSymbol.definitionKind);
 		executeStatement(stmt);
 	}
 
-
-	void DatabaseStorage::addFile(int nodeId, const std::string& filePath)
+	void DatabaseStorage::addFile(const StorageFile& storageFile)
 	{
-		std::string modificationTime = utility::getDateTimeString(0);
-		const bool indexed = true;
-		const bool complete = true;
-		std::string content = "";
-		if (utility::getFileExists(filePath))
 		{
-			modificationTime = utility::getDateTimeString(utility::getFileModificationTime(filePath));
-			content = utility::getFileContent(filePath);
+			CppSQLite3Statement stmt = m_database.compileStatement(
+				"SELECT id FROM file WHERE id == ?;"
+			);
+			stmt.bind(1, storageFile.id);
+			CppSQLite3Query q = executeQuery(stmt);
+			if (!q.eof())
+			{
+				return; // early exit if the file already exists
+			}
+		}
+
+		std::string content = "";
+		if (utility::getFileExists(storageFile.filePath))
+		{
+			content = utility::getFileContent(storageFile.filePath);
 		}
 		const int lineCount = utility::getLineCount(content);
 
@@ -335,11 +354,11 @@ namespace sourcetrail
 			CppSQLite3Statement stmt = m_database.compileStatement(
 				"INSERT OR IGNORE INTO file(id, path, modification_time, indexed, complete, line_count) VALUES(?, ?, ?, ?, ?, ?);"
 			);
-			stmt.bind(1, nodeId);
-			stmt.bind(2, filePath.c_str());
-			stmt.bind(3, modificationTime.c_str());
-			stmt.bind(4, indexed);
-			stmt.bind(5, complete);
+			stmt.bind(1, storageFile.id);
+			stmt.bind(2, storageFile.filePath.c_str());
+			stmt.bind(3, storageFile.modificationTime.c_str());
+			stmt.bind(4, storageFile.indexed);
+			stmt.bind(5, storageFile.complete);
 			stmt.bind(6, lineCount);
 			executeStatement(stmt);
 		}
@@ -349,13 +368,13 @@ namespace sourcetrail
 			CppSQLite3Statement stmt = m_database.compileStatement(
 				"INSERT INTO filecontent(id, content) VALUES(?, ?);"
 			);
-			stmt.bind(1, nodeId);
+			stmt.bind(1, storageFile.id);
 			stmt.bind(2, content.c_str());
 			executeStatement(stmt);
 		}
 	}
 
-	int DatabaseStorage::addEdge(int sourceNodeId, int targetNodeId, int edgeKind)
+	int DatabaseStorage::addEdge(const StorageEdgeData& storageEdgeData)
 	{
 		int id = 0;
 
@@ -363,9 +382,9 @@ namespace sourcetrail
 			CppSQLite3Statement stmt = m_database.compileStatement(
 				"SELECT id FROM edge WHERE source_node_id == ? AND target_node_id == ? AND type == ? LIMIT 1;"
 			);
-			stmt.bind(1, sourceNodeId);
-			stmt.bind(2, targetNodeId);
-			stmt.bind(3, edgeKind);
+			stmt.bind(1, storageEdgeData.sourceNodeId);
+			stmt.bind(2, storageEdgeData.targetNodeId);
+			stmt.bind(3, storageEdgeData.edgeKind);
 			CppSQLite3Query q = executeQuery(stmt);
 			if (!q.eof())
 			{
@@ -387,16 +406,16 @@ namespace sourcetrail
 					"INSERT INTO edge(id, type, source_node_id, target_node_id) VALUES(?, ?, ?, ?);"
 				);
 				stmt.bind(1, id);
-				stmt.bind(2, edgeKind);
-				stmt.bind(3, sourceNodeId);
-				stmt.bind(4, targetNodeId);
+				stmt.bind(2, storageEdgeData.edgeKind);
+				stmt.bind(3, storageEdgeData.sourceNodeId);
+				stmt.bind(4, storageEdgeData.targetNodeId);
 				executeStatement(stmt);
 			}
 		}
 		return id;
 	}
 
-	int DatabaseStorage::addLocalSymbol(const std::string& name)
+	int DatabaseStorage::addLocalSymbol(const StorageLocalSymbolData& storageLocalSymbolData)
 	{
 		int id = 0;
 
@@ -404,7 +423,7 @@ namespace sourcetrail
 			CppSQLite3Statement stmt = m_database.compileStatement(
 				"SELECT id FROM local_symbol WHERE name == ? LIMIT 1;"
 			);
-			stmt.bind(1, name.c_str());
+			stmt.bind(1, storageLocalSymbolData.name.c_str());
 			CppSQLite3Query q = executeQuery(stmt);
 			if (!q.eof())
 			{
@@ -426,20 +445,14 @@ namespace sourcetrail
 					"INSERT INTO local_symbol(id, name) VALUES(?, ?);"
 				);
 				stmt.bind(1, id);
-				stmt.bind(2, name.c_str());
+				stmt.bind(2, storageLocalSymbolData.name.c_str());
 				executeStatement(stmt);
 			}
 		}
 		return id;
 	}
 
-	int DatabaseStorage::addSourceLocation(
-		int fileId,
-		int startLineNumber,
-		int startColumnNumber,
-		int endLineNumber,
-		int endColumnNumber,
-		int locationKind)
+	int DatabaseStorage::addSourceLocation(const StorageSourceLocationData& storageSourceLocationData)
 	{
 		int id = 0;
 
@@ -454,12 +467,12 @@ namespace sourcetrail
 				"type = ? "
 				"LIMIT 1;"
 			);
-			stmt.bind(1, fileId);
-			stmt.bind(2, startLineNumber);
-			stmt.bind(3, startColumnNumber);
-			stmt.bind(4, endLineNumber);
-			stmt.bind(5, endColumnNumber);
-			stmt.bind(6, locationKind);
+			stmt.bind(1, storageSourceLocationData.fileNodeId);
+			stmt.bind(2, storageSourceLocationData.startLineNumber);
+			stmt.bind(3, storageSourceLocationData.startColumnNumber);
+			stmt.bind(4, storageSourceLocationData.endLineNumber);
+			stmt.bind(5, storageSourceLocationData.endColumnNumber);
+			stmt.bind(6, storageSourceLocationData.locationKind);
 			CppSQLite3Query q = executeQuery(stmt);
 			if (!q.eof())
 			{
@@ -472,31 +485,29 @@ namespace sourcetrail
 			CppSQLite3Statement stmt = m_database.compileStatement(
 				"INSERT INTO source_location(id, file_node_id, start_line, start_column, end_line, end_column, type) VALUES(NULL, ?, ?, ?, ?, ?, ?);"
 			);
-			stmt.bind(1, fileId);
-			stmt.bind(2, startLineNumber);
-			stmt.bind(3, startColumnNumber);
-			stmt.bind(4, endLineNumber);
-			stmt.bind(5, endColumnNumber);
-			stmt.bind(6, locationKind);
+			stmt.bind(1, storageSourceLocationData.fileNodeId);
+			stmt.bind(2, storageSourceLocationData.startLineNumber);
+			stmt.bind(3, storageSourceLocationData.startColumnNumber);
+			stmt.bind(4, storageSourceLocationData.endLineNumber);
+			stmt.bind(5, storageSourceLocationData.endColumnNumber);
+			stmt.bind(6, storageSourceLocationData.locationKind);
 			executeStatement(stmt);
 			id = m_database.lastRowId();
 		}
 		return id;
 	}
 
-	void DatabaseStorage::addOccurrence(int elementId, int sourceLocationId)
+	void DatabaseStorage::addOccurrence(const StorageOccurrence& storageOccurrence)
 	{
 		CppSQLite3Statement stmt = m_database.compileStatement(
 			"INSERT OR IGNORE INTO occurrence(element_id, source_location_id) VALUES(?, ?);"
 		);
-		stmt.bind(1, elementId);
-		stmt.bind(2, sourceLocationId);
+		stmt.bind(1, storageOccurrence.elementId);
+		stmt.bind(2, storageOccurrence.sourceLocationId);
 		executeStatement(stmt);
 	}
 
-	int DatabaseStorage::addError(
-		const std::string& message,
-		bool fatal)
+	int DatabaseStorage::addError(const StorageErrorData& storageErrorData)
 	{
 		int id = 0;
 		{
@@ -506,8 +517,8 @@ namespace sourcetrail
 				"fatal == ? "
 				"LIMIT 1;"
 			);
-			stmt.bind(1, message.c_str());
-			stmt.bind(2, fatal);
+			stmt.bind(1, storageErrorData.message.c_str());
+			stmt.bind(2, storageErrorData.fatal);
 			CppSQLite3Query q = executeQuery(stmt);
 			if (!q.eof() && q.numFields() > 0)
 			{
@@ -530,10 +541,10 @@ namespace sourcetrail
 				"VALUES(?, ?, ?, ?, ?);"
 			);
 			stmt.bind(1, id);
-			stmt.bind(2, message.c_str());
-			stmt.bind(3, fatal);
-			stmt.bind(4, true);
-			stmt.bind(5, "");
+			stmt.bind(2, storageErrorData.message.c_str());
+			stmt.bind(3, storageErrorData.fatal);
+			stmt.bind(4, storageErrorData.indexed);
+			stmt.bind(5, storageErrorData.translationUnit.c_str());
 			executeStatement(stmt);
 			id = m_database.lastRowId();
 		}
@@ -613,4 +624,208 @@ namespace sourcetrail
 			throw SourcetrailException("Failed to execute query with message \"" + std::string(e.errorMessage()) + "\".");
 		}
 	}
+
+	template <>
+	std::vector<StorageEdge> DatabaseStorage::doGetAll<StorageEdge>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT id, type, source_node_id, target_node_id FROM edge " + query + ";"
+		);
+
+		std::vector<StorageEdge> edges;
+		while (!q.eof())
+		{
+			const int id = q.getIntField(0, 0);
+			const int edgeKind = q.getIntField(1, -1);
+			const int sourceId = q.getIntField(2, 0);
+			const int targetId = q.getIntField(3, 0);
+
+			if (id != 0 && edgeKind != -1)
+			{
+				edges.emplace_back(StorageEdge(id, sourceId, targetId, edgeKind));
+			}
+
+			q.nextRow();
+		}
+		return edges;
+	}
+
+	template <>
+	std::vector<StorageNode> DatabaseStorage::doGetAll<StorageNode>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT id, type, serialized_name FROM node " + query + ";"
+		);
+
+		std::vector<StorageNode> nodes;
+		while (!q.eof())
+		{
+			const int id = q.getIntField(0, 0);
+			const int type = q.getIntField(1, -1);
+			const std::string serializedName = q.getStringField(2, "");
+
+			if (id != 0 && type != -1)
+			{
+				nodes.emplace_back(StorageNode(id, type, serializedName));
+			}
+
+			q.nextRow();
+		}
+		return nodes;
+	}
+
+	template <>
+	std::vector<StorageSymbol> DatabaseStorage::doGetAll<StorageSymbol>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT id, definition_kind FROM symbol " + query + ";"
+		);
+
+		std::vector<StorageSymbol> symbols;
+		while (!q.eof())
+		{
+			const int id = q.getIntField(0, 0);
+			const int definitionKind = q.getIntField(1, 0);
+
+			if (id != 0)
+			{
+				symbols.emplace_back(StorageSymbol(id, definitionKind));
+			}
+
+			q.nextRow();
+		}
+		return symbols;
+	}
+
+	template <>
+	std::vector<StorageFile> DatabaseStorage::doGetAll<StorageFile>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT id, path, modification_time, indexed, complete FROM file " + query + ";"
+		);
+
+		std::vector<StorageFile> files;
+		while (!q.eof())
+		{
+			const int id = q.getIntField(0, 0);
+			const std::string filePath = q.getStringField(1, "");
+			const std::string modificationTime = q.getStringField(2, "");
+			const bool indexed = q.getIntField(3, 0);
+			const bool complete = q.getIntField(4, 0);
+
+			if (id != 0)
+			{
+				files.emplace_back(StorageFile(id, filePath, modificationTime, indexed, complete));
+			}
+			q.nextRow();
+		}
+
+		return files;
+	}
+
+	template <>
+	std::vector<StorageLocalSymbol> DatabaseStorage::doGetAll<StorageLocalSymbol>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT id, name FROM local_symbol " + query + ";"
+		);
+
+		std::vector<StorageLocalSymbol> localSymbols;
+
+		while (!q.eof())
+		{
+			const int id = q.getIntField(0, 0);
+			const std::string name = q.getStringField(1, "");
+
+			if (id != 0)
+			{
+				localSymbols.emplace_back(StorageLocalSymbol(id, name));
+			}
+
+			q.nextRow();
+		}
+		return localSymbols;
+	}
+
+	template <>
+	std::vector<StorageSourceLocation> DatabaseStorage::doGetAll<StorageSourceLocation>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT id, file_node_id, start_line, start_column, end_line, end_column, type FROM source_location " + query + ";"
+		);
+
+		std::vector<StorageSourceLocation> sourceLocations;
+
+		while (!q.eof())
+		{
+			const int id = q.getIntField(0, 0);
+			const int fileNodeId = q.getIntField(1, 0);
+			const int startLineNumber = q.getIntField(2, -1);
+			const int startColNumber = q.getIntField(3, -1);
+			const int endLineNumber = q.getIntField(4, -1);
+			const int endColNumber = q.getIntField(5, -1);
+			const int locationKind = q.getIntField(6, -1);
+
+			if (id != 0 && fileNodeId != 0 && startLineNumber != -1 && startColNumber != -1 && endLineNumber != -1 &&
+				endColNumber != -1 && locationKind != -1)
+			{
+				sourceLocations.emplace_back(StorageSourceLocation(id, fileNodeId, startLineNumber, startColNumber, endLineNumber, endColNumber, locationKind));
+			}
+
+			q.nextRow();
+		}
+		return sourceLocations;
+	}
+
+	template <>
+	std::vector<StorageOccurrence> DatabaseStorage::doGetAll<StorageOccurrence>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT element_id, source_location_id FROM occurrence " + query + ";"
+		);
+
+		std::vector<StorageOccurrence> occurrences;
+
+		while (!q.eof())
+		{
+			const int elementId = q.getIntField(0, 0);
+			const int sourceLocationId = q.getIntField(1, 0);
+
+			if (elementId != 0 && sourceLocationId != 0)
+			{
+				occurrences.emplace_back(StorageOccurrence(elementId, sourceLocationId));
+			}
+
+			q.nextRow();
+		}
+		return occurrences;
+	}
+
+	template <>
+	std::vector<StorageError> DatabaseStorage::doGetAll<StorageError>(const std::string& query) const
+	{
+		CppSQLite3Query q = executeQuery(
+			"SELECT id, message, fatal, indexed, translation_unit FROM error " + query + ";"
+		);
+
+		std::vector<StorageError> errors;
+		while (!q.eof())
+		{
+			const int id = q.getIntField(0, 0);
+			const std::string message = q.getStringField(1, "");
+			const bool fatal = q.getIntField(2, 0);
+			const bool indexed = q.getIntField(3, 0);
+			const std::string translationUnit = q.getStringField(4, "");
+
+			if (id != 0)
+			{
+				errors.emplace_back(StorageError(id, message, translationUnit, fatal, indexed));
+			}
+
+			q.nextRow();
+		}
+
+		return errors;
+	}
+
 }
