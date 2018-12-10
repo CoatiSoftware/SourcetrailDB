@@ -88,19 +88,19 @@ void clearLastError()
 	dbWriter.clearLastError();
 }
 
-bool openProject(std::string projectDirectory, std::string projectName)
+bool open(std::string databaseFilePath)
 {
-	return dbWriter.openProject(projectDirectory, projectName);
+	return dbWriter.open(databaseFilePath);
 }
 
-bool closeProject()
+bool close()
 {
-	return dbWriter.closeProject();
+	return dbWriter.close();
 }
 
-bool clearProject()
+bool clear()
 {
-	return dbWriter.clearProject();
+	return dbWriter.clear();
 }
 
 bool isEmpty()

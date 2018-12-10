@@ -51,9 +51,9 @@ namespace sourcetrail
 		const std::string& getLastError() const;
 		void clearLastError();
 
-		bool openProject(const std::string& projectDirectory, const std::string& projectName);
-		bool closeProject();
-		bool clearProject();
+		bool open(const std::string& databaseFilePath);
+		bool close();
+		bool clear();
 
 		bool isEmpty() const;
 		bool isCompatible() const;
@@ -101,8 +101,8 @@ namespace sourcetrail
 		int addEdge(int sourceId, int targetId, EdgeKind edgeKind);
 		void addSourceLocation(int elementId, const SourceRange& location, LocationKind kind);
 
-		std::string m_projectDirectory;
-		std::string m_projectName;
+		std::string m_projectFilePath;
+		std::string m_databaseFilePath;
 		std::shared_ptr<DatabaseStorage> m_storage;
 		mutable std::string m_lastError;
 	};

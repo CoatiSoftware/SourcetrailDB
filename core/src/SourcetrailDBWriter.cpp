@@ -16,6 +16,7 @@
 
 #include "SourcetrailDBWriter.h"
 
+#include <algorithm>
 #include <fstream>
 #include <vector>
 
@@ -62,10 +63,17 @@ namespace sourcetrail
 		m_lastError.clear();
 	}
 
-	bool SourcetrailDBWriter::openProject(const std::string& projectDirectory, const std::string& projectName)
+	bool SourcetrailDBWriter::open(const std::string& databaseFilePath)
 	{
-		m_projectDirectory = projectDirectory;
-		m_projectName = projectName;
+		m_databaseFilePath = databaseFilePath;
+
+		m_projectFilePath = databaseFilePath;
+		const size_t pos = m_projectFilePath.rfind('.');
+		if (pos != std::string::npos)
+		{
+			m_projectFilePath = m_projectFilePath.substr(0, pos);
+		}
+		m_projectFilePath += ".srctrlprj";
 
 		try
 		{
@@ -90,7 +98,7 @@ namespace sourcetrail
 		{
 			bool projectFileExists = false;
 			{
-				std::ifstream f(getProjectFilePath().c_str());
+				std::ifstream f(m_projectFilePath.c_str());
 				projectFileExists = f.good();
 				f.close();
 			}
@@ -111,7 +119,7 @@ namespace sourcetrail
 		return true;
 	}
 
-	bool SourcetrailDBWriter::closeProject()
+	bool SourcetrailDBWriter::close()
 	{
 		try
 		{
@@ -126,7 +134,7 @@ namespace sourcetrail
 		return true;
 	}
 
-	bool SourcetrailDBWriter::clearProject()
+	bool SourcetrailDBWriter::clear()
 	{
 		try
 		{
@@ -582,15 +590,6 @@ namespace sourcetrail
 		return serialized;
 	}
 
-	std::string SourcetrailDBWriter::getProjectFilePath() const
-	{
-		return m_projectDirectory + "/" + m_projectName + ".srctrlprj";
-	}
-	std::string SourcetrailDBWriter::getDatabaseFilePath() const
-	{
-		return m_projectDirectory + "/" + m_projectName + ".srctrldb";
-	}
-
 	void SourcetrailDBWriter::openDatabase()
 	{
 		if (m_storage)
@@ -600,7 +599,7 @@ namespace sourcetrail
 
 		try
 		{
-			m_storage = DatabaseStorage::openDatabase(getDatabaseFilePath());
+			m_storage = DatabaseStorage::openDatabase(m_databaseFilePath);
 		}
 		catch (CppSQLite3Exception e)
 		{
@@ -641,7 +640,7 @@ namespace sourcetrail
 		try
 		{
 			std::ofstream fileStream;
-			fileStream.open(getProjectFilePath(), std::ios::out);
+			fileStream.open(m_projectFilePath, std::ios::out);
 			fileStream << std::string(
 				"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n"
 				"<config>\n"

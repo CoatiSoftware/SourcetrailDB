@@ -56,11 +56,11 @@ std::string getLastError();
 
 void clearLastError();
 
-bool openProject(std::string projectDirectory, std::string projectName);
+bool open(std::string databaseFilePath);
 
-bool closeProject();
+bool close();
 
-bool clearProject();
+bool clear();
 
 bool isEmpty();
 
