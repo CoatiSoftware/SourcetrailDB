@@ -20,7 +20,7 @@
 #include <fstream>
 #include <vector>
 
-#include "sqlite/CppSQLite3.h"
+#include "CppSQLite3.h"
 
 #include "DatabaseStorage.h"
 #include "DefinitionKind.h"

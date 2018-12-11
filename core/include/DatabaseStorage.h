@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "sqlite/CppSQLite3.h"
+#include "CppSQLite3.h"
 
 #include "StorageEdge.h"
 #include "StorageError.h"

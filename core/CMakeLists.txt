@@ -16,8 +16,8 @@ configure_file(
 )
 
 set(LIB_SRC_FILES 
-	external/sqlite/CppSQLite3.cpp
-	external/sqlite/sqlite3.c
+	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/src/CppSQLite3.cpp"
+	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/src/sqlite3.c"
 	src/DatabaseStorage.cpp
 	src/DefinitionKind.cpp
 	src/EdgeKind.cpp
@@ -31,9 +31,9 @@ set(LIB_SRC_FILES
 )
 
 set(LIB_HDR_FILES 
-	external/json/json.hpp
-	external/sqlite/CppSQLite3.h
-	external/sqlite/sqlite3.h
+	"${CMAKE_SOURCE_DIR}/external/json/include/json.hpp"
+	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include/CppSQLite3.h"
+	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include/sqlite3.h"
 	include/DatabaseStorage.h
 	include/DefinitionKind.h
 	include/EdgeKind.h
@@ -65,7 +65,8 @@ set_target_properties(${LIB_CORE} PROPERTIES OUTPUT_NAME "sourcetraildb")
 
 target_include_directories(${LIB_CORE} PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	"${CMAKE_CURRENT_SOURCE_DIR}/external"
+	"${CMAKE_SOURCE_DIR}/external/json/include"
+	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include"
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 
@@ -78,7 +79,9 @@ add_executable(${TEST_CORE} ${TEST_SRC_FILES})
 
 target_include_directories(${TEST_CORE} PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	"${CMAKE_CURRENT_SOURCE_DIR}/external"
+	"${CMAKE_SOURCE_DIR}/external/catch/include"
+	"${CMAKE_SOURCE_DIR}/external/json/include"
+	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include"
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 

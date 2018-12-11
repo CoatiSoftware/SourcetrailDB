@@ -16,7 +16,7 @@
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() function
 
-#include "catch/catch.hpp"
+#include "catch.hpp"
 
 #include "DatabaseStorage.h"
 #include "NodeKind.h"

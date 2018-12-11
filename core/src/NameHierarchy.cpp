@@ -16,7 +16,7 @@
 
 #include "NameHierarchy.h"
 
-#include "json/json.hpp"
+#include "json.hpp"
 
 namespace sourcetrail
 {
