@@ -29,31 +29,17 @@ install:
 
 
 before_build:
-    # Setup core project
-    - cd core
     - mkdir build
     - cd build
-    - mkdir %ARCHITECTURE%
-    - cd %ARCHITECTURE%
-    - cmake -G "%CMAKE_GENERATOR%" ../..
-    - cd ../../..
-    # Setup bindings_python project
-    - cd bindings_python
-    - mkdir build
-    - cd build
-    - mkdir %ARCHITECTURE%
-    - cd %ARCHITECTURE%
-    - cmake -G "%CMAKE_GENERATOR%" ../.. -DPYTHON_INCLUDE_DIRS="%PYTHON_PATH%/include" -DPYTHON_LIBRARIES="%PYTHON_PATH%/libs/python37.lib"
-    - cd ../../..
+    - cmake -G "%CMAKE_GENERATOR%" ../
+    - cmake -G "%CMAKE_GENERATOR%" ../ -DPYTHON_INCLUDE_DIRS="%PYTHON_PATH%/include" -DPYTHON_LIBRARIES="%PYTHON_PATH%/libs/python37.lib"
+    - cd ../
 
 
 build_script:
-    - cd core/build/%ARCHITECTURE%
+    - cd build
     - msbuild /p:configuration=Release /v:m ALL_BUILD.vcxproj
-    - cd ../../..
-    - cd bindings_python/build/%ARCHITECTURE%
-    - msbuild /p:configuration=Release /v:m ALL_BUILD.vcxproj
-    - cd ../../..
+    - cd ../
 
 
 after_build:
@@ -63,17 +49,17 @@ after_build:
     - mkdir include
     - cd ..
     - ps: |
-        copy core/build/$env:ARCHITECTURE/release/sourcetraildb.lib artifacts_core/lib/
-        copy core/build/$env:ARCHITECTURE/include/version.h artifacts_core/include/
+        copy build/core/release/sourcetraildb.lib artifacts_core/lib/
+        copy build/core/include/version.h artifacts_core/include/
         copy core/include/* artifacts_core/include/
     - mkdir artifacts_bindings_python
     - ps: |
-        copy bindings_python/build/$env:ARCHITECTURE/release/_sourcetraildb.pyd artifacts_bindings_python/
-        copy bindings_python/build/$env:ARCHITECTURE/release/sourcetraildb.py artifacts_bindings_python/
+        copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/
+        copy build/bindings_python/release/sourcetraildb.py artifacts_bindings_python/
 
 
 test_script:
-    - "core\\build\\%ARCHITECTURE%\\release\\test.exe"
+    - "build\\core\\release\\test_core.exe"
 
 
 artifacts:

@@ -1,44 +1,17 @@
 cmake_minimum_required (VERSION 2.6)
 
-set(PROJECT_NAME "SourcetrailDBCore")
-set(LIB_NAME "sourcetraildb")
-set(TEST_NAME "test")
+set(TEST_CORE "test_core")
 
 set(INTERFACE_VERSION 0)
 set(DATABASE_VERSION 22)
 set(COMMIT_VERSION 1)
 set(VERSION_STRING "v${INTERFACE_VERSION}_db${DATABASE_VERSION}_c${COMMIT_VERSION}")
 
-project(${PROJECT_NAME})
-
-# check for current architecture
-if(NOT "${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
-    set(ARCH 32)
-else()
-    set(ARCH 64)
-endif()
-
-# configure default build type to Release
-set(CMAKE_BUILD_TYPE_INIT "Release")
-
-# configure the output directory
-if (UNIX)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/${ARCH}bit/${CMAKE_BUILD_TYPE}/")
-else ()
-	foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-		string( TOUPPER ${OUTPUTCONFIG} UPPER_OUTPUTCONFIG )
-		set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${UPPER_OUTPUTCONFIG} "${CMAKE_SOURCE_DIR}/build/${ARCH}bit/${OUTPUTCONFIG}/")
-		set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${UPPER_OUTPUTCONFIG} "${CMAKE_SOURCE_DIR}/build/${ARCH}bit/${OUTPUTCONFIG}/")
-		set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_OUTPUTCONFIG} "${CMAKE_SOURCE_DIR}/build/${ARCH}bit/${OUTPUTCONFIG}/")
-	endforeach(OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES)
-endif ()
-
-
-set(GENERATED_INCLUDE_DIRECTORY "${CMAKE_BINARY_DIR}/include")
+set(GENERATED_INCLUDE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/include")
 set(GENERATED_VERSION_FILE "${GENERATED_INCLUDE_DIRECTORY}/version.h")
 
 configure_file(
-	${CMAKE_SOURCE_DIR}/version.h.in
+	${CMAKE_CURRENT_SOURCE_DIR}/version.h.in
 	${GENERATED_VERSION_FILE}
 )
 
@@ -86,11 +59,13 @@ set(LIB_HDR_FILES
 	${GENERATED_VERSION_FILE}
 )
 
-add_library(${LIB_NAME} STATIC ${LIB_SRC_FILES} ${LIB_HDR_FILES})
+add_library(${LIB_CORE} STATIC ${LIB_SRC_FILES} ${LIB_HDR_FILES})
 
-target_include_directories(${LIB_NAME} PUBLIC
-	"${CMAKE_SOURCE_DIR}/include"
-	"${CMAKE_SOURCE_DIR}/external"
+set_target_properties(${LIB_CORE} PROPERTIES OUTPUT_NAME "sourcetraildb")
+
+target_include_directories(${LIB_CORE} PUBLIC
+	"${CMAKE_CURRENT_SOURCE_DIR}/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/external"
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 
@@ -99,12 +74,12 @@ set(TEST_SRC_FILES
 	test/test.cpp
 )
 
-add_executable(${TEST_NAME} ${TEST_SRC_FILES})
+add_executable(${TEST_CORE} ${TEST_SRC_FILES})
 
-target_include_directories(${TEST_NAME} PUBLIC
-	"${CMAKE_SOURCE_DIR}/include"
-	"${CMAKE_SOURCE_DIR}/external"
+target_include_directories(${TEST_CORE} PUBLIC
+	"${CMAKE_CURRENT_SOURCE_DIR}/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/external"
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 
-target_link_libraries(${TEST_NAME} ${LIB_NAME})
+target_link_libraries(${TEST_CORE} ${LIB_CORE})
