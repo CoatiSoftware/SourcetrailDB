@@ -59,6 +59,11 @@ namespace sourcetrail
 		return m_lastError;
 	}
 
+	void SourcetrailDBWriter::setLastError(const std::string& error) const
+	{
+		m_lastError = error;
+	}
+
 	void SourcetrailDBWriter::clearLastError()
 	{
 		m_lastError.clear();

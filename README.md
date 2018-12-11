@@ -140,7 +140,7 @@ sourcetrail::SourcetrailDBWriter writer;
 writer.open("MyProject.srctrldb");
 
 int fileId = writer.recordFile("C:/example/Bar.cpp");
-int referencedSymbolId = writer.recordFileLanguage(fileId, "cpp"); // this enables syntax highlighting for predefined languages
+writer.recordFileLanguage(fileId, "cpp"); // this enables syntax highlighting for predefined languages
 
 writer.close();
 ```

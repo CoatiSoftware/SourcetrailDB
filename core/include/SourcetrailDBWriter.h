@@ -48,6 +48,7 @@ namespace sourcetrail
 
 		int getSupportedDatabaseVersion() const;
 		const std::string& getLastError() const;
+		void setLastError(const std::string& error) const;
 		void clearLastError();
 
 		bool open(const std::string& databaseFilePath);

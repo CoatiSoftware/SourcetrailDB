@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <source_groups>
+        <source_group_78efd997-84bf-4db6-9736-f5ddd702053c>
+            <custom_command>./cpp_api_example $DB_PATH $DB_VERSION $SOURCE_PATH</custom_command>
+            <name>Custom Command Source Group</name>
+            <source_extensions>
+                <source_extension>.cpp</source_extension>
+            </source_extensions>
+            <source_paths>
+                <source_path>@API_EXAMPLE_DATA_PATH@/example.cpp</source_path>
+            </source_paths>
+            <status>enabled</status>
+            <type>Custom Command Source Group</type>
+        </source_group_78efd997-84bf-4db6-9736-f5ddd702053c>
+    </source_groups>
+    <version>7</version>
+</config>

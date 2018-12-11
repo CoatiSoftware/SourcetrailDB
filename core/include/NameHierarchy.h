@@ -38,7 +38,7 @@ namespace sourcetrail
 
 	std::string serializeNameHierarchyToDatabaseString(const NameHierarchy& nameHierarchy);
 	std::string serializeNameHierarchyToJson(const NameHierarchy& nameHierarchy);
-	NameHierarchy deserializeNameHierarchyFromJson(const std::string& serializedNameHierarchy);
+	NameHierarchy deserializeNameHierarchyFromJson(const std::string& serializedNameHierarchy, std::string* error = nullptr);
 }
 
 #endif // SOURCETRAIL_NAME_HIERARCHY_H

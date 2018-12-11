@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <source_groups>
+        <source_group_78efd997-84bf-4db6-9736-f5ddd702053c>
+            <custom_command>python3 example.py --database-file-path=$DB_PATH --source-file-path=$SOURCE_PATH</custom_command>
+            <name>Custom Command Source Group</name>
+            <source_extensions>
+                <source_extension>.py</source_extension>
+            </source_extensions>
+            <source_paths>
+                <source_path>@PYTHON_BINDING_EXAMPLE_DATA_PATH@/file.py</source_path>
+            </source_paths>
+            <status>enabled</status>
+            <type>Custom Command Source Group</type>
+        </source_group_78efd997-84bf-4db6-9736-f5ddd702053c>
+    </source_groups>
+    <version>7</version>
+</config>

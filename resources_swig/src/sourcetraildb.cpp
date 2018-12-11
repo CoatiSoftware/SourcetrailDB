@@ -139,11 +139,11 @@ bool optimizeDatabaseMemory()
 
 int recordSymbol(std::string serializedNameHierarchy)
 {
-	const sourcetrail::NameHierarchy nameHierarchy = sourcetrail::deserializeNameHierarchyFromJson(serializedNameHierarchy);
-	if (nameHierarchy.nameElements.empty())
+	std::string error;
+	const sourcetrail::NameHierarchy nameHierarchy = sourcetrail::deserializeNameHierarchyFromJson(serializedNameHierarchy, &error);
+	if (error.size() || nameHierarchy.nameElements.empty())
 	{
-		// TODO: handle this case!
-		//dbWriter.setLastError("Unable to deserialize name hierarchy \"" + serializedNameHierarchy + "\".");
+		dbWriter.setLastError("Unable to deserialize name hierarchy \"" + serializedNameHierarchy + "\": " + error);
 		return 0;
 	}
 	return dbWriter.recordSymbol(nameHierarchy);

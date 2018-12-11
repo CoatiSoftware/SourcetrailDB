@@ -61,7 +61,7 @@ namespace sourcetrail
 		return j.dump(4);
 	}
 
-	NameHierarchy deserializeNameHierarchyFromJson(const std::string& serializedNameHierarchy)
+	NameHierarchy deserializeNameHierarchyFromJson(const std::string& serializedNameHierarchy, std::string* error)
 	{
 		typedef nlohmann::json json;
 
@@ -110,9 +110,19 @@ namespace sourcetrail
 				}
 			}
 		}
+		catch (json::exception& e)
+		{
+			if (error)
+			{
+				*error = e.what();
+			}
+		}
 		catch (...)
 		{
-			// do nothing
+			if (error)
+			{
+				*error = "Exception thrown during NameHierarchy deserialization";
+			}
 		}
 
 		return nameHierarchy;
