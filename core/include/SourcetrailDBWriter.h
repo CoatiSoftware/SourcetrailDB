@@ -87,7 +87,6 @@ namespace sourcetrail
 		bool recordError(const std::string& message, bool fatal, const SourceRange& location);
 
 	private:
-		static std::string serializeNameHierarchy(const NameHierarchy& nameHierarchy);
 		void openDatabase();
 		void closeDatabase();
 		void setupDatabaseTables();

@@ -26,6 +26,9 @@ namespace sourcetrail
 {
 	/**
 	* Struct that represents an entire name of a symbol.
+	*
+	* TODO: explain prefix and postfix
+	* TODO: alway provide prefix and postfix of all name elements to make them unique. Example from C++ (2 foo::bar (foo has different signature)
 	*/
 	struct NameHierarchy
 	{
@@ -33,6 +36,7 @@ namespace sourcetrail
 		std::vector<NameElement> nameElements;
 	};
 
+	std::string serializeNameHierarchyToDatabaseString(const NameHierarchy& nameHierarchy);
 	std::string serializeNameHierarchyToJson(const NameHierarchy& nameHierarchy);
 	NameHierarchy deserializeNameHierarchyFromJson(const std::string& serializedNameHierarchy);
 }

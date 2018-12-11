@@ -571,26 +571,6 @@ namespace sourcetrail
 
 	// --- Private Interface ---
 
-	std::string SourcetrailDBWriter::serializeNameHierarchy(const NameHierarchy& nameHierarchy)
-	{
-		static std::string META_DELIMITER = "\tm";
-		static std::string NAME_DELIMITER = "\tn";
-		static std::string PARTS_DELIMITER = "\ts";
-		static std::string SIGNATURE_DELIMITER = "\tp";
-
-		std::string serialized = nameHierarchy.nameDelimiter + META_DELIMITER;
-		for (size_t i = 0; i < nameHierarchy.nameElements.size(); i++)
-		{
-			if (i != 0)
-			{
-				serialized += NAME_DELIMITER;
-			}
-			const NameElement& nameElement = nameHierarchy.nameElements[i];
-			serialized += nameElement.name + PARTS_DELIMITER + nameElement.prefix + SIGNATURE_DELIMITER + nameElement.postfix;
-		}
-		return serialized;
-	}
-
 	void SourcetrailDBWriter::openDatabase()
 	{
 		if (m_storage)
@@ -672,7 +652,10 @@ namespace sourcetrail
 		{
 			currentNameHierarchy.nameElements.push_back(nameHierarchy.nameElements[i]);
 
-			int nodeId = m_storage->addNode(StorageNodeData(nodeKindToInt(NODE_UNKNOWN), serializeNameHierarchy(currentNameHierarchy)));
+			int nodeId = m_storage->addNode(StorageNodeData(
+				nodeKindToInt(NODE_UNKNOWN),
+				serializeNameHierarchyToDatabaseString(currentNameHierarchy)
+			));
 
 			if (parentNodeId != 0)
 			{
