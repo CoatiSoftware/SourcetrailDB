@@ -300,6 +300,7 @@ namespace sourcetrail
 			REQUIRE(files.size() == 1);
 			REQUIRE(files.front().id == idFile1);
 			REQUIRE(files.front().filePath == filePath);
+			REQUIRE(files.front().languageIdentifier == "");
 		}
 
 		SECTION("writer does not record file twice")
@@ -310,6 +311,23 @@ namespace sourcetrail
 
 			const std::vector<StorageFile> files = storage->getAll<StorageFile>();
 			REQUIRE(files.size() == 1);
+		}
+
+		SECTION("writer records file language")
+		{
+			const std::string languageIdentifier = "testlanguage";
+
+			const bool success = writer.recordFileLanguage(
+				idFile1,
+				languageIdentifier
+			);
+			REQUIRE(success);
+			REQUIRE(writer.getLastError() == "");
+
+			const std::vector<StorageFile> files = storage->getAll<StorageFile>();
+			REQUIRE(files.size() == 1);
+			REQUIRE(files.front().id == idFile1);
+			REQUIRE(files.front().languageIdentifier == languageIdentifier);
 		}
 
 		writer.close();

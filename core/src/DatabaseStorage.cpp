@@ -116,6 +116,7 @@ namespace sourcetrail
 			"CREATE TABLE IF NOT EXISTS file("
 			"	id INTEGER NOT NULL, "
 			"	path TEXT, "
+			"	language TEXT, "
 			"	modification_time TEXT, "
 			"	indexed INTEGER, "
 			"	complete INTEGER, "
@@ -352,14 +353,15 @@ namespace sourcetrail
 
 		{
 			CppSQLite3Statement stmt = m_database.compileStatement(
-				"INSERT OR IGNORE INTO file(id, path, modification_time, indexed, complete, line_count) VALUES(?, ?, ?, ?, ?, ?);"
+				"INSERT OR IGNORE INTO file(id, path, language, modification_time, indexed, complete, line_count) VALUES(?, ?, ?, ?, ?, ?, ?);"
 			);
 			stmt.bind(1, storageFile.id);
 			stmt.bind(2, storageFile.filePath.c_str());
-			stmt.bind(3, storageFile.modificationTime.c_str());
-			stmt.bind(4, storageFile.indexed);
-			stmt.bind(5, storageFile.complete);
-			stmt.bind(6, lineCount);
+			stmt.bind(3, storageFile.languageIdentifier.c_str());
+			stmt.bind(4, storageFile.modificationTime.c_str());
+			stmt.bind(5, storageFile.indexed);
+			stmt.bind(6, storageFile.complete);
+			stmt.bind(7, lineCount);
 			executeStatement(stmt);
 		}
 
@@ -561,6 +563,16 @@ namespace sourcetrail
 		executeStatement(stmt);
 	}
 
+	void DatabaseStorage::setFileLanguage(int fileId, const std::string& languageIdentifier)
+	{
+		CppSQLite3Statement stmt = m_database.compileStatement(
+			"UPDATE file SET language = ? WHERE id == ?;"
+		);
+		stmt.bind(1, languageIdentifier.c_str());
+		stmt.bind(2, fileId);
+		executeStatement(stmt);
+	}
+
 	// --- Private Interface ---
 
 	void DatabaseStorage::insertOrUpdateMetaValue(const std::string& key, const std::string& value)
@@ -701,7 +713,7 @@ namespace sourcetrail
 	std::vector<StorageFile> DatabaseStorage::doGetAll<StorageFile>(const std::string& query) const
 	{
 		CppSQLite3Query q = executeQuery(
-			"SELECT id, path, modification_time, indexed, complete FROM file " + query + ";"
+			"SELECT id, path, language, modification_time, indexed, complete FROM file " + query + ";"
 		);
 
 		std::vector<StorageFile> files;
@@ -709,13 +721,14 @@ namespace sourcetrail
 		{
 			const int id = q.getIntField(0, 0);
 			const std::string filePath = q.getStringField(1, "");
-			const std::string modificationTime = q.getStringField(2, "");
-			const bool indexed = q.getIntField(3, 0);
-			const bool complete = q.getIntField(4, 0);
+			const std::string languageIdentifier = q.getStringField(2, "");
+			const std::string modificationTime = q.getStringField(3, "");
+			const bool indexed = q.getIntField(4, 0);
+			const bool complete = q.getIntField(5, 0);
 
 			if (id != 0)
 			{
-				files.emplace_back(StorageFile(id, filePath, modificationTime, indexed, complete));
+				files.emplace_back(StorageFile(id, filePath, languageIdentifier, modificationTime, indexed, complete));
 			}
 			q.nextRow();
 		}

@@ -480,6 +480,27 @@ namespace sourcetrail
 		}
 	}
 
+	bool SourcetrailDBWriter::recordFileLanguage(int fileId, const std::string& languageIdentifier)
+	{
+		if (!m_storage)
+		{
+			m_lastError = "Unable to record file language, because no database is currently open.";
+			return false;
+		}
+
+		try
+		{
+			m_storage->setFileLanguage(fileId, languageIdentifier);
+		}
+		catch (const SourcetrailException e)
+		{
+			m_lastError = e.getMessage();
+			return false;
+		}
+
+		return true;
+	}
+
 	int SourcetrailDBWriter::recordLocalSymbol(const std::string& name)
 	{
 		if (!m_storage)
@@ -678,7 +699,7 @@ namespace sourcetrail
 		const int nodeId = addNodeHierarchy(nameHierarchy);
 		m_storage->setNodeType(nodeId, nodeKindToInt(NODE_FILE));
 
-		m_storage->addFile(StorageFile(nodeId, filePath, utility::getDateTimeString(time(0)), true, true));
+		m_storage->addFile(StorageFile(nodeId, filePath, "", utility::getDateTimeString(time(0)), true, true));
 
 		return nodeId;
 	}

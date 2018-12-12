@@ -95,6 +95,8 @@ bool recordReferenceLocation(int referenceId, std::string filePath, int startLin
 
 int recordFile(std::string filePath);
 
+bool recordFileLanguage(int fileId, std::string languageIdentifier);
+
 int recordLocalSymbol(std::string name);
 
 bool recordLocalSymbolLocation(int localSymbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn);

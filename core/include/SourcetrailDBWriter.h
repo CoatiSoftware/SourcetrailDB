@@ -78,6 +78,7 @@ namespace sourcetrail
 		bool recordReferenceLocation(int referenceId, const SourceRange& location);
 
 		int recordFile(const std::string& filePath);
+		bool recordFileLanguage(int fileId, const std::string& languageIdentifier);
 
 		int recordLocalSymbol(const std::string& name);
 		bool recordLocalSymbolLocation(int localSymbolId, const SourceRange& location);

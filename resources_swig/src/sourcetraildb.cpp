@@ -191,6 +191,11 @@ int recordFile(std::string filePath)
 	return dbWriter.recordFile(filePath);
 }
 
+bool recordFileLanguage(int fileId, std::string languageIdentifier)
+{
+	return dbWriter.recordFileLanguage(fileId, languageIdentifier);
+}
+
 int recordLocalSymbol(std::string name)
 {
 	return dbWriter.recordLocalSymbol(name);

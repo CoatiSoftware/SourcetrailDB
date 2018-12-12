@@ -26,22 +26,16 @@ namespace sourcetrail
 		StorageFile()
 			: id(0)
 			, filePath("")
+			, languageIdentifier("")
 			, modificationTime("")
 			, indexed(true)
 			, complete(true)
 		{}
 
-		StorageFile(int id, std::string filePath, bool indexed, bool complete)
+		StorageFile(int id, std::string filePath, std::string languageIdentifier, std::string modificationTime, bool indexed, bool complete)
 			: id(id)
 			, filePath(std::move(filePath))
-			, modificationTime("")
-			, indexed(indexed)
-			, complete(complete)
-		{}
-
-		StorageFile(int id, std::string filePath, std::string modificationTime, bool indexed, bool complete)
-			: id(id)
-			, filePath(std::move(filePath))
+			, languageIdentifier(std::move(languageIdentifier))
 			, modificationTime(std::move(modificationTime))
 			, indexed(indexed)
 			, complete(complete)
@@ -49,6 +43,7 @@ namespace sourcetrail
 
 		int id;
 		std::string filePath;
+		std::string languageIdentifier;
 		std::string modificationTime;
 		bool indexed;
 		bool complete;

@@ -69,6 +69,7 @@ namespace sourcetrail
 		int addError(const StorageErrorData& storageErrorData);
 
 		void setNodeType(int nodeId, int nodeKind);
+		void setFileLanguage(int fileId, const std::string& languageIdentifier);
 
 		template <typename ResultType>
 		std::vector<ResultType> getAll() const
