@@ -1,0 +1,33 @@
+language: cpp
+compiler: clang
+
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    env: PYTHON_BINDING=0
+  - os: linux
+    dist: trusty
+    env: PYTHON_BINDING=1
+  - os: osx
+    env: PYTHON_BINDING=0
+  - os: osx
+    env: PYTHON_BINDING=1
+
+install: travis/install.sh
+
+script: travis/script.sh
+
+before_deploy: travis/bundle.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: UwuiE6SrjorpBr1CzTRadX1zq83hwbnur+MvzBueqEHM7Yyu5Y0xMkwchRlX41HzMuSkC0azM0S8GfqJT1E7pIrqgJGvFbXR3t9ZG8HtvrcM4PvTS8b0G0d8aWHfTP2Zv+PAK3MMnYtxmOFPs4IaqO1m+imjQWtpvCRG5tvc4DNIPAMh0S8LCjxUdz35BYAM4pwM7WB9Qt+YhbyP1h3oSQ7qtr1fZYCC0H4G1cjVBLeP9g66/tfg0MIQVf1wxU8KF3H6esilPhFDCnsBYcnYrKyJN9OkMXZvLoxsjqQvTlsSNO2wIQ32dW8fk+1VFebWjN3RnNUV2Zb3wdz2y6e6A08J8T/+QrJ003eUJAGassQEgsuQ85ldcbylbKCVdi+iA+W6pKSJoHIlyr2KQG77OZ+q3obvY09IMNX2qVnUJKG8g9vZHKk8TlvUtIDODUxqJ/XUVwG5aKiUPuE5UMeLnZlO7cWpABb28BjXGehLCDtqg2eu39n+N9hyEjmsJLcOuS03+C55YrjJHW09qZomorMyIa//4jxSAOU9Iah7cRzPGUl/eSwQ2kf0OGWfySd2PreOThWepH0ymvG9htlTUSMM4wRuKnNAmG7NY6TykttJY2KsTLpki+P4MFBlSvL0VvoHQintK69udSVeUrJaGx508w8V59AdZwJjMxhjOXw=
+  file_glob: true
+  file: $TRAVIS_BUILD_DIR/*.zip
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: CoatiSoftware/SourcetrailDB

@@ -16,6 +16,7 @@
 
 #include "utility.h"
 
+#include <algorithm>
 #include <ctime>
 #include <fstream>
 

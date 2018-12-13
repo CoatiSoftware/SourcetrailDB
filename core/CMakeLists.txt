@@ -2,11 +2,6 @@ cmake_minimum_required (VERSION 2.6)
 
 set(TEST_CORE "test_core")
 
-set(INTERFACE_VERSION 0)
-set(DATABASE_VERSION 23)
-set(COMMIT_VERSION 1)
-set(VERSION_STRING "v${INTERFACE_VERSION}_db${DATABASE_VERSION}_c${COMMIT_VERSION}")
-
 set(GENERATED_INCLUDE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/include")
 set(GENERATED_VERSION_FILE "${GENERATED_INCLUDE_DIRECTORY}/version.h")
 
@@ -15,7 +10,7 @@ configure_file(
 	${GENERATED_VERSION_FILE}
 )
 
-set(LIB_SRC_FILES 
+set(LIB_SRC_FILES
 	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/src/CppSQLite3.cpp"
 	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/src/sqlite3.c"
 	src/DatabaseStorage.cpp
@@ -30,7 +25,7 @@ set(LIB_SRC_FILES
 	src/utility.cpp
 )
 
-set(LIB_HDR_FILES 
+set(LIB_HDR_FILES
 	"${CMAKE_SOURCE_DIR}/external/json/include/json.hpp"
 	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include/CppSQLite3.h"
 	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include/sqlite3.h"
@@ -71,7 +66,7 @@ target_include_directories(${LIB_CORE} PUBLIC
 )
 
 
-set(TEST_SRC_FILES 
+set(TEST_SRC_FILES
 	test/test.cpp
 )
 
@@ -85,4 +80,4 @@ target_include_directories(${TEST_CORE} PUBLIC
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 
-target_link_libraries(${TEST_CORE} ${LIB_CORE})
+target_link_libraries(${TEST_CORE} ${LIB_CORE} "-ldl")

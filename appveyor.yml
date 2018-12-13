@@ -31,7 +31,7 @@ install:
 before_build:
     - mkdir build
     - cd build
-    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=ON -DPYTHON_INCLUDE_DIRS="%PYTHON_PATH%/include" -DPYTHON_INCLUDE_DIRS="%PYTHON_PATH%/include" -DPYTHON_LIBRARIES="%PYTHON_PATH%/libs/python37.lib"
+    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=ON -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python37.lib"
     - cd ../
 
 
@@ -62,7 +62,7 @@ after_build:
     - cd ..
     - ps: |
         copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/
-        copy build/bindings_python/release/sourcetraildb.py artifacts_bindings_python/
+        copy build/bindings_python/sourcetraildb.py artifacts_bindings_python/
         copy LICENSE.txt artifacts_bindings_python/license/license_sourcetraildb.txt
         copy external/catch/license_catch.txt artifacts_bindings_python/license/
         copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/license/
