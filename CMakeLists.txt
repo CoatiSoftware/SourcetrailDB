@@ -6,9 +6,9 @@ set(PROJECT_NAME "SourcetrailDB")
 
 project(${PROJECT_NAME})
 
-# configure default build type to Release
+# configure default flags
 set(CMAKE_BUILD_TYPE_INIT "Release")
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 set(LIB_CORE "lib_core")
 set(CORE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/core") # can be accessed in subdirectory CMake files

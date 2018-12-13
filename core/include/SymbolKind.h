@@ -17,10 +17,10 @@
 #ifndef SOURCETRAIL_SYMBOL_KIND_H
 #define SOURCETRAIL_SYMBOL_KIND_H
 
+#include "NodeKind.h"
+
 namespace sourcetrail
 {
-	enum NodeKind;
-
 	/**
 	* Enum providing all possible values for kinds of symbols that can be recorded using the SourcetrailDBWriter interface.
 	*/

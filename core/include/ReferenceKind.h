@@ -17,10 +17,10 @@
 #ifndef SOURCETRAIL_REFERENCE_KIND_H
 #define SOURCETRAIL_REFERENCE_KIND_H
 
+#include "EdgeKind.h"
+
 namespace sourcetrail
 {
-	enum EdgeKind;
-
 	/**
 	* Enum providing all possible values for kinds of references that can be recorded using the SourcetrailDBWriter interface.
 	*/
