@@ -37,7 +37,6 @@ set(LIB_HDR_FILES
 	include/NameHierarchy.h
 	include/NodeKind.h
 	include/ReferenceKind.h
-	include/SourceLocation.h
 	include/SourceRange.h
 	include/SourcetrailDBWriter.h
 	include/SourcetrailException.h

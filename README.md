@@ -77,7 +77,7 @@ name.nameElements.push_back(parentElement);
 
 sourcetrail::NameElement childElement;
 childElement.prefix = "void"; // tooltips omit prefixes of parents and only show the prefix of the hovered element
-childElement.name = "bar"; 
+childElement.name = "bar";
 childElement.postfix = "()"; // tooltips omit postfixes of parents and only show the prefix of the hovered element
 name.nameElements.push_back(childElement);
 
@@ -97,14 +97,16 @@ writer.close();
 sourcetrail::SourcetrailDBWriter writer;
 writer.open("MyProject.srctrldb");
 
+int symbolId = writer.recordSymbol({ "::",{ { "", "Bar", "" },{ "void", "bar", "()" } } });
+
+int fileId = writer.recordFile("C:/example/Bar.cpp");  // path to the source file that contains the recorded location
+
 sourcetrail::SourceRange location;
-location.filePath = "C:/example/Bar.cpp"; // path to the source file that contains the recorded location
+location.fileId = fileId;
 location.startLine = 8; // recorded lines start at 1, not 0
 location.startColumn = 7; // recorded columns start at 1, not 0
 location.endLine = 8;
 location.endColumn = 9;
-
-int symbolId = writer.recordSymbol({ "::",{ { "", "Bar", "" }, { "void", "bar", "()" } } });
 writer.recordSymbolLocation(symbolId, location); // lets you click symbols in Sourcetrail's code view
 
 writer.close();
@@ -122,7 +124,8 @@ writer.open("MyProject.srctrldb");
 int contextSymbolId = writer.recordSymbol({ "::",{ { "", "Bar", "" },{ "void", "bar", "()" } } });
 int referencedSymbolId = writer.recordSymbol({ "::",{ { "void", "foo", "()" } } });
 int referenceId = writer.recordReference(contextSymbolId, referencedSymbolId, sourcetrail::REFERENCE_CALL); // edges always go from the context to the referenced symbol
-writer.recordReferenceLocation(referenceId, { "C:/example/Bar.cpp", 10, 3, 10, 5 }); // clicking an edge will highlight this locaion in the code view
+int fileId = writer.recordFile("C:/example/Bar.cpp");
+writer.recordReferenceLocation(referenceId, { fileId, 10, 3, 10, 5 }); // clicking an edge will highlight this locaion in the code view
 
 writer.close();
 ```
@@ -136,8 +139,8 @@ writer.close();
 sourcetrail::SourcetrailDBWriter writer;
 writer.open("MyProject.srctrldb");
 
-int fileId = writer.recordFile("C:/example/Bar.cpp"); // files are stored implicitly when recording locations, but this call provides an id
-int referencedSymbolId = writer.recordFileLanguage(fileId, "cpp"); // this enables syntax highlighting
+int fileId = writer.recordFile("C:/example/Bar.cpp");
+int referencedSymbolId = writer.recordFileLanguage(fileId, "cpp"); // this enables syntax highlighting for predefined languages
 
 writer.close();
 ```
@@ -152,8 +155,9 @@ sourcetrail::SourcetrailDBWriter writer;
 writer.open("MyProject.srctrldb");
 
 int id = writer.recordLocalSymbol("some_unique_name"); // this name is just for referencing the symbol and won't be displayed anywhere
-writer.recordLocalSymbolLocation(id, { "C:/example/Foo.cpp", 3, 6, 3, 6 });
-writer.recordLocalSymbolLocation(id, { "C:/example/Foo.cpp", 4, 2, 4, 2 });
+int fileId = writer.recordFile("C:/example/Foo.cpp");
+writer.recordLocalSymbolLocation(id, { fileId, 3, 6, 3, 6 });
+writer.recordLocalSymbolLocation(id, { fileId, 4, 2, 4, 2 });
 
 writer.close();
 ```
@@ -167,7 +171,8 @@ writer.close();
 sourcetrail::SourcetrailDBWriter writer;
 writer.open("MyProject.srctrldb");
 
-int id = writer.recordCommentLocation({ "C:/example/Bar.cpp", 3, 2, 7, 4 }); // causes Sourcetrail to treat the source range as atomic - either display it completely or don't show it at all
+int fileId = writer.recordFile("C:/example/Bar.cpp");
+int id = writer.recordCommentLocation({ fileId, 3, 2, 7, 4 }); // causes Sourcetrail to treat the source range as atomic - either display it completely or don't show it at all
 
 writer.close();
 ```
@@ -181,9 +186,10 @@ writer.close();
 sourcetrail::SourcetrailDBWriter writer;
 writer.open("MyProject.srctrldb");
 
+int fileId = writer.recordFile("C:/example/Foo.cpp");
 std::string message = "Really? You missed that \";\" again?";
 bool fatal = false;
-sourcetrail::SourceRange location = { "C:/example/Foo.cpp", 4, 4, 4, 4 };
+sourcetrail::SourceRange location = { fileId, 4, 4, 4, 4 };
 int id = writer.recordError(message, fatal, location); // store and show parsing and indexing errors
 
 writer.close();

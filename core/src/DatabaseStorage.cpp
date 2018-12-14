@@ -199,7 +199,7 @@ namespace sourcetrail
 
 		const std::vector<std::string> tableNames = {
 			"meta",
-			"error"
+			"error",
 			"component_access",
 			"occurrence",
 			"source_location",

@@ -117,6 +117,7 @@ namespace sourcetrail
 		SECTION("writer records symbol locations")
 		{
 			const std::string filePath = "path/to/non_existing_file.cpp";
+			const int fileId = writer.recordFile(filePath);
 			const int startLine = 1;
 			const int startCol = 2;
 			const int endLine = 3;
@@ -128,7 +129,7 @@ namespace sourcetrail
 			{
 				const bool success = writer.recordSymbolLocation(
 					idSymbol1,
-					SourceRange({ filePath, startLine, startCol, endLine, endCol })
+					{ fileId, startLine, startCol, endLine, endCol }
 				);
 				REQUIRE(success);
 				REQUIRE(writer.getLastError() == "");
@@ -142,7 +143,7 @@ namespace sourcetrail
 			{
 				const bool success = writer.recordSymbolScopeLocation(
 					idSymbol1,
-					SourceRange({ filePath, startLine, startCol, endLine, endCol })
+					{ fileId, startLine, startCol, endLine, endCol }
 				);
 				REQUIRE(success);
 				REQUIRE(writer.getLastError() == "");
@@ -156,7 +157,7 @@ namespace sourcetrail
 			{
 				const bool success = writer.recordSymbolSignatureLocation(
 					idSymbol1,
-					SourceRange({ filePath, startLine, startCol, endLine, endCol })
+					{ fileId, startLine, startCol, endLine, endCol }
 				);
 				REQUIRE(success);
 				REQUIRE(writer.getLastError() == "");
@@ -239,6 +240,7 @@ namespace sourcetrail
 		SECTION("writer records reference location")
 		{
 			const std::string filePath = "path/to/non_existing_file.cpp";
+			const int fileId = writer.recordFile(filePath);
 			const int startLine = 1;
 			const int startCol = 2;
 			const int endLine = 3;
@@ -246,7 +248,7 @@ namespace sourcetrail
 
 			const bool success = writer.recordReferenceLocation(
 				idReference1,
-				SourceRange({ filePath, startLine, startCol, endLine, endCol })
+				{ fileId, startLine, startCol, endLine, endCol }
 			);
 			REQUIRE(success);
 			REQUIRE(writer.getLastError() == "");
@@ -375,6 +377,7 @@ namespace sourcetrail
 		SECTION("writer records local symbol location")
 		{
 			const std::string filePath = "path/to/non_existing_file.cpp";
+			const int fileId = writer.recordFile(filePath);
 			const int startLine = 1;
 			const int startCol = 2;
 			const int endLine = 3;
@@ -382,7 +385,7 @@ namespace sourcetrail
 
 			const bool success = writer.recordLocalSymbolLocation(
 				idLocalSymbol1,
-				SourceRange({ filePath, startLine, startCol, endLine, endCol })
+				{ fileId, startLine, startCol, endLine, endCol }
 			);
 			REQUIRE(success);
 			REQUIRE(writer.getLastError() == "");
@@ -426,13 +429,14 @@ namespace sourcetrail
 		REQUIRE(writer.getLastError() == "");
 
 		const std::string filePath = "path/to/non_existing_file.cpp";
+		const int fileId = writer.recordFile(filePath);
 		const int startLine = 1;
 		const int startCol = 2;
 		const int endLine = 3;
 		const int endCol = 4;
 
 		const bool success1 = writer.recordCommentLocation(
-			SourceRange({ filePath, startLine, startCol, endLine, endCol })
+			{ fileId, startLine, startCol, endLine, endCol }
 		);
 		REQUIRE(success1);
 		REQUIRE(writer.getLastError() == "");
@@ -456,7 +460,7 @@ namespace sourcetrail
 		SECTION("writer does not record comment location twice")
 		{
 			const bool success2 = writer.recordCommentLocation(
-				SourceRange({ filePath, startLine, startCol, endLine, endCol })
+				{ fileId, startLine, startCol, endLine, endCol }
 			);
 			REQUIRE(success2);
 			REQUIRE(writer.getLastError() == "");
@@ -487,6 +491,7 @@ namespace sourcetrail
 		const std::string message = "This is a very serious test error message.";
 		const bool fatal = false;
 		const std::string filePath = "path/to/non_existing_file.cpp";
+		const int fileId = writer.recordFile(filePath);
 		const int startLine = 1;
 		const int startCol = 2;
 		const int endLine = 3;
@@ -495,7 +500,7 @@ namespace sourcetrail
 		const bool success1 = writer.recordError(
 			message,
 			fatal,
-			SourceRange({ filePath, startLine, startCol, endLine, endCol })
+			{ fileId, startLine, startCol, endLine, endCol }
 		);
 		REQUIRE(success1);
 		REQUIRE(writer.getLastError() == "");
@@ -531,7 +536,7 @@ namespace sourcetrail
 			const bool success2 = writer.recordError(
 				message,
 				fatal,
-				SourceRange({ filePath, startLine, startCol, endLine, endCol })
+				{ fileId, startLine, startCol, endLine, endCol }
 			);
 			REQUIRE(success2);
 			REQUIRE(writer.getLastError() == "");

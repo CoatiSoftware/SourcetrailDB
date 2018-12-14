@@ -83,15 +83,15 @@ bool recordSymbolDefinitionKind(int symbolId, DefinitionKind symbolDefinitionKin
 
 bool recordSymbolKind(int symbolId, SymbolKind symbolKind);
 
-bool recordSymbolLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn);
+bool recordSymbolLocation(int symbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
-bool recordSymbolScopeLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn);
+bool recordSymbolScopeLocation(int symbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
-bool recordSymbolSignatureLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn);
+bool recordSymbolSignatureLocation(int symbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
 int recordReference(int contextSymbolId, int referencedSymbolId, ReferenceKind referenceKind);
 
-bool recordReferenceLocation(int referenceId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn);
+bool recordReferenceLocation(int referenceId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
 int recordFile(std::string filePath);
 
@@ -99,10 +99,10 @@ bool recordFileLanguage(int fileId, std::string languageIdentifier);
 
 int recordLocalSymbol(std::string name);
 
-bool recordLocalSymbolLocation(int localSymbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn);
+bool recordLocalSymbolLocation(int localSymbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
-bool recordCommentLocation(std::string filePath, int startLine, int startColumn, int endLine, int endColumn);
+bool recordCommentLocation(int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
-bool recordError(std::string message, bool fatal, std::string filePath, int startLine, int startColumn, int endLine, int endColumn);
+bool recordError(std::string message, bool fatal, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
 #endif // SOURCETRAILDB_H

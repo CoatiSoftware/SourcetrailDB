@@ -550,9 +550,8 @@ namespace sourcetrail
 
 		try
 		{
-			const int fileId = addFile(location.filePath);
 			const int sourceLocationId = m_storage->addSourceLocation(StorageSourceLocationData(
-				fileId,
+				location.fileId,
 				location.startLine,
 				location.startColumn,
 				location.endLine,
@@ -724,10 +723,8 @@ namespace sourcetrail
 
 	void SourcetrailDBWriter::addSourceLocation(int elementId, const SourceRange& location, LocationKind kind)
 	{
-		const int fileId = addFile(location.filePath);
-
 		const int sourceLocationId = m_storage->addSourceLocation(StorageSourceLocationData(
-			fileId,
+			location.fileId,
 			location.startLine,
 			location.startColumn,
 			location.endLine,

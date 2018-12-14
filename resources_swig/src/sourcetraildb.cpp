@@ -3,11 +3,9 @@
 #include "DefinitionKind.h"
 #include "NameHierarchy.h"
 #include "SymbolKind.h"
-#include "SourceLocation.h"
 #include "SourceRange.h"
 #include "SourcetrailDBWriter.h"
 #include "ReferenceKind.h"
-
 
 namespace
 {
@@ -161,19 +159,19 @@ bool recordSymbolKind(int symbolId, SymbolKind symbolKind)
 	return dbWriter.recordSymbolKind(symbolId, convertSymbolKind(symbolKind));
 }
 
-bool recordSymbolLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
+bool recordSymbolLocation(int symbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordSymbolLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordSymbolLocation(symbolId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
-bool recordSymbolScopeLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
+bool recordSymbolScopeLocation(int symbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordSymbolScopeLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordSymbolScopeLocation(symbolId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
-bool recordSymbolSignatureLocation(int symbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
+bool recordSymbolSignatureLocation(int symbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordSymbolSignatureLocation(symbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordSymbolSignatureLocation(symbolId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
 int recordReference(int contextSymbolId, int referencedSymbolId, ReferenceKind referenceKind)
@@ -181,9 +179,9 @@ int recordReference(int contextSymbolId, int referencedSymbolId, ReferenceKind r
 	return dbWriter.recordReference(contextSymbolId, referencedSymbolId, convertReferenceKind(referenceKind));
 }
 
-bool recordReferenceLocation(int referenceId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
+bool recordReferenceLocation(int referenceId, int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordReferenceLocation(referenceId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordReferenceLocation(referenceId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
 int recordFile(std::string filePath)
@@ -201,17 +199,17 @@ int recordLocalSymbol(std::string name)
 	return dbWriter.recordLocalSymbol(name);
 }
 
-bool recordLocalSymbolLocation(int localSymbolId, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
+bool recordLocalSymbolLocation(int localSymbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordLocalSymbolLocation(localSymbolId, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordLocalSymbolLocation(localSymbolId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
-bool recordCommentLocation(std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
+bool recordCommentLocation(int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordCommentLocation(sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordCommentLocation({ fileId, startLine, startColumn, endLine, endColumn });
 }
 
-bool recordError(std::string message, bool fatal, std::string filePath, int startLine, int startColumn, int endLine, int endColumn)
+bool recordError(std::string message, bool fatal, int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordError(message, fatal, sourcetrail::SourceRange({ filePath, startLine, startColumn, endLine, endColumn }));
+	return dbWriter.recordError(message, fatal, { fileId, startLine, startColumn, endLine, endColumn });
 }
