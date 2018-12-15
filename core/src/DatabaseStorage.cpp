@@ -52,25 +52,7 @@ namespace sourcetrail
 
 	DatabaseStorage::~DatabaseStorage()
 	{
-		m_insertElementStatement.finalize();
-		m_findNodeStatement.finalize();
-		m_insertNodeStatement.finalize();
-		m_setNodeTypeStmt.finalize();
-		m_insertSymbolStatement.finalize();
-		m_findFileStatement.finalize();
-		m_insertFileStatement.finalize();
-		m_setFileLanguageStmt.finalize();
-		m_insertFileContentStatement.finalize();
-		m_findEdgeStatement.finalize();
-		m_insertEdgeStatement.finalize();
-		m_findLocalSymbolStmt.finalize();
-		m_insertLocalSymbolStmt.finalize();
-		m_findSourceLocationStmt.finalize();
-		m_insertSourceLocationStmt.finalize();
-		m_insertOccurenceStmt.finalize();
-		m_findErrorStatement.finalize();
-		m_insertErrorStatement.finalize();
-		m_insertOrUpdateMetaValueStmt.finalize();
+		clearPrecompiledStatements();
 
 		m_database.close();
 	}
@@ -97,25 +79,9 @@ namespace sourcetrail
 	{
 		executeStatement("PRAGMA foreign_keys=OFF;");
 
-		const std::vector<std::string> tableNames = {
-			"meta",
-			"error",
-			"component_access",
-			"occurrence",
-			"source_location",
-			"local_symbol",
-			"filecontent",
-			"file",
-			"symbol",
-			"node",
-			"edge",
-			"element"
-		};
+		clearPrecompiledStatements();
 
-		for (const std::string& tableName : tableNames)
-		{
-			executeStatement("DROP TABLE IF EXISTS main." + tableName + ";");
-		}
+		clearTables();
 
 		setupDatabase();
 	}
@@ -533,6 +499,29 @@ namespace sourcetrail
 		);
 	}
 
+	void DatabaseStorage::clearTables()
+	{
+		const std::vector<std::string> tableNames = {
+			"meta",
+			"error",
+			"component_access",
+			"occurrence",
+			"source_location",
+			"local_symbol",
+			"filecontent",
+			"file",
+			"symbol",
+			"node",
+			"edge",
+			"element"
+		};
+
+		for (const std::string& tableName : tableNames)
+		{
+			executeStatement("DROP TABLE IF EXISTS main." + tableName + ";");
+		}
+	}
+
 	void DatabaseStorage::setupIndices()
 	{
 		executeStatement(
@@ -649,6 +638,29 @@ namespace sourcetrail
 				"(SELECT id FROM meta WHERE key = ?), ?, ?"
 			");"
 		);
+	}
+
+	void DatabaseStorage::clearPrecompiledStatements()
+	{
+		m_insertElementStatement.finalize();
+		m_findNodeStatement.finalize();
+		m_insertNodeStatement.finalize();
+		m_setNodeTypeStmt.finalize();
+		m_insertSymbolStatement.finalize();
+		m_findFileStatement.finalize();
+		m_insertFileStatement.finalize();
+		m_setFileLanguageStmt.finalize();
+		m_insertFileContentStatement.finalize();
+		m_findEdgeStatement.finalize();
+		m_insertEdgeStatement.finalize();
+		m_findLocalSymbolStmt.finalize();
+		m_insertLocalSymbolStmt.finalize();
+		m_findSourceLocationStmt.finalize();
+		m_insertSourceLocationStmt.finalize();
+		m_insertOccurenceStmt.finalize();
+		m_findErrorStatement.finalize();
+		m_insertErrorStatement.finalize();
+		m_insertOrUpdateMetaValueStmt.finalize();
 	}
 
 	int DatabaseStorage::insertElement()

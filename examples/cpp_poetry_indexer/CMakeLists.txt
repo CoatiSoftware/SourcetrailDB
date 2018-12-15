@@ -17,7 +17,7 @@ target_include_directories(${EXAMPLE_NAME} PUBLIC
 	"${CORE_SOURCE_DIR}/include"
 )
 
-target_link_libraries(${EXAMPLE_NAME} ${LIB_CORE})
+target_link_libraries(${EXAMPLE_NAME} ${LIB_CORE} "-ldl")
 
 
 # --- Configure Sourcetrail Project File ---

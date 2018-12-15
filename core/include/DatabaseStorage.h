@@ -81,8 +81,10 @@ namespace sourcetrail
 		DatabaseStorage() = default;
 
 		void setupTables();
+		void clearTables();
 		void setupIndices();
 		void setupPrecompiledStatements();
+		void clearPrecompiledStatements();
 
 		int insertElement();
 		void insertOrUpdateMetaValue(const std::string& key, const std::string& value);
