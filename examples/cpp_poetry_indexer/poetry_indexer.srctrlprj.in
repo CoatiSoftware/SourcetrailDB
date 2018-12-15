@@ -4,7 +4,7 @@
         <source_group_78efd997-84bf-4db6-9736-f5ddd702053c>
             <custom_command>./poetry_indexer $DB_PATH $DB_VERSION $SOURCE_PATH</custom_command>
             <exclude_filters>
-                <exclude_filter>@POETRY_INDEXER_DATA_PATH@/copyright.txt</exclude_filter>
+                <exclude_filter>@POETRY_INDEXER_DATA_PATH@/COPYRIGHT.txt</exclude_filter>
             </exclude_filters>
             <name>Custom Command Source Group</name>
             <source_extensions>

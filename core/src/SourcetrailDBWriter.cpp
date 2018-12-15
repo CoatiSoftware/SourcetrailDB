@@ -629,7 +629,7 @@ namespace sourcetrail
 		{
 			throw SourcetrailException("Unable to setup database tables, because no database is currently open.");
 		}
-		m_storage->setupTables();
+		m_storage->setupDatabase();
 	}
 
 	void SourcetrailDBWriter::clearDatabaseTables()
@@ -638,7 +638,7 @@ namespace sourcetrail
 		{
 			throw SourcetrailException("Unable to setup database tables, because no database is currently open.");
 		}
-		m_storage->clearTables();
+		m_storage->clearDatabase();
 	}
 
 	void SourcetrailDBWriter::createOrResetProjectFile()

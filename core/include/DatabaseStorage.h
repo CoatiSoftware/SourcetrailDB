@@ -48,8 +48,8 @@ namespace sourcetrail
 		static std::shared_ptr<DatabaseStorage> openDatabase(const std::string& dbFilePath);
 		~DatabaseStorage();
 
-		void setupTables();
-		void clearTables();
+		void setupDatabase();
+		void clearDatabase();
 
 		bool isEmpty() const;
 		bool isCompatible() const;
@@ -80,7 +80,13 @@ namespace sourcetrail
 	private:
 		DatabaseStorage() = default;
 
+		void setupTables();
+		void setupIndices();
+		void setupPrecompiledStatements();
+
+		int insertElement();
 		void insertOrUpdateMetaValue(const std::string& key, const std::string& value);
+		CppSQLite3Statement compileStatement(const std::string& statement) const;
 		void executeStatement(const std::string& statement) const;
 		void executeStatement(CppSQLite3Statement& statement) const;
 		CppSQLite3Query executeQuery(const std::string& query) const;
@@ -90,6 +96,26 @@ namespace sourcetrail
 		std::vector<ResultType> doGetAll(const std::string& query) const;
 
 		mutable CppSQLite3DB m_database;
+
+		CppSQLite3Statement m_insertElementStatement;
+		CppSQLite3Statement m_findNodeStatement;
+		CppSQLite3Statement m_insertNodeStatement;
+		CppSQLite3Statement m_setNodeTypeStmt;
+		CppSQLite3Statement m_insertSymbolStatement;
+		CppSQLite3Statement m_findFileStatement;
+		CppSQLite3Statement m_insertFileStatement;
+		CppSQLite3Statement m_setFileLanguageStmt;
+		CppSQLite3Statement m_insertFileContentStatement;
+		CppSQLite3Statement m_findEdgeStatement;
+		CppSQLite3Statement m_insertEdgeStatement;
+		CppSQLite3Statement m_findLocalSymbolStmt;
+		CppSQLite3Statement m_insertLocalSymbolStmt;
+		CppSQLite3Statement m_findSourceLocationStmt;
+		CppSQLite3Statement m_insertSourceLocationStmt;
+		CppSQLite3Statement m_insertOccurenceStmt;
+		CppSQLite3Statement m_findErrorStatement;
+		CppSQLite3Statement m_insertErrorStatement;
+		CppSQLite3Statement m_insertOrUpdateMetaValueStmt;
 	};
 
 	template <>
