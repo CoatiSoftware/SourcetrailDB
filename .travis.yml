@@ -1,20 +1,45 @@
 language: cpp
-compiler: clang
 
 matrix:
   include:
-  - os: linux
-    dist: trusty
-    env: PYTHON_BINDING=0
-  - os: linux
-    dist: trusty
-    env: PYTHON_BINDING=1
-  - os: osx
-    env: PYTHON_BINDING=0
-  - os: osx
-    env: PYTHON_BINDING=1
+    - os: linux
+      compiler: gcc
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env:
+        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=0
 
-install: travis/install.sh
+    - os: linux
+      compiler: gcc
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env:
+        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1
+
+    - os: osx
+      compiler: clang
+      env:
+        - PYTHON_BINDING=0
+
+    - os: osx
+      compiler: clang
+      env:
+        - PYTHON_BINDING=1
+
+install:
+  - travis/install.sh
+  - if [[ "${CXX_COMPILER}" != "" ]]; then export CXX=${CXX_COMPILER}; export CXX_FOR_BUILD=${CXX_COMPILER}; fi
+  - if [[ "${CC_COMPILER}" != "" ]]; then export CC=${CC_COMPILER}; export CC_FOR_BUILD=${CC_COMPILER}; fi
 
 script: travis/script.sh
 

@@ -3,7 +3,7 @@
 ## CI Pipelines
 
 Windows Builds: [![Build status](https://ci.appveyor.com/api/projects/status/gbblx1l790vm952c/branch/master?svg=true)](https://ci.appveyor.com/project/mlangkabel/sourcetraildb/branch/master)
-
+Linux and Mac Builds: [![Build Status](https://travis-ci.org/CoatiSoftware/SourcetrailDB.svg?branch=master)](https://travis-ci.org/CoatiSoftware/SourcetrailDB)
 
 ## Introduction
 
