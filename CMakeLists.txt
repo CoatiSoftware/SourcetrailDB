@@ -80,7 +80,7 @@ if (BUILD_EXAMPLES)
 	add_subdirectory("${CMAKE_SOURCE_DIR}/examples/cpp_poetry_indexer")
 
 	if (BUILD_BINDINGS_PYTHON)
-		add_subdirectory("${CMAKE_SOURCE_DIR}/examples/python_binding_example")
+		add_subdirectory("${CMAKE_SOURCE_DIR}/examples/python_api_example")
 	else()
 		message(STATUS "Skip python binding sample. You can enable building it by setting 'BUILD_BINDINGS_PYTHON' to 'ON'.")
 	endif()

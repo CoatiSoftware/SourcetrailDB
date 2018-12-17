@@ -2,7 +2,7 @@
 <config>
     <source_groups>
         <source_group_78efd997-84bf-4db6-9736-f5ddd702053c>
-            <custom_command>./poetry_indexer $DB_PATH $DB_VERSION $SOURCE_PATH</custom_command>
+            <custom_command>./poetry_indexer $DB_PATH $SOURCE_PATH $DB_VERSION</custom_command>
             <exclude_filters>
                 <exclude_filter>@POETRY_INDEXER_DATA_PATH@/COPYRIGHT.txt</exclude_filter>
             </exclude_filters>

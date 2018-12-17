@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 
@@ -7,39 +8,48 @@ int main(int argc, const char *argv[])
 {
 	sourcetrail::SourcetrailDBWriter dbWriter;
 
-	std::cout << "SourcetrailDB Poetry Indexer" << std::endl;
+	std::cout << "\nSourcetrailDB C++ API Example" << std::endl;
 	std::cout << std::endl;
 	std::cout << "SourcetrailDB version: " << dbWriter.getVersionString() << std::endl;
 	std::cout << "Supported database version: " << dbWriter.getSupportedDatabaseVersion() << std::endl;
 	std::cout << std::endl;
 
-	if (argc != 4)
+	if (argc < 3 || argc > 4)
 	{
-		std::cout << "usage: poetry_indexer <database_path> <database_version> <source_path>";
+		std::cout << "usage: cpp_api_example <database_path> <source_path> <optional:database_version>";
 	}
 
 	std::string dbPath = argv[1];
-	int dbVersion = std::stoi(argv[2]);
-	std::string sourcePath = argv[3];
+	std::string sourcePath = argv[2];
 
-	if (dbVersion != dbWriter.getSupportedDatabaseVersion())
+	int dbVersion = 0;
+	if (argc == 4)
 	{
-		std::cout << "error: binary only supports database version: " << dbWriter.getSupportedDatabaseVersion()
+		char* end;
+		dbVersion = strtol(argv[3], &end, 10);
+	}
+
+	if (dbVersion && dbVersion != dbWriter.getSupportedDatabaseVersion())
+	{
+		std::cerr << "error: binary only supports database version: " << dbWriter.getSupportedDatabaseVersion()
 			<< ". Requested version: " << dbVersion << std::endl;
 		return 1;
 	}
 
 	// open database by passing .srctrldb or .srctrldb_tmp path
+	std::cout << "Opening Database: " << dbPath << std::endl;
 	if (!dbWriter.open(dbPath))
 	{
-		std::cout << "error: " << dbWriter.getLastError() << std::endl;
+		std::cerr << "error: " << dbWriter.getLastError() << std::endl;
 		return 1;
 	}
+
+	std::cout << "Starting Indexing..." << std::endl;
 
 	// start recording with faster speed
 	if (!dbWriter.beginTransaction())
 	{
-		std::cout << "error: " << dbWriter.getLastError() << std::endl;
+		std::cerr << "error: " << dbWriter.getLastError() << std::endl;
 		return 1;
 	}
 
@@ -108,22 +118,24 @@ int main(int argc, const char *argv[])
 
 
 	// record error
-	dbWriter.recordError("Really? You missed that \";\" again?", false, { fileId, 22, 1, 22, 1 });
+	dbWriter.recordError("Really? You missed that \";\" again? (intentional error)", false, { fileId, 22, 1, 22, 1 });
 
 
 	// end recording
 	if (!dbWriter.commitTransaction())
 	{
-		std::cout << "error: " << dbWriter.getLastError() << std::endl;
+		std::cerr << "error: " << dbWriter.getLastError() << std::endl;
 		return 1;
 	}
 
 	// check for errors before finishing
 	if (dbWriter.getLastError().size())
 	{
-		std::cout << "error: " << dbWriter.getLastError() << std::endl;
+		std::cerr << "error: " << dbWriter.getLastError() << std::endl;
 		return 1;
 	}
+
+	std::cout << "done!" << std::endl;
 
 	return 0;
 }
