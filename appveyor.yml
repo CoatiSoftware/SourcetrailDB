@@ -7,13 +7,22 @@ environment:
         - MBITS: 32
           PYTHON_VERSION: 37
           MSVC_VERSION: 15
+          DEPLOY_PYTHON_BINDINGS: true
         - MBITS: 64
           PYTHON_VERSION: 37
           MSVC_VERSION: 15
+          DEPLOY_PYTHON_BINDINGS: true
+        - MBITS: 32
+          PYTHON_VERSION: 37
+          MSVC_VERSION: 14
+          DEPLOY_PYTHON_BINDINGS: false
+        - MBITS: 64
+          PYTHON_VERSION: 37
+          MSVC_VERSION: 14
+          DEPLOY_PYTHON_BINDINGS: false
 
 
 install:
-    - ps: echo $env:version 
     - ps: |
         if ($env:MBITS -eq "32") {
             echo "Architecture set to 32 bit."
@@ -83,6 +92,12 @@ after_build:
         copy external/catch/license_catch.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
         copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
         copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+    - ps: |
+        if ($env:DEPLOY_PYTHON_BINDINGS) {
+            $env:ARTIFACTY_TO_DEPLOY= $env:CORE_PACKAGE_NAME + "," + $env:PYTHON_PACKAGE_NAME
+        } else {
+            $env:ARTIFACTY_TO_DEPLOY= $env:CORE_PACKAGE_NAME
+        }
 
 
 test_script:
@@ -100,6 +115,7 @@ artifacts:
 
 deploy:
     provider: GitHub
+    artifact: $(ARTIFACTY_TO_DEPLOY)
     auth_token:
         secure: 8UwbjFrtR19GxLgL3O3efUT0Su2mp3+X23YioThJITupEvexmQJPAf3Whmmb3eeL
     on:
