@@ -4,26 +4,28 @@ image: Visual Studio 2017
 
 environment:
     matrix:
-        - ARCHITECTURE: 32bit
-          PYTHON_PATH: C:/Python37
-        - ARCHITECTURE: 64bit
-          PYTHON_PATH: C:/Python37-x64
+        - MBITS: 32
+          PYTHON_VERSION: 37
+          MSVC_VERSION: 15
+        - MBITS: 64
+          PYTHON_VERSION: 37
+          MSVC_VERSION: 15
 
 
 install:
+    - ps: echo $env:version 
     - ps: |
-        if ($env:ARCHITECTURE -eq "32bit") {
+        if ($env:MBITS -eq "32") {
             echo "Architecture set to 32 bit."
-            $env:CMAKE_GENERATOR="Visual Studio 15 2017"
-        } elseif ($env:ARCHITECTURE -eq "64bit") {
+            $env:CMAKE_GENERATOR="Visual Studio $env:MSVC_VERSION"
+            $env:PYTHON_PATH="C:/Python$env:PYTHON_VERSION"
+        } elseif ($env:MBITS -eq "64") {
             echo "Architecture set to 64 bit."
-            $env:CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
+            $env:CMAKE_GENERATOR="Visual Studio $env:MSVC_VERSION Win64"
+            $env:PYTHON_PATH="C:/Python$env:PYTHON_VERSION-x64"
         } else {
-            echo "No architecture set. Falling back to 32 bit build."
-            $env:ARCHITECTURE="32bit"
-            $env:CMAKE_GENERATOR="Visual Studio 15 2017"
+            echo "No architecture set. Build will be canceled."
         }
-        
         # Install SWIG by Choco
         choco install -y --no-progress swig
 
@@ -31,8 +33,14 @@ install:
 before_build:
     - mkdir build
     - cd build
-    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=ON -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python37.lib"
+    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=ON -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python%PYTHON_VERSION%.lib"
     - cd ../
+    - ps: $env:CORE_VERSION = Get-Content -Path ./build/version.txt
+    - ps: echo "Core version is $env:CORE_VERSION"
+# TODO: convert the core version into dotted format and update appveyor version here
+#    - ps: $env:BUILD_VERSION = "0.0.1." + $env:APPVEYOR_BUILD_NUMBER 
+#    - ps: echo update build version to $env:BUILD_VERSION
+#    - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
 
 
 build_script:
@@ -42,31 +50,39 @@ build_script:
 
 
 after_build:
+    - ps: $env:CORE_PACKAGE_NAME = 'sourcetraildb_core_' + $env:CORE_VERSION + '-windows-' + $env:MBITS + 'bit-msvc' + $env:MSVC_VERSION
+    - ps: $env:PYTHON_PACKAGE_NAME = 'sourcetrailbd_python' + $env:PYTHON_VERSION + '_' + $env:CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
+    - ps: echo $env:CORE_PACKAGE_NAME
+    - ps: echo $env:PYTHON_PACKAGE_NAME
     - mkdir artifacts_core
     - cd artifacts_core
+    - mkdir %CORE_PACKAGE_NAME%
+    - cd %CORE_PACKAGE_NAME%
     - mkdir lib
     - mkdir include
     - mkdir license
-    - cd ..
+    - cd ../..
     - ps: |
-        copy build/core/release/sourcetraildb.lib artifacts_core/lib/
-        copy build/core/include/version.h artifacts_core/include/
-        copy core/include/* artifacts_core/include/
-        copy LICENSE.txt artifacts_core/license/license_sourcetraildb.txt
-        copy external/catch/license_catch.txt artifacts_core/license/
-        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_core/license/
-        copy external/json/license_json.txt artifacts_core/license/
+        copy build/core/release/sourcetraildb.lib artifacts_core/$env:CORE_PACKAGE_NAME/lib/
+        copy build/core/include/version.h artifacts_core/$env:CORE_PACKAGE_NAME/include/
+        copy core/include/* artifacts_core/$env:CORE_PACKAGE_NAME/include/
+        copy LICENSE.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/license_sourcetraildb.txt
+        copy external/catch/license_catch.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
+        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
+        copy external/json/license_json.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
     - mkdir artifacts_bindings_python
     - cd artifacts_bindings_python
+    - mkdir %PYTHON_PACKAGE_NAME%
+    - cd %PYTHON_PACKAGE_NAME%
     - mkdir license
-    - cd ..
+    - cd ../..
     - ps: |
-        copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/
-        copy build/bindings_python/sourcetraildb.py artifacts_bindings_python/
-        copy LICENSE.txt artifacts_bindings_python/license/license_sourcetraildb.txt
-        copy external/catch/license_catch.txt artifacts_bindings_python/license/
-        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/license/
-        copy external/json/license_json.txt artifacts_bindings_python/license/
+        copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
+        copy build/bindings_python/sourcetraildb.py artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
+        copy LICENSE.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/license_sourcetraildb.txt
+        copy external/catch/license_catch.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+        copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
 
 
 test_script:
@@ -75,8 +91,16 @@ test_script:
 
 artifacts:
     - path: artifacts_core
-      name: sourcetraildb_core_windows_%ARCHITECTURE%_$(appveyor_build_version)
+      name: $(CORE_PACKAGE_NAME)
       type: Zip
     - path: artifacts_bindings_python
-      name: sourcetrailbd_python_windows_%ARCHITECTURE%_$(appveyor_build_version)
+      name: $(PYTHON_PACKAGE_NAME)
       type: Zip
+
+
+deploy:
+    provider: GitHub
+    auth_token:
+        secure: 8UwbjFrtR19GxLgL3O3efUT0Su2mp3+X23YioThJITupEvexmQJPAf3Whmmb3eeL
+    on:
+        appveyor_repo_tag: true

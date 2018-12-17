@@ -37,7 +37,7 @@ endif()
 
 string(REGEX REPLACE "v([0-9]+)_.*" "\\1" INTERFACE_VERSION "${GIT_VERSION_NUMBER}")
 string(REGEX REPLACE "v[0-9]+_db([0-9]+)_.*" "\\1" DATABASE_VERSION "${GIT_VERSION_NUMBER}")
-string(REGEX REPLACE "v[0-9]+_db[0-9]+_p([0-9])-.*" "\\1" PATCH_VERSION "${GIT_VERSION_NUMBER}")
+string(REGEX REPLACE "v[0-9]+_db[0-9]+_p([0-9]+)-.*" "\\1" PATCH_VERSION "${GIT_VERSION_NUMBER}")
 set(VERSION_STRING "v${INTERFACE_VERSION}_db${DATABASE_VERSION}_p${PATCH_VERSION}")
 
 message(STATUS "SourcetrailDB Version: ${VERSION_STRING}")
