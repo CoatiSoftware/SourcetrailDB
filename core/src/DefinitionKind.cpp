@@ -18,18 +18,23 @@
 
 namespace sourcetrail
 {
-	int definitionKindToInt(DefinitionKind v)
+	int definitionKindToInt(DefinitionKind kind)
 	{
-		return v;
+		return static_cast<int>(kind);
 	}
 
-	DefinitionKind intToDefinitionKind(int v)
+	DefinitionKind intToDefinitionKind(int i)
 	{
-		if (v == definitionKindToInt(DEFINITION_IMPLICIT))
-			return DEFINITION_IMPLICIT;
-		if (v == definitionKindToInt(DEFINITION_EXPLICIT))
-			return DEFINITION_EXPLICIT;
+		const DefinitionKind kinds[] = { DefinitionKind::IMPLICIT, DefinitionKind::EXPLICIT };
 
-		return DEFINITION_EXPLICIT;
+		for (DefinitionKind kind : kinds)
+		{
+			if (i == definitionKindToInt(kind))
+			{
+				return kind;
+			}
+		}
+
+		return DefinitionKind::EXPLICIT;
 	}
 }

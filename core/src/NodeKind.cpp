@@ -18,35 +18,46 @@
 
 namespace sourcetrail
 {
-	int nodeKindToInt(NodeKind v)
+	int nodeKindToInt(NodeKind kind)
 	{
-		return v;
+		return static_cast<int>(kind);
 	}
 
-	NodeKind intToNodeKind(int v)
+	NodeKind intToNodeKind(int i)
 	{
-		if (v == nodeKindToInt(NODE_UNKNOWN)) { return NODE_UNKNOWN; }
-		if (v == nodeKindToInt(NODE_TYPE)) { return NODE_TYPE; }
-		if (v == nodeKindToInt(NODE_BUILTIN_TYPE)) { return NODE_BUILTIN_TYPE; }
-		if (v == nodeKindToInt(NODE_MODULE)) { return NODE_MODULE; }
-		if (v == nodeKindToInt(NODE_NAMESPACE)) { return NODE_NAMESPACE; }
-		if (v == nodeKindToInt(NODE_PACKAGE)) { return NODE_PACKAGE; }
-		if (v == nodeKindToInt(NODE_STRUCT)) { return NODE_STRUCT; }
-		if (v == nodeKindToInt(NODE_CLASS)) { return NODE_CLASS; }
-		if (v == nodeKindToInt(NODE_INTERFACE)) { return NODE_INTERFACE; }
-		if (v == nodeKindToInt(NODE_ANNOTATION)) { return NODE_ANNOTATION; }
-		if (v == nodeKindToInt(NODE_GLOBAL_VARIABLE)) { return NODE_GLOBAL_VARIABLE; }
-		if (v == nodeKindToInt(NODE_FIELD)) { return NODE_FIELD; }
-		if (v == nodeKindToInt(NODE_FUNCTION)) { return NODE_FUNCTION; }
-		if (v == nodeKindToInt(NODE_METHOD)) { return NODE_METHOD; }
-		if (v == nodeKindToInt(NODE_ENUM)) { return NODE_ENUM; }
-		if (v == nodeKindToInt(NODE_ENUM_CONSTANT)) { return NODE_ENUM_CONSTANT; }
-		if (v == nodeKindToInt(NODE_TYPEDEF)) { return NODE_TYPEDEF; }
-		if (v == nodeKindToInt(NODE_TEMPLATE_PARAMETER)) { return NODE_TEMPLATE_PARAMETER; }
-		if (v == nodeKindToInt(NODE_TYPE_PARAMETER)) { return NODE_TYPE_PARAMETER; }
-		if (v == nodeKindToInt(NODE_FILE)) { return NODE_FILE; }
-		if (v == nodeKindToInt(NODE_MACRO)) { return NODE_MACRO; }
-		if (v == nodeKindToInt(NODE_UNION)) { return NODE_UNION; }
-		return NODE_UNKNOWN;
+		const NodeKind kinds[] = {
+			NodeKind::UNKNOWN,
+			NodeKind::TYPE,
+			NodeKind::BUILTIN_TYPE,
+			NodeKind::MODULE,
+			NodeKind::NAMESPACE,
+			NodeKind::PACKAGE,
+			NodeKind::STRUCT,
+			NodeKind::CLASS,
+			NodeKind::INTERFACE,
+			NodeKind::ANNOTATION,
+			NodeKind::GLOBAL_VARIABLE,
+			NodeKind::FIELD,
+			NodeKind::FUNCTION,
+			NodeKind::METHOD,
+			NodeKind::ENUM,
+			NodeKind::ENUM_CONSTANT,
+			NodeKind::TYPEDEF,
+			NodeKind::TEMPLATE_PARAMETER,
+			NodeKind::TYPE_PARAMETER,
+			NodeKind::FILE,
+			NodeKind::MACRO,
+			NodeKind::UNION
+		};
+
+		for (NodeKind kind : kinds)
+		{
+			if (i == nodeKindToInt(kind))
+			{
+				return kind;
+			}
+		}
+
+		return NodeKind::UNKNOWN;
 	}
 }

@@ -28,28 +28,28 @@ namespace sourcetrail
 	 * for edges that will be created implicitly. For example edges of type "EDGE_MEMBER" will be created while storing parent
 	 * child node relations when recording symbols with hierarchical names (see NameHierarchy).
 	 */
-	enum EdgeKind
+	enum class EdgeKind : int
 	{
-		EDGE_UNKNOWN = 0,
-		EDGE_MEMBER = 1 << 0,
-		EDGE_TYPE_USAGE = 1 << 1,
-		EDGE_USAGE = 1 << 2,
-		EDGE_CALL = 1 << 3,
-		EDGE_INHERITANCE = 1 << 4,
-		EDGE_OVERRIDE = 1 << 5,
-		EDGE_TEMPLATE_ARGUMENT = 1 << 6,
-		EDGE_TYPE_ARGUMENT = 1 << 7,
-		EDGE_TEMPLATE_DEFAULT_ARGUMENT = 1 << 8,
-		EDGE_TEMPLATE_SPECIALIZATION = 1 << 9,
-		EDGE_TEMPLATE_MEMBER_SPECIALIZATION = 1 << 10,
-		EDGE_INCLUDE = 1 << 11,
-		EDGE_IMPORT = 1 << 12,
-		EDGE_AGGREGATION = 1 << 13,
-		EDGE_MACRO_USAGE = 1 << 14,
-		EDGE_ANNOTATION_USAGE = 1 << 15
+		UNKNOWN = 0,
+		MEMBER = 1 << 0,
+		TYPE_USAGE = 1 << 1,
+		USAGE = 1 << 2,
+		CALL = 1 << 3,
+		INHERITANCE = 1 << 4,
+		OVERRIDE = 1 << 5,
+		TEMPLATE_ARGUMENT = 1 << 6,
+		TYPE_ARGUMENT = 1 << 7,
+		TEMPLATE_DEFAULT_ARGUMENT = 1 << 8,
+		TEMPLATE_SPECIALIZATION = 1 << 9,
+		TEMPLATE_MEMBER_SPECIALIZATION = 1 << 10,
+		INCLUDE = 1 << 11,
+		IMPORT = 1 << 12,
+		AGGREGATION = 1 << 13,
+		MACRO_USAGE = 1 << 14,
+		ANNOTATION_USAGE = 1 << 15
 	};
 
-	int edgeKindToInt(EdgeKind edgeKind);
+	int edgeKindToInt(EdgeKind kind);
 	EdgeKind intToEdgeKind(int i);
 }
 

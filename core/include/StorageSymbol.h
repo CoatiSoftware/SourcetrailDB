@@ -25,7 +25,7 @@ namespace sourcetrail
 	{
 		StorageSymbol()
 			: id(0)
-			, definitionKind(definitionKindToInt(DEFINITION_EXPLICIT))
+			, definitionKind(definitionKindToInt(DefinitionKind::EXPLICIT))
 		{}
 
 		StorageSymbol(int id, int definitionKind)

@@ -13,60 +13,96 @@ namespace
 	{
 		switch (v)
 		{
-		case DEFINITION_IMPLICIT: return sourcetrail::DEFINITION_IMPLICIT;
-		case DEFINITION_EXPLICIT: return sourcetrail::DEFINITION_EXPLICIT;
+		case DEFINITION_IMPLICIT:
+			return sourcetrail::DefinitionKind::IMPLICIT;
+		case DEFINITION_EXPLICIT:
+			return sourcetrail::DefinitionKind::EXPLICIT;
 		}
-		return sourcetrail::DEFINITION_EXPLICIT;
+		return sourcetrail::DefinitionKind::EXPLICIT;
 	}
 
 	sourcetrail::SymbolKind convertSymbolKind(::SymbolKind v)
 	{
 		switch (v)
 		{
-		case SYMBOL_TYPE: return sourcetrail::SYMBOL_TYPE;
-		case SYMBOL_BUILTIN_TYPE: return sourcetrail::SYMBOL_BUILTIN_TYPE;
-		case SYMBOL_MODULE: return sourcetrail::SYMBOL_MODULE;
-		case SYMBOL_NAMESPACE: return sourcetrail::SYMBOL_NAMESPACE;
-		case SYMBOL_PACKAGE: return sourcetrail::SYMBOL_PACKAGE;
-		case SYMBOL_STRUCT: return sourcetrail::SYMBOL_STRUCT;
-		case SYMBOL_CLASS: return sourcetrail::SYMBOL_CLASS;
-		case SYMBOL_INTERFACE: return sourcetrail::SYMBOL_INTERFACE;
-		case SYMBOL_ANNOTATION: return sourcetrail::SYMBOL_ANNOTATION;
-		case SYMBOL_GLOBAL_VARIABLE: return sourcetrail::SYMBOL_GLOBAL_VARIABLE;
-		case SYMBOL_FIELD: return sourcetrail::SYMBOL_FIELD;
-		case SYMBOL_FUNCTION: return sourcetrail::SYMBOL_FUNCTION;
-		case SYMBOL_METHOD: return sourcetrail::SYMBOL_METHOD;
-		case SYMBOL_ENUM: return sourcetrail::SYMBOL_ENUM;
-		case SYMBOL_ENUM_CONSTANT: return sourcetrail::SYMBOL_ENUM_CONSTANT;
-		case SYMBOL_TYPEDEF: return sourcetrail::SYMBOL_TYPEDEF;
-		case SYMBOL_TEMPLATE_PARAMETER: return sourcetrail::SYMBOL_TEMPLATE_PARAMETER;
-		case SYMBOL_TYPE_PARAMETER: return sourcetrail::SYMBOL_TYPE_PARAMETER;
-		case SYMBOL_MACRO: return sourcetrail::SYMBOL_MACRO;
-		case SYMBOL_UNION: return sourcetrail::SYMBOL_UNION;
+		case SYMBOL_TYPE:
+			return sourcetrail::SymbolKind::TYPE;
+		case SYMBOL_BUILTIN_TYPE:
+			return sourcetrail::SymbolKind::BUILTIN_TYPE;
+		case SYMBOL_MODULE:
+			return sourcetrail::SymbolKind::MODULE;
+		case SYMBOL_NAMESPACE:
+			return sourcetrail::SymbolKind::NAMESPACE;
+		case SYMBOL_PACKAGE:
+			return sourcetrail::SymbolKind::PACKAGE;
+		case SYMBOL_STRUCT:
+			return sourcetrail::SymbolKind::STRUCT;
+		case SYMBOL_CLASS:
+			return sourcetrail::SymbolKind::CLASS;
+		case SYMBOL_INTERFACE:
+			return sourcetrail::SymbolKind::INTERFACE;
+		case SYMBOL_ANNOTATION:
+			return sourcetrail::SymbolKind::ANNOTATION;
+		case SYMBOL_GLOBAL_VARIABLE:
+			return sourcetrail::SymbolKind::GLOBAL_VARIABLE;
+		case SYMBOL_FIELD:
+			return sourcetrail::SymbolKind::FIELD;
+		case SYMBOL_FUNCTION:
+			return sourcetrail::SymbolKind::FUNCTION;
+		case SYMBOL_METHOD:
+			return sourcetrail::SymbolKind::METHOD;
+		case SYMBOL_ENUM:
+			return sourcetrail::SymbolKind::ENUM;
+		case SYMBOL_ENUM_CONSTANT:
+			return sourcetrail::SymbolKind::ENUM_CONSTANT;
+		case SYMBOL_TYPEDEF:
+			return sourcetrail::SymbolKind::TYPEDEF;
+		case SYMBOL_TEMPLATE_PARAMETER:
+			return sourcetrail::SymbolKind::TEMPLATE_PARAMETER;
+		case SYMBOL_TYPE_PARAMETER:
+			return sourcetrail::SymbolKind::TYPE_PARAMETER;
+		case SYMBOL_MACRO:
+			return sourcetrail::SymbolKind::MACRO;
+		case SYMBOL_UNION:
+			return sourcetrail::SymbolKind::UNION;
 		}
-		return sourcetrail::SYMBOL_TYPE;
+		return sourcetrail::SymbolKind::TYPE;
 	}
 
 	sourcetrail::ReferenceKind convertReferenceKind(::ReferenceKind v)
 	{
 		switch (v)
 		{
-		case REFERENCE_TYPE_USAGE: return sourcetrail::REFERENCE_TYPE_USAGE;
-		case REFERENCE_USAGE: return sourcetrail::REFERENCE_USAGE;
-		case REFERENCE_CALL: return sourcetrail::REFERENCE_CALL;
-		case REFERENCE_INHERITANCE: return sourcetrail::REFERENCE_INHERITANCE;
-		case REFERENCE_OVERRIDE: return sourcetrail::REFERENCE_OVERRIDE;
-		case REFERENCE_TEMPLATE_ARGUMENT: return sourcetrail::REFERENCE_TEMPLATE_ARGUMENT;
-		case REFERENCE_TYPE_ARGUMENT: return sourcetrail::REFERENCE_TYPE_ARGUMENT;
-		case REFERENCE_TEMPLATE_DEFAULT_ARGUMENT: return sourcetrail::REFERENCE_TEMPLATE_DEFAULT_ARGUMENT;
-		case REFERENCE_TEMPLATE_SPECIALIZATION: return sourcetrail::REFERENCE_TEMPLATE_SPECIALIZATION;
-		case REFERENCE_TEMPLATE_MEMBER_SPECIALIZATION: return sourcetrail::REFERENCE_TEMPLATE_MEMBER_SPECIALIZATION;
-		case REFERENCE_INCLUDE: return sourcetrail::REFERENCE_INCLUDE;
-		case REFERENCE_IMPORT: return sourcetrail::REFERENCE_IMPORT;
-		case REFERENCE_MACRO_USAGE: return sourcetrail::REFERENCE_MACRO_USAGE;
-		case REFERENCE_ANNOTATION_USAGE: return sourcetrail::REFERENCE_ANNOTATION_USAGE;
+		case REFERENCE_TYPE_USAGE:
+			return sourcetrail::ReferenceKind::TYPE_USAGE;
+		case REFERENCE_USAGE:
+			return sourcetrail::ReferenceKind::USAGE;
+		case REFERENCE_CALL:
+			return sourcetrail::ReferenceKind::CALL;
+		case REFERENCE_INHERITANCE:
+			return sourcetrail::ReferenceKind::INHERITANCE;
+		case REFERENCE_OVERRIDE:
+			return sourcetrail::ReferenceKind::OVERRIDE;
+		case REFERENCE_TEMPLATE_ARGUMENT:
+			return sourcetrail::ReferenceKind::TEMPLATE_ARGUMENT;
+		case REFERENCE_TYPE_ARGUMENT:
+			return sourcetrail::ReferenceKind::TYPE_ARGUMENT;
+		case REFERENCE_TEMPLATE_DEFAULT_ARGUMENT:
+			return sourcetrail::ReferenceKind::TEMPLATE_DEFAULT_ARGUMENT;
+		case REFERENCE_TEMPLATE_SPECIALIZATION:
+			return sourcetrail::ReferenceKind::TEMPLATE_SPECIALIZATION;
+		case REFERENCE_TEMPLATE_MEMBER_SPECIALIZATION:
+			return sourcetrail::ReferenceKind::TEMPLATE_MEMBER_SPECIALIZATION;
+		case REFERENCE_INCLUDE:
+			return sourcetrail::ReferenceKind::INCLUDE;
+		case REFERENCE_IMPORT:
+			return sourcetrail::ReferenceKind::IMPORT;
+		case REFERENCE_MACRO_USAGE:
+			return sourcetrail::ReferenceKind::MACRO_USAGE;
+		case REFERENCE_ANNOTATION_USAGE:
+			return sourcetrail::ReferenceKind::ANNOTATION_USAGE;
 		}
-		return sourcetrail::REFERENCE_TYPE_USAGE;
+		return sourcetrail::ReferenceKind::TYPE_USAGE;
 	}
 }
 

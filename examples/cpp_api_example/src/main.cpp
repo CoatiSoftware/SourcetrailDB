@@ -55,8 +55,8 @@ int main(int argc, const char *argv[])
 	// record namespace "api"
 	sourcetrail::NameHierarchy namespaceName { "::", { { "", "api", "" } } };
 	int namespaceId = dbWriter.recordSymbol(namespaceName);
-	dbWriter.recordSymbolDefinitionKind(namespaceId, sourcetrail::DEFINITION_EXPLICIT);
-	dbWriter.recordSymbolKind(namespaceId, sourcetrail::SYMBOL_NAMESPACE);
+	dbWriter.recordSymbolDefinitionKind(namespaceId, sourcetrail::DefinitionKind::EXPLICIT);
+	dbWriter.recordSymbolKind(namespaceId, sourcetrail::SymbolKind::NAMESPACE);
 	dbWriter.recordSymbolLocation(namespaceId, { fileId, 8, 11, 8, 13 });
 	dbWriter.recordSymbolScopeLocation(namespaceId, { fileId, 8, 1, 24, 1 });
 
@@ -65,15 +65,15 @@ int main(int argc, const char *argv[])
 	sourcetrail::NameHierarchy className = namespaceName;
 	className.nameElements.push_back( { "", "MyType", "" } );
 	int classId = dbWriter.recordSymbol(className);
-	dbWriter.recordSymbolDefinitionKind(classId, sourcetrail::DEFINITION_EXPLICIT);
-	dbWriter.recordSymbolKind(classId, sourcetrail::SYMBOL_CLASS);
+	dbWriter.recordSymbolDefinitionKind(classId, sourcetrail::DefinitionKind::EXPLICIT);
+	dbWriter.recordSymbolKind(classId, sourcetrail::SymbolKind::CLASS);
 	dbWriter.recordSymbolLocation(classId, { fileId, 11, 7, 11, 12 });
 	dbWriter.recordSymbolScopeLocation(classId, { fileId, 11, 1, 22, 1 }); // gets highlight when active
 
 
 	// record inheritance reference to "BaseType"
 	int baseId = dbWriter.recordSymbol( { "::", { { "", "BaseType", "" } } } );
-	int inheritanceId = dbWriter.recordReference(baseId, classId, sourcetrail::REFERENCE_INHERITANCE);
+	int inheritanceId = dbWriter.recordReference(baseId, classId, sourcetrail::ReferenceKind::INHERITANCE);
 	dbWriter.recordReferenceLocation(inheritanceId, { fileId, 12, 14, 12, 21 });
 
 
@@ -81,8 +81,8 @@ int main(int argc, const char *argv[])
 	sourcetrail::NameHierarchy methodName = className;
 	methodName.nameElements.push_back( { "void", "my_method", "() const" } );
 	int methodId = dbWriter.recordSymbol(methodName);
-	dbWriter.recordSymbolDefinitionKind(methodId, sourcetrail::DEFINITION_EXPLICIT);
-	dbWriter.recordSymbolKind(methodId, sourcetrail::SYMBOL_METHOD);
+	dbWriter.recordSymbolDefinitionKind(methodId, sourcetrail::DefinitionKind::EXPLICIT);
+	dbWriter.recordSymbolKind(methodId, sourcetrail::SymbolKind::METHOD);
 	dbWriter.recordSymbolLocation(methodId, { fileId, 15, 10, 15, 18 });
 	dbWriter.recordSymbolScopeLocation(methodId, { fileId, 15, 5, 21, 5 }); // gets highlight when active
 	dbWriter.recordSymbolSignatureLocation(methodId, { fileId, 15, 5, 15, 45 }); // used in tooltip
@@ -90,7 +90,7 @@ int main(int argc, const char *argv[])
 
 	// record parameter type "bool"
 	int typeId = dbWriter.recordSymbol({ "::", { { "", "bool", "" } } });
-	int typeuseId = dbWriter.recordReference(methodId, typeId, sourcetrail::REFERENCE_TYPE_USAGE);
+	int typeuseId = dbWriter.recordReference(methodId, typeId, sourcetrail::ReferenceKind::TYPE_USAGE);
 	dbWriter.recordReferenceLocation(typeuseId, { fileId, 15, 20, 15, 23 });
 
 
@@ -102,8 +102,8 @@ int main(int argc, const char *argv[])
 
 	// record function call reference to "send_signal()"
 	int funcId = dbWriter.recordSymbol({ "::", { { "", "Client", "" }, { "", "send_signal", "()" } } });
-	dbWriter.recordSymbolKind(funcId, sourcetrail::SYMBOL_FUNCTION);
-	int callId = dbWriter.recordReference(methodId, funcId, sourcetrail::REFERENCE_CALL);
+	dbWriter.recordSymbolKind(funcId, sourcetrail::SymbolKind::FUNCTION);
+	int callId = dbWriter.recordReference(methodId, funcId, sourcetrail::ReferenceKind::CALL);
 	dbWriter.recordReferenceLocation(callId, { fileId, 19, 13, 19, 33 });
 
 

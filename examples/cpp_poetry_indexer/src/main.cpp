@@ -102,8 +102,8 @@ int main(int argc, const char *argv[])
 		{
 			// store the author as namespace, the title as type
 			symbolId = dbWriter.recordSymbol(toNameHierarchy({ author, line.content }));
-			dbWriter.recordSymbolDefinitionKind(symbolId, sourcetrail::DEFINITION_EXPLICIT);
-			dbWriter.recordSymbolKind(symbolId, line.number == 1 ? sourcetrail::SYMBOL_NAMESPACE : sourcetrail::SYMBOL_TYPE);
+			dbWriter.recordSymbolDefinitionKind(symbolId, sourcetrail::DefinitionKind::EXPLICIT);
+			dbWriter.recordSymbolKind(symbolId, line.number == 1 ? sourcetrail::SymbolKind::NAMESPACE : sourcetrail::SymbolKind::TYPE);
 
 			sourcetrail::SourceRange range = { fileId, line.number, 1, line.number, static_cast<int>(line.content.size()) };
 			dbWriter.recordSymbolLocation(symbolId, range);
@@ -135,8 +135,8 @@ int main(int argc, const char *argv[])
 
 			// store each paragraph as method
 			paragraph.id = dbWriter.recordSymbol(toNameHierarchy({ author, poem.name, "paragraph " + std::to_string(paragraph.number) }));
-			dbWriter.recordSymbolDefinitionKind(paragraph.id, sourcetrail::DEFINITION_EXPLICIT);
-			dbWriter.recordSymbolKind(paragraph.id, sourcetrail::SYMBOL_METHOD);
+			dbWriter.recordSymbolDefinitionKind(paragraph.id, sourcetrail::DefinitionKind::EXPLICIT);
+			dbWriter.recordSymbolKind(paragraph.id, sourcetrail::SymbolKind::METHOD);
 			paragraph.range = { fileId, line.number, 1, 0, 0 };
 			symbolId = paragraph.id;
 		}
@@ -160,11 +160,11 @@ int main(int argc, const char *argv[])
 
 				// store each word as global variable
 				int wordId = dbWriter.recordSymbol(toNameHierarchy({ word }));
-				dbWriter.recordSymbolDefinitionKind(wordId, sourcetrail::DEFINITION_EXPLICIT);
-				dbWriter.recordSymbolKind(wordId, sourcetrail::SYMBOL_GLOBAL_VARIABLE);
+				dbWriter.recordSymbolDefinitionKind(wordId, sourcetrail::DefinitionKind::EXPLICIT);
+				dbWriter.recordSymbolKind(wordId, sourcetrail::SymbolKind::GLOBAL_VARIABLE);
 
 				// create a reference between word and paragraph
-				int referenceId = dbWriter.recordReference(symbolId, wordId, sourcetrail::REFERENCE_USAGE);
+				int referenceId = dbWriter.recordReference(symbolId, wordId, sourcetrail::ReferenceKind::USAGE);
 				sourcetrail::SourceRange range = { fileId, line.number, static_cast<int>(pos + wordPos), line.number, static_cast<int>(pos + wordPos + wordLen) - 1 };
 				dbWriter.recordReferenceLocation(referenceId, range);
 

@@ -20,39 +20,39 @@
 
 namespace sourcetrail
 {
-	EdgeKind referenceKindToEdgeKind(ReferenceKind v)
+	EdgeKind referenceKindToEdgeKind(ReferenceKind kind)
 	{
-		switch (v)
+		switch (kind)
 		{
-		case REFERENCE_TYPE_USAGE:
-			return EDGE_TYPE_USAGE;
-		case REFERENCE_USAGE:
-			return EDGE_USAGE;
-		case REFERENCE_CALL:
-			return EDGE_CALL;
-		case REFERENCE_INHERITANCE:
-			return EDGE_INHERITANCE;
-		case REFERENCE_OVERRIDE:
-			return EDGE_OVERRIDE;
-		case REFERENCE_TEMPLATE_ARGUMENT:
-			return EDGE_TEMPLATE_ARGUMENT;
-		case REFERENCE_TYPE_ARGUMENT:
-			return EDGE_TYPE_ARGUMENT;
-		case REFERENCE_TEMPLATE_DEFAULT_ARGUMENT:
-			return EDGE_TEMPLATE_DEFAULT_ARGUMENT;
-		case REFERENCE_TEMPLATE_SPECIALIZATION:
-			return EDGE_TEMPLATE_SPECIALIZATION;
-		case REFERENCE_TEMPLATE_MEMBER_SPECIALIZATION:
-			return EDGE_TEMPLATE_MEMBER_SPECIALIZATION;
-		case REFERENCE_INCLUDE:
-			return EDGE_INCLUDE;
-		case REFERENCE_IMPORT:
-			return EDGE_IMPORT;
-		case REFERENCE_MACRO_USAGE:
-			return EDGE_MACRO_USAGE;
-		case REFERENCE_ANNOTATION_USAGE:
-			return EDGE_ANNOTATION_USAGE;
+		case ReferenceKind::TYPE_USAGE:
+			return EdgeKind::TYPE_USAGE;
+		case ReferenceKind::USAGE:
+			return EdgeKind::USAGE;
+		case ReferenceKind::CALL:
+			return EdgeKind::CALL;
+		case ReferenceKind::INHERITANCE:
+			return EdgeKind::INHERITANCE;
+		case ReferenceKind::OVERRIDE:
+			return EdgeKind::OVERRIDE;
+		case ReferenceKind::TEMPLATE_ARGUMENT:
+			return EdgeKind::TEMPLATE_ARGUMENT;
+		case ReferenceKind::TYPE_ARGUMENT:
+			return EdgeKind::TYPE_ARGUMENT;
+		case ReferenceKind::TEMPLATE_DEFAULT_ARGUMENT:
+			return EdgeKind::TEMPLATE_DEFAULT_ARGUMENT;
+		case ReferenceKind::TEMPLATE_SPECIALIZATION:
+			return EdgeKind::TEMPLATE_SPECIALIZATION;
+		case ReferenceKind::TEMPLATE_MEMBER_SPECIALIZATION:
+			return EdgeKind::TEMPLATE_MEMBER_SPECIALIZATION;
+		case ReferenceKind::INCLUDE:
+			return EdgeKind::INCLUDE;
+		case ReferenceKind::IMPORT:
+			return EdgeKind::IMPORT;
+		case ReferenceKind::MACRO_USAGE:
+			return EdgeKind::MACRO_USAGE;
+		case ReferenceKind::ANNOTATION_USAGE:
+			return EdgeKind::ANNOTATION_USAGE;
 		}
-		return EDGE_UNKNOWN;
+		return EdgeKind::UNKNOWN;
 	}
 }

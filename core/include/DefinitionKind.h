@@ -28,14 +28,14 @@ namespace sourcetrail
 	* record an implicit definition kind for those symbols.
 	* If you do not record any definition kind for a symbol, Sourcetrail will show it as "non-indexed".
 	*/
-	enum DefinitionKind
+	enum class DefinitionKind : int
 	{
-		DEFINITION_IMPLICIT = 1,
-		DEFINITION_EXPLICIT = 2
+		IMPLICIT = 1,
+		EXPLICIT = 2
 	};
 
-	int definitionKindToInt(DefinitionKind v);
-	DefinitionKind intToDefinitionKind(int v);
+	int definitionKindToInt(DefinitionKind kind);
+	DefinitionKind intToDefinitionKind(int i);
 }
 
 #endif // SOURCETRAIL_DEFINITION_KIND_H

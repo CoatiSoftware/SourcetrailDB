@@ -79,7 +79,7 @@ namespace sourcetrail
 			REQUIRE(nodes.size() == 1);
 			REQUIRE(nodes.front().id == idSymbol1);
 			REQUIRE(nodes.front().serializedName == serializeNameHierarchyToDatabaseString(nameSymbol1));
-			REQUIRE(nodes.front().nodeKind == NODE_UNKNOWN);
+			REQUIRE(nodes.front().nodeKind == nodeKindToInt(NodeKind::UNKNOWN));
 		}
 
 		SECTION("writer does not record node for symbol twice")
@@ -94,24 +94,24 @@ namespace sourcetrail
 
 		SECTION("writer records \"explicit\" symbol definition kind")
 		{
-			const bool success = writer.recordSymbolDefinitionKind(idSymbol1, DEFINITION_EXPLICIT);
+			const bool success = writer.recordSymbolDefinitionKind(idSymbol1, DefinitionKind::EXPLICIT);
 			REQUIRE(success);
 			REQUIRE(writer.getLastError() == "");
 
 			const std::vector<StorageSymbol> symbols = storage->getAll<StorageSymbol>();
 			REQUIRE(symbols.size() == 1);
-			REQUIRE(symbols.front().definitionKind == definitionKindToInt(DEFINITION_EXPLICIT));
+			REQUIRE(symbols.front().definitionKind == definitionKindToInt(DefinitionKind::EXPLICIT));
 		}
 
 		SECTION("writer records \"class\" symbol kind")
 		{
-			const bool success = writer.recordSymbolKind(idSymbol1, SYMBOL_CLASS);
+			const bool success = writer.recordSymbolKind(idSymbol1, SymbolKind::CLASS);
 			REQUIRE(success);
 			REQUIRE(writer.getLastError() == "");
 
 			const std::vector<StorageNode> nodes = storage->getAll<StorageNode>();
 			REQUIRE(nodes.size() == 1);
-			REQUIRE(nodes.front().nodeKind == symbolKindToNodeKind(SYMBOL_CLASS));
+			REQUIRE(nodes.front().nodeKind == nodeKindToInt(NodeKind::CLASS));
 		}
 
 		SECTION("writer records symbol locations")
@@ -136,7 +136,7 @@ namespace sourcetrail
 
 				sourceLocations = storage->getAll<StorageSourceLocation>();
 				REQUIRE(sourceLocations.size() == 1);
-				REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LOCATION_TOKEN));
+				REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::TOKEN));
 			}
 
 			SECTION("writer records symbol scope location")
@@ -150,7 +150,7 @@ namespace sourcetrail
 
 				sourceLocations = storage->getAll<StorageSourceLocation>();
 				REQUIRE(sourceLocations.size() == 1);
-				REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LOCATION_SCOPE));
+				REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::SCOPE));
 			}
 
 			SECTION("writer records symbol signature location")
@@ -164,7 +164,7 @@ namespace sourcetrail
 
 				sourceLocations = storage->getAll<StorageSourceLocation>();
 				REQUIRE(sourceLocations.size() == 1);
-				REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LOCATION_SIGNATURE));
+				REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::SIGNATURE));
 			}
 
 			REQUIRE(sourceLocations.front().startLineNumber == startLine);
@@ -212,7 +212,7 @@ namespace sourcetrail
 		REQUIRE(idSymbol2 != 0);
 		REQUIRE(writer.getLastError() == "");
 
-		const ReferenceKind kindReference1 = REFERENCE_CALL;
+		const ReferenceKind kindReference1 = ReferenceKind::CALL;
 		const int idReference1 = writer.recordReference(idSymbol1, idSymbol2, kindReference1);
 		REQUIRE(idReference1 != 0);
 		REQUIRE(writer.getLastError() == "");
@@ -229,7 +229,7 @@ namespace sourcetrail
 
 		SECTION("writer does not record edge for reference twice")
 		{
-			const int secondIdReference1 = writer.recordReference(idSymbol1, idSymbol2, REFERENCE_CALL);
+			const int secondIdReference1 = writer.recordReference(idSymbol1, idSymbol2, ReferenceKind::CALL);
 			REQUIRE(secondIdReference1 == idReference1);
 			REQUIRE(writer.getLastError() == "");
 
@@ -255,7 +255,7 @@ namespace sourcetrail
 
 			const std::vector<StorageSourceLocation> sourceLocations = storage->getAll<StorageSourceLocation>();
 			REQUIRE(sourceLocations.size() == 1);
-			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LOCATION_TOKEN));
+			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::TOKEN));
 			REQUIRE(sourceLocations.front().startLineNumber == startLine);
 			REQUIRE(sourceLocations.front().startColumnNumber == startCol);
 			REQUIRE(sourceLocations.front().endLineNumber == endLine);
@@ -392,7 +392,7 @@ namespace sourcetrail
 
 			const std::vector<StorageSourceLocation> sourceLocations = storage->getAll<StorageSourceLocation>();
 			REQUIRE(sourceLocations.size() == 1);
-			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LOCATION_LOCAL_SYMBOL));
+			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::LOCAL_SYMBOL));
 			REQUIRE(sourceLocations.front().startLineNumber == startLine);
 			REQUIRE(sourceLocations.front().startColumnNumber == startCol);
 			REQUIRE(sourceLocations.front().endLineNumber == endLine);
@@ -445,7 +445,7 @@ namespace sourcetrail
 		{
 			const std::vector<StorageSourceLocation> sourceLocations = storage->getAll<StorageSourceLocation>();
 			REQUIRE(sourceLocations.size() == 1);
-			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LOCATION_COMMENT));
+			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::COMMENT));
 			REQUIRE(sourceLocations.front().startLineNumber == startLine);
 			REQUIRE(sourceLocations.front().startColumnNumber == startCol);
 			REQUIRE(sourceLocations.front().endLineNumber == endLine);
@@ -514,7 +514,7 @@ namespace sourcetrail
 
 			const std::vector<StorageSourceLocation> sourceLocations = storage->getAll<StorageSourceLocation>();
 			REQUIRE(sourceLocations.size() == 1);
-			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LOCATION_ERROR));
+			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::ERROR));
 			REQUIRE(sourceLocations.front().startLineNumber == startLine);
 			REQUIRE(sourceLocations.front().startColumnNumber == startCol);
 			REQUIRE(sourceLocations.front().endLineNumber == endLine);

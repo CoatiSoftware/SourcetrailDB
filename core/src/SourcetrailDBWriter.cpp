@@ -377,7 +377,7 @@ namespace sourcetrail
 
 		try
 		{
-			addSourceLocation(symbolId, location, LOCATION_TOKEN);
+			addSourceLocation(symbolId, location, LocationKind::TOKEN);
 			return true;
 		}
 		catch (const SourcetrailException e)
@@ -397,7 +397,7 @@ namespace sourcetrail
 
 		try
 		{
-			addSourceLocation(symbolId, location, LOCATION_SCOPE);
+			addSourceLocation(symbolId, location, LocationKind::SCOPE);
 			return true;
 		}
 		catch (const SourcetrailException e)
@@ -417,7 +417,7 @@ namespace sourcetrail
 
 		try
 		{
-			addSourceLocation(symbolId, location, LOCATION_SIGNATURE);
+			addSourceLocation(symbolId, location, LocationKind::SIGNATURE);
 			return true;
 		}
 		catch (const SourcetrailException e)
@@ -456,7 +456,7 @@ namespace sourcetrail
 
 		try
 		{
-			addSourceLocation(referenceId, location, LOCATION_TOKEN);
+			addSourceLocation(referenceId, location, LocationKind::TOKEN);
 			return true;
 		}
 		catch (const SourcetrailException e)
@@ -535,7 +535,7 @@ namespace sourcetrail
 
 		try
 		{
-			addSourceLocation(localSymbolId, location, LOCATION_LOCAL_SYMBOL);
+			addSourceLocation(localSymbolId, location, LocationKind::LOCAL_SYMBOL);
 			return true;
 		}
 		catch (const SourcetrailException e)
@@ -561,7 +561,7 @@ namespace sourcetrail
 				location.startColumn,
 				location.endLine,
 				location.endColumn,
-				locationKindToInt(LOCATION_COMMENT)
+				locationKindToInt(LocationKind::COMMENT)
 			));
 
 			return true;
@@ -584,7 +584,7 @@ namespace sourcetrail
 		try
 		{
 			const int errorId = m_storage->addError(StorageErrorData(message, "", fatal, true));
-			addSourceLocation(errorId, location, LOCATION_ERROR);
+			addSourceLocation(errorId, location, LocationKind::ERROR);
 			return true;
 		}
 		catch (const SourcetrailException e)
@@ -678,13 +678,13 @@ namespace sourcetrail
 			currentNameHierarchy.nameElements.push_back(nameHierarchy.nameElements[i]);
 
 			int nodeId = m_storage->addNode(StorageNodeData(
-				nodeKindToInt(NODE_UNKNOWN),
+				nodeKindToInt(NodeKind::UNKNOWN),
 				serializeNameHierarchyToDatabaseString(currentNameHierarchy)
 			));
 
 			if (parentNodeId != 0)
 			{
-				addEdge(parentNodeId, nodeId, EDGE_MEMBER);
+				addEdge(parentNodeId, nodeId, EdgeKind::MEMBER);
 			}
 
 			parentNodeId = nodeId;
@@ -701,7 +701,7 @@ namespace sourcetrail
 		nameHierarchy.nameElements.push_back(nameElement);
 
 		const int nodeId = addNodeHierarchy(nameHierarchy);
-		m_storage->setNodeType(nodeId, nodeKindToInt(NODE_FILE));
+		m_storage->setNodeType(nodeId, nodeKindToInt(NodeKind::FILE));
 
 		m_storage->addFile(StorageFile(nodeId, filePath, "", utility::getDateTimeString(time(0)), true, true));
 
