@@ -7,19 +7,44 @@ environment:
         - MBITS: 32
           PYTHON_VERSION: 37
           MSVC_VERSION: 15
-          DEPLOY_PYTHON_BINDINGS: true
+          DEPLOY_CORE: 1
+          DEPLOY_PYTHON_BINDINGS: 1
         - MBITS: 64
           PYTHON_VERSION: 37
           MSVC_VERSION: 15
-          DEPLOY_PYTHON_BINDINGS: true
+          DEPLOY_CORE: 1
+          DEPLOY_PYTHON_BINDINGS: 1
+        - MBITS: 32
+          PYTHON_VERSION: 36
+          MSVC_VERSION: 15
+          DEPLOY_CORE: 0
+          DEPLOY_PYTHON_BINDINGS: 1
+        - MBITS: 64
+          PYTHON_VERSION: 36
+          MSVC_VERSION: 15
+          DEPLOY_CORE: 0
+          DEPLOY_PYTHON_BINDINGS: 1
+        - MBITS: 32
+          PYTHON_VERSION: 35
+          MSVC_VERSION: 15
+          DEPLOY_CORE: 0
+          DEPLOY_PYTHON_BINDINGS: 1
+        - MBITS: 64
+          PYTHON_VERSION: 35
+          MSVC_VERSION: 15
+          DEPLOY_CORE: 0
+          DEPLOY_PYTHON_BINDINGS: 1
+          
         - MBITS: 32
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
-          DEPLOY_PYTHON_BINDINGS: false
+          DEPLOY_CORE: 1
+          DEPLOY_PYTHON_BINDINGS: 1
         - MBITS: 64
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
-          DEPLOY_PYTHON_BINDINGS: false
+          DEPLOY_CORE: 1
+          DEPLOY_PYTHON_BINDINGS: 1
 
 
 install:
@@ -93,11 +118,15 @@ after_build:
         copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
         copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
     - ps: |
-        if ($env:DEPLOY_PYTHON_BINDINGS) {
-            $env:ARTIFACTY_TO_DEPLOY= $env:CORE_PACKAGE_NAME + "," + $env:PYTHON_PACKAGE_NAME
-        } else {
-            $env:ARTIFACTY_TO_DEPLOY= $env:CORE_PACKAGE_NAME
+        $env:ARTIFACTY_TO_DEPLOY = ""
+        if ($env:DEPLOY_CORE -eq "1") {
+            $env:ARTIFACTY_TO_DEPLOY = $env:ARTIFACTY_TO_DEPLOY + "," + $env:CORE_PACKAGE_NAME
         }
+        if ($env:DEPLOY_PYTHON_BINDINGS -eq "1") {
+            $env:ARTIFACTY_TO_DEPLOY = $env:ARTIFACTY_TO_DEPLOY + "," + $env:PYTHON_PACKAGE_NAME
+        }
+        $env:ARTIFACTY_TO_DEPLOY = $env:ARTIFACTY_TO_DEPLOY.substring(1)
+        echo $env:ARTIFACTY_TO_DEPLOY
 
 
 test_script:
