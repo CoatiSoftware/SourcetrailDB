@@ -1,4 +1,6 @@
 # SourcetrailDB
+Library to export Sourcetrail compatible database files for writing custom indexers
+
 
 ## CI Pipelines
 
@@ -12,7 +14,7 @@ The SourcetrailDB project provides write access to [Sourcetrail](https://www.sou
 
 
 ## Projects Using the SourcetrailDB
-* TODO: reference Python project here
+* [SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer)
 
 
 ## Supported Languages
