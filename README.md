@@ -3,6 +3,7 @@
 ## CI Pipelines
 
 Windows Builds: [![Build status](https://ci.appveyor.com/api/projects/status/gbblx1l790vm952c/branch/master?svg=true)](https://ci.appveyor.com/project/mlangkabel/sourcetraildb/branch/master)
+
 Linux and Mac Builds: [![Build Status](https://travis-ci.org/CoatiSoftware/SourcetrailDB.svg?branch=master)](https://travis-ci.org/CoatiSoftware/SourcetrailDB)
 
 ## Introduction
@@ -21,6 +22,16 @@ Note that even though the core of this project is written in C++, this does __no
 * Python (via [SWIG](http://www.swig.org/))
 
 If the language of your choice is not covered by this list, feel free to open an issue on the [issue tracker](https://github.com/CoatiSoftware/SourcetrailDB/issues) or even better: join us in our efforts on this project and provide a pull request!
+
+
+## Versioning
+
+The SourcetrailDB version format consists of three numbers and looks like this `vXX_dbYY_pZZ`. 
+* `XX` marks the interface version of the API. This version is increases on every change that breaks backwards compatibility of the API.
+* `YY` marks the version of the database that will be generated when using the SourcetrailDB API. This version needs to match the database version of the Sourcetrail instance that is used to open the generated database file to be compatible. 
+* `ZZ` marks the patch number of the build. It will increase with every release that publishes bugfixes and features that don't break any compatibility.
+
+You can find a complete list of available releases on the [GitHub release page](https://github.com/CoatiSoftware/SourcetrailDB/releases). If you are interested in the actual changes of every release, please take a look at the [Changelog](https://github.com/CoatiSoftware/SourcetrailDB/blob/master/CHANGELOG.md).
 
 
 ## Writing to the Sourcetrail Database
