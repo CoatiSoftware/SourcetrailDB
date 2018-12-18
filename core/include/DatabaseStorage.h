@@ -51,6 +51,8 @@ namespace sourcetrail
 		void setupDatabase();
 		void clearDatabase();
 
+		void setProjectSettingsText(const std::string& text);
+
 		bool isEmpty() const;
 		bool isCompatible() const;
 		int getLoadedDatabaseVersion() const;

@@ -94,6 +94,7 @@ namespace sourcetrail
 		void setupDatabaseTables();
 		void clearDatabaseTables();
 		void createOrResetProjectFile();
+		void updateProjectSettingsText();
 		int addNodeHierarchy(const NameHierarchy& nameHierarchy);
 		int addFile(const std::string& filePath);
 		int addEdge(int sourceId, int targetId, EdgeKind edgeKind);

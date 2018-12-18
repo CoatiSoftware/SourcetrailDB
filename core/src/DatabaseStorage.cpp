@@ -86,6 +86,11 @@ namespace sourcetrail
 		setupDatabase();
 	}
 
+	void DatabaseStorage::setProjectSettingsText(const std::string& text)
+	{
+		insertOrUpdateMetaValue("project_settings", text);
+	}
+
 	bool DatabaseStorage::isEmpty() const
 	{
 		const std::string tableName = "meta";

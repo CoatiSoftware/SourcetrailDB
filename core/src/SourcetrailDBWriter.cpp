@@ -81,26 +81,6 @@ namespace sourcetrail
 		}
 		m_projectFilePath += ".srctrlprj";
 
-		try
-		{
-			openDatabase();
-		}
-		catch (const SourcetrailException e)
-		{
-			m_lastError = e.getMessage();
-			return false;
-		}
-
-		try
-		{
-			setupDatabaseTables();
-		}
-		catch (const SourcetrailException e)
-		{
-			m_lastError = e.getMessage();
-			return false;
-		}
-
 		{
 			bool projectFileExists = false;
 			{
@@ -120,6 +100,27 @@ namespace sourcetrail
 					return false;
 				}
 			}
+		}
+
+		try
+		{
+			openDatabase();
+		}
+		catch (const SourcetrailException e)
+		{
+			m_lastError = e.getMessage();
+			return false;
+		}
+
+		try
+		{
+			setupDatabaseTables();
+			updateProjectSettingsText();
+		}
+		catch (const SourcetrailException e)
+		{
+			m_lastError = e.getMessage();
+			return false;
 		}
 
 		return true;
@@ -145,16 +146,7 @@ namespace sourcetrail
 		try
 		{
 			clearDatabaseTables();
-		}
-		catch (const SourcetrailException e)
-		{
-			m_lastError = e.getMessage();
-			return false;
-		}
-
-		try
-		{
-			createOrResetProjectFile();
+			updateProjectSettingsText();
 		}
 		catch (const SourcetrailException e)
 		{
@@ -654,6 +646,33 @@ namespace sourcetrail
 				"</config>\n"
 			);
 			fileStream.close();
+		}
+		catch (...)
+		{
+			throw SourcetrailException("Exception occurred while creating project file.");
+		}
+	}
+
+	void SourcetrailDBWriter::updateProjectSettingsText()
+	{
+		try
+		{
+			std::ifstream f(m_projectFilePath.c_str());
+			if (f.is_open())
+			{
+				std::string line;
+				std::string text;
+				while (getline(f, line))
+				{
+					text += line + '\n';
+				}
+				f.close();
+				m_storage->setProjectSettingsText(text);
+			}
+			else
+			{
+				throw SourcetrailException("Unable to open project file.");
+			}
 		}
 		catch (...)
 		{
