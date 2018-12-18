@@ -584,7 +584,7 @@ namespace sourcetrail
 		try
 		{
 			const int errorId = m_storage->addError(StorageErrorData(message, "", fatal, true));
-			addSourceLocation(errorId, location, LocationKind::ERROR);
+			addSourceLocation(errorId, location, LocationKind::INDEXER_ERROR);
 			return true;
 		}
 		catch (const SourcetrailException e)

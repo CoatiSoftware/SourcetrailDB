@@ -30,7 +30,7 @@ namespace sourcetrail
 		LOCAL_SYMBOL = 3,
 		SIGNATURE = 4,
 		COMMENT = 5,
-		ERROR = 6,
+		INDEXER_ERROR = 6,
 		FULLTEXT_SEARCH = 7,
 		SCREEN_SEARCH = 8
 	};

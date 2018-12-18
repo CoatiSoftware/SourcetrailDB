@@ -514,7 +514,7 @@ namespace sourcetrail
 
 			const std::vector<StorageSourceLocation> sourceLocations = storage->getAll<StorageSourceLocation>();
 			REQUIRE(sourceLocations.size() == 1);
-			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::ERROR));
+			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::INDEXER_ERROR));
 			REQUIRE(sourceLocations.front().startLineNumber == startLine);
 			REQUIRE(sourceLocations.front().startColumnNumber == startCol);
 			REQUIRE(sourceLocations.front().endLineNumber == endLine);

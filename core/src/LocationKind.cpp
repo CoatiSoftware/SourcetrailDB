@@ -34,7 +34,7 @@ namespace sourcetrail
 			LocationKind::LOCAL_SYMBOL,
 			LocationKind::SIGNATURE,
 			LocationKind::COMMENT,
-			LocationKind::ERROR,
+			LocationKind::INDEXER_ERROR,
 			LocationKind::FULLTEXT_SEARCH,
 			LocationKind::SCREEN_SEARCH
 		};
