@@ -2,7 +2,7 @@
 <config>
     <source_groups>
         <source_group_78efd997-84bf-4db6-9736-f5ddd702053c>
-            <custom_command>python example.py --database-file-path=$DB_PATH --source-file-path=$SOURCE_PATH</custom_command>
+            <custom_command>python example.py --database-file-path=%{DATABASE_FILE_PATH} --source-file-path=%{SOURCE_FILE_PATH}</custom_command>
             <name>Custom Command Source Group</name>
             <source_extensions>
                 <source_extension>.py</source_extension>
