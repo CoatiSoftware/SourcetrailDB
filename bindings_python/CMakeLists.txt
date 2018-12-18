@@ -13,7 +13,7 @@ set(SWIG_INTERFACE_FILE "${RESOURCES_SWIG_DIR}/interface/${PACKAGE_NAME}.i")
 
 # --- Find Python ---
 
-find_package(PythonLibs)
+find_package(PythonLibs ${PYTHON_VERSION} REQUIRED)
 
 
 # --- Find Swig ---

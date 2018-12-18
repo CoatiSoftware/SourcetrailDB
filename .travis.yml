@@ -24,26 +24,121 @@ matrix:
           packages:
             - g++-5
       env:
-        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1
+        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1 PYTHON=3.5
+
+    # - os: linux
+    #   compiler: gcc
+    #   dist: trusty
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #       packages:
+    #         - g++-5
+    #   env:
+    #     - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1 PYTHON=3.6
+
+    # - os: linux
+    #   compiler: gcc
+    #   dist: trusty
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #       packages:
+    #         - g++-5
+    #   env:
+    #     - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1 PYTHON=3.7
 
     - os: osx
       compiler: clang
       env:
         - PYTHON_BINDING=0
 
+    # - os: osx
+    #   compiler: clang
+    #   env:
+    #     - PYTHON_BINDING=1 PYTHON=3.5
+
     - os: osx
       compiler: clang
       env:
-        - PYTHON_BINDING=1
+        - PYTHON_BINDING=1 PYTHON=3.6
+
+    # - os: osx
+    #   compiler: clang
+    #   env:
+    #     - PYTHON_BINDING=1 PYTHON=3.7
+
+before_install:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew install swig
+      brew link --force swig
+
+      # TODO: find way to install specific python versions on osx
+      # if [[ "$PYTHON_BINDING" == "1" ]]; then
+      #   brew install python$PYTHON
+      #   python --version
+      # fi
+
+    elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      sudo apt-get update
+      sudo apt-get install -qq swig
+
+      # TODO: this is only working for python3.5, not above
+      if [[ "$PYTHON_BINDING" == "1" ]]; then
+        sudo apt-get install python$PYTHON
+        sudo apt-get install python$PYTHON-dev
+        alias python="/usr/bin/python$PYTHON"
+        python --version
+      fi
+    fi
 
 install:
-  - travis/install.sh
   - if [[ "${CXX_COMPILER}" != "" ]]; then export CXX=${CXX_COMPILER}; export CXX_FOR_BUILD=${CXX_COMPILER}; fi
   - if [[ "${CC_COMPILER}" != "" ]]; then export CC=${CC_COMPILER}; export CC_FOR_BUILD=${CC_COMPILER}; fi
 
-script: travis/script.sh
+script:
+  - |
+    mkdir build
+    cd build
+    cmake -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDING -DPYTHON_VERSION=$PYTHON ..
+    make
+    ./core/test_core
 
-before_deploy: travis/bundle.sh
+before_deploy:
+  - |
+    cd $TRAVIS_BUILD_DIR
+
+    VERSION=$(head -1 build/version.txt)
+
+    if [[ "$PYTHON_BINDING" == "1" ]]; then
+      PYTHON_VERSION=${PYTHON//.}
+      PYTHON_VERSION=${PYTHON_VERSION:0:2}
+      BUNDLE_NAME=sourcetraildb_python${PYTHON_VERSION}_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
+
+      mkdir -p $BUNDLE_NAME
+      cp build/bindings_python/sourcetraildb.py $BUNDLE_NAME
+      cp build/bindings_python/_sourcetraildb* $BUNDLE_NAME/_sourcetraildb.so
+    else
+      BUNDLE_NAME=sourcetraildb_core_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
+
+      mkdir -p $BUNDLE_NAME/include
+      mkdir -p $BUNDLE_NAME/lib
+
+      cp build/core/*.a $BUNDLE_NAME/lib
+      cp core/include/* $BUNDLE_NAME/include
+      cp build/core/include/* $BUNDLE_NAME/include
+    fi
+
+    mkdir -p $BUNDLE_NAME/license
+    cp LICENSE.txt $BUNDLE_NAME/license/license_sourcetraildb.txt
+    cp external/catch/license_catch.txt $BUNDLE_NAME/license/
+    cp external/cpp_sqlite/license_cpp_sqlite.txt $BUNDLE_NAME/license/
+    cp external/json/license_json.txt $BUNDLE_NAME/license/
+
+    zip -r $BUNDLE_NAME $BUNDLE_NAME
 
 deploy:
   provider: releases
