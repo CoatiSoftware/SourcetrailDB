@@ -20,15 +20,27 @@
 #include <string>
 #include <vector>
 
-#include "NameElement.h"
-
 namespace sourcetrail
 {
 	/**
+	* Struct that represents a single hierarchical element that is part of a symbol's name.
+	*
+	*  prefix: optional prefix used for unique identification and shown in tooltips
+	*  name: name represented by this element
+	*  postfix: optional prefix used for unique identification and shown in tooltips
+	*/
+	struct NameElement
+	{
+		std::string prefix;
+		std::string name;
+		std::string postfix;
+	};
+
+	/**
 	* Struct that represents an entire name of a symbol.
 	*
-	* TODO: explain prefix and postfix
-	* TODO: alway provide prefix and postfix of all name elements to make them unique. Example from C++ (2 foo::bar (foo has different signature)
+	*  nameDelimiter: delimiter added between name elements
+	*  nameElements: all name elements that make up the hierarchy
 	*/
 	struct NameHierarchy
 	{
@@ -36,9 +48,51 @@ namespace sourcetrail
 		std::vector<NameElement> nameElements;
 	};
 
-	std::string serializeNameHierarchyToDatabaseString(const NameHierarchy& nameHierarchy);
+	/**
+	 * Converts a NameHierarchy to a JSON string
+	 *
+	 *  param: nameHierarchy - the name hierarchy to convert to JSON string
+	 *
+	 *  return: a JSON object of the form:
+	 *    {
+	 *      "name_delimiter" : "."
+	 *      "name_elements" : [
+	 *        {
+	 *          "prefix" : "",
+	 *          "name" : "",
+	 *          "postfix" : ""
+	 *        },
+	 *        ...
+	 *      ]
+	 *    }
+	 */
 	std::string serializeNameHierarchyToJson(const NameHierarchy& nameHierarchy);
+
+	/**
+	 * Converts a JSON string to a NameHierarchy
+	 *
+	 *  param: serializedNameHierarchy - JSON object string of the form:
+	 *    {
+	 *      "name_delimiter" : "."
+	 *      "name_elements" : [
+	 *        {
+	 *          "prefix" : "",
+	 *          "name" : "",
+	 *          "postfix" : ""
+	 *        },
+	 *        ...
+	 *      ]
+	 *    }
+	 *  param: error - optional pointer to a string, where an error message will be set
+	 *
+	 *  return: NameHierarchy object. Empty on failure.
+	 */
 	NameHierarchy deserializeNameHierarchyFromJson(const std::string& serializedNameHierarchy, std::string* error = nullptr);
+
+	/**
+	 * INTERNAL: Converts a NameHierarchy to a string in Sourcetrail database format
+	 */
+	std::string serializeNameHierarchyToDatabaseString(const NameHierarchy& nameHierarchy);
 }
 
 #endif // SOURCETRAIL_NAME_HIERARCHY_H

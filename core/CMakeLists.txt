@@ -33,7 +33,6 @@ set(LIB_HDR_FILES
 	include/DefinitionKind.h
 	include/EdgeKind.h
 	include/LocationKind.h
-	include/NameElement.h
 	include/NameHierarchy.h
 	include/NodeKind.h
 	include/ReferenceKind.h

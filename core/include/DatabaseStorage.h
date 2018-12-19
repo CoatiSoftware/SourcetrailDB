@@ -45,7 +45,7 @@ namespace sourcetrail
 	{
 	public:
 		static int getSupportedDatabaseVersion();
-		static std::shared_ptr<DatabaseStorage> openDatabase(const std::string& dbFilePath);
+		static std::unique_ptr<DatabaseStorage> openDatabase(const std::string& dbFilePath);
 		~DatabaseStorage();
 
 		void setupDatabase();

@@ -22,8 +22,8 @@ namespace sourcetrail
 	/**
 	* Struct that represents the location of a range of characters in a source file.
 	*
-	* Note: Line and column numbers start at 1 instead of 0!
-	* Note: The SourceRange includes both, the start and the end column number.
+	*  note: Line and column numbers start at 1 instead of 0!
+	*  note: The SourceRange includes both, the start and the end column number.
 	*/
 	struct SourceRange
 	{

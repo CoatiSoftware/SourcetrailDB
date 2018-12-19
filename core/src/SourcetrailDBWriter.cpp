@@ -44,6 +44,10 @@ namespace sourcetrail
 	{
 	}
 
+	SourcetrailDBWriter::~SourcetrailDBWriter()
+	{
+	}
+
 	std::string SourcetrailDBWriter::getVersionString() const
 	{
 		return VERSION_STRING;

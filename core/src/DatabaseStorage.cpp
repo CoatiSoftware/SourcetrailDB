@@ -35,14 +35,14 @@ namespace sourcetrail
 		return DATABASE_VERSION;
 	}
 
-	std::shared_ptr<DatabaseStorage> DatabaseStorage::openDatabase(const std::string& dbFilePath)
+	std::unique_ptr<DatabaseStorage> DatabaseStorage::openDatabase(const std::string& dbFilePath)
 	{
 		try
 		{
-			std::shared_ptr<DatabaseStorage> storage = std::shared_ptr<DatabaseStorage>(new DatabaseStorage());
+			std::unique_ptr<DatabaseStorage> storage = std::unique_ptr<DatabaseStorage>(new DatabaseStorage());
 			storage->m_database.open(dbFilePath.c_str());
 			storage->executeStatement("PRAGMA foreign_keys=ON;");
-			return storage;
+			return std::move(storage);
 		}
 		catch (CppSQLite3Exception e)
 		{
