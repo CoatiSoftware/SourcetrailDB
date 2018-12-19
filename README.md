@@ -13,6 +13,8 @@ Linux and macOS: [![Build Status](https://travis-ci.org/CoatiSoftware/Sourcetrai
 
 The SourcetrailDB project provides write access to [Sourcetrail](https://www.sourcetrail.com/) database files. You can use the SourcetrailDB project to write an indexer for an arbitrary programming language (or other kind of data, e.g. see [poetry indexer example](examples/cpp_poetry_indexer)) and export a Sourcetrail database file that can be viewed and navigated within Sourcetrail.
 
+!["C++ Poetry Indexer"](images/readme/00_cpp_poetry_indexer.png "C++ Poetry Indexer")
+
 
 ## Projects Using SourcetrailDB
 * [SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer)
