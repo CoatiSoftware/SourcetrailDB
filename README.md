@@ -45,6 +45,8 @@ Take a look at [Appveyor (for Windows)](appveyor.yml) or [Travis (for Linux and 
 
 ### SourcetrailDB Core
 
+Before building the core project, please make sure that you also have checked out the tags of this repository (they are relevant for deriving version number information during the build).
+
 Requirements:
 * [CMake](https://cmake.org/) >= 2.6
 * C++-Compiler with C++11 support
