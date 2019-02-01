@@ -32,6 +32,11 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 else()
+    set(GIT_VERSION_NUMBER "")
+endif()
+
+if("${GIT_VERSION_NUMBER}" STREQUAL "")
+	message(WARNING "Unable to derive SourcetrailDB version number from most recent Git tag.")
     set(GIT_VERSION_NUMBER "v0.db0.p0-0-a")
 endif()
 
