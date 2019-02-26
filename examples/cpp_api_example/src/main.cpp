@@ -58,8 +58,8 @@ int main(int argc, const char *argv[])
 	dbWriter.recordFileLanguage(fileId, "cpp"); // record file language for syntax highlighting
 
 
-	// record comment
-	dbWriter.recordCommentLocation({ fileId, 2, 1, 6, 3 });
+	// record atomic source range for multi line comment
+	dbWriter.recordAtomicSourceRange({ fileId, 2, 1, 6, 3 });
 
 
 	// record namespace "api"

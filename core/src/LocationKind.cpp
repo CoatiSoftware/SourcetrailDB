@@ -33,7 +33,7 @@ namespace sourcetrail
 			LocationKind::QUALIFIER,
 			LocationKind::LOCAL_SYMBOL,
 			LocationKind::SIGNATURE,
-			LocationKind::COMMENT,
+			LocationKind::ATOMIC_RANGE,
 			LocationKind::INDEXER_ERROR,
 			LocationKind::FULLTEXT_SEARCH,
 			LocationKind::SCREEN_SEARCH

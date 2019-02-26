@@ -101,7 +101,7 @@ int recordLocalSymbol(std::string name);
 
 bool recordLocalSymbolLocation(int localSymbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
-bool recordCommentLocation(int fileId, int startLine, int startColumn, int endLine, int endColumn);
+bool recordAtomicSourceRange(int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
 bool recordError(std::string message, bool fatal, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 

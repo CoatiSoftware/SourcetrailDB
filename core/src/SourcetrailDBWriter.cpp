@@ -541,23 +541,23 @@ namespace sourcetrail
 		}
 	}
 
-	bool SourcetrailDBWriter::recordCommentLocation(const SourceRange& location)
+	bool SourcetrailDBWriter::recordAtomicSourceRange(const SourceRange& sourceRange)
 	{
 		if (!m_storage)
 		{
-			m_lastError = "Unable to record comment location, because no database is currently open.";
+			m_lastError = "Unable to record atomic source range, because no database is currently open.";
 			return false;
 		}
 
 		try
 		{
 			const int sourceLocationId = m_storage->addSourceLocation(StorageSourceLocationData(
-				location.fileId,
-				location.startLine,
-				location.startColumn,
-				location.endLine,
-				location.endColumn,
-				locationKindToInt(LocationKind::COMMENT)
+				sourceRange.fileId,
+				sourceRange.startLine,
+				sourceRange.startColumn,
+				sourceRange.endLine,
+				sourceRange.endColumn,
+				locationKindToInt(LocationKind::ATOMIC_RANGE)
 			));
 
 			return true;

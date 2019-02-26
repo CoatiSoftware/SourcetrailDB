@@ -29,7 +29,7 @@ namespace sourcetrail
 		QUALIFIER = 2,
 		LOCAL_SYMBOL = 3,
 		SIGNATURE = 4,
-		COMMENT = 5,
+		ATOMIC_RANGE = 5,
 		INDEXER_ERROR = 6,
 		FULLTEXT_SEARCH = 7,
 		SCREEN_SEARCH = 8

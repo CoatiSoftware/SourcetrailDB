@@ -411,18 +411,21 @@ namespace sourcetrail
 		bool recordLocalSymbolLocation(int localSymbolId, const SourceRange& location);
 
 		/**
-		 * Stores a comment location to the database
+		 * Stores an atomic SourceRange to the database
 		 *
-		 * This method allows to store a comment location to the database. These comment locations will
-		 * be used by Sourcetrail to prevent the code view from displaying comments imcomplete.
+		 * This method allows to store an atomic SourceRange to the database. These ranges will
+		 * be used by Sourcetrail to prevent the code view from displaying only a part of the range. Thus,
+		 * if any line that lies within one of the project's atomic ranges is dispayed, the remaining
+		 * lines will be displayed as well. This may be useful for dealing with multi-line comments or
+		 * multi-line strings.
 		 *
-		 *  param: location - the SourceRange of the comment to record.
+		 *  param: sourceRange - the SourceRange to record.
 		 *
 		 *  return: true if successful. false on failure. getLastError() provides the error message.
 		 *
 		 *  see: SourceRange
 		 */
-		bool recordCommentLocation(const SourceRange& location);
+		bool recordAtomicSourceRange(const SourceRange& sourceRange);
 
 		/**
 		 * Stores an indexing error to the database

@@ -240,9 +240,9 @@ bool recordLocalSymbolLocation(int localSymbolId, int fileId, int startLine, int
 	return dbWriter.recordLocalSymbolLocation(localSymbolId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
-bool recordCommentLocation(int fileId, int startLine, int startColumn, int endLine, int endColumn)
+bool recordAtomicSourceRange(int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
-	return dbWriter.recordCommentLocation({ fileId, startLine, startColumn, endLine, endColumn });
+	return dbWriter.recordAtomicSourceRange({ fileId, startLine, startColumn, endLine, endColumn });
 }
 
 bool recordError(std::string message, bool fatal, int fileId, int startLine, int startColumn, int endLine, int endColumn)

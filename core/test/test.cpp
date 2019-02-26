@@ -435,7 +435,7 @@ namespace sourcetrail
 		const int endLine = 3;
 		const int endCol = 4;
 
-		const bool success1 = writer.recordCommentLocation(
+		const bool success1 = writer.recordAtomicSourceRange(
 			{ fileId, startLine, startCol, endLine, endCol }
 		);
 		REQUIRE(success1);
@@ -445,7 +445,7 @@ namespace sourcetrail
 		{
 			const std::vector<StorageSourceLocation> sourceLocations = storage->getAll<StorageSourceLocation>();
 			REQUIRE(sourceLocations.size() == 1);
-			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::COMMENT));
+			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::ATOMIC_RANGE));
 			REQUIRE(sourceLocations.front().startLineNumber == startLine);
 			REQUIRE(sourceLocations.front().startColumnNumber == startCol);
 			REQUIRE(sourceLocations.front().endLineNumber == endLine);
@@ -457,9 +457,9 @@ namespace sourcetrail
 			REQUIRE(sourceLocations.front().fileNodeId == files.front().id);
 		}
 
-		SECTION("writer does not record comment location twice")
+		SECTION("writer does not record atomic source range twice")
 		{
-			const bool success2 = writer.recordCommentLocation(
+			const bool success2 = writer.recordAtomicSourceRange(
 				{ fileId, startLine, startCol, endLine, endCol }
 			);
 			REQUIRE(success2);
