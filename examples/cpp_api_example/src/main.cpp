@@ -4,6 +4,17 @@
 
 #include "SourcetrailDBWriter.h"
 
+void findAndReplaceAll(std::string &data, const std::string &toSearch, const std::string &replaceStr)
+{
+	size_t pos = data.find(toSearch);
+
+	while (pos != std::string::npos)
+	{
+		data.replace(pos, toSearch.size(), replaceStr);
+		pos = data.find(toSearch, pos + replaceStr.size());
+	}
+}
+
 int main(int argc, const char *argv[])
 {
 	sourcetrail::SourcetrailDBWriter dbWriter;
@@ -21,6 +32,7 @@ int main(int argc, const char *argv[])
 
 	std::string dbPath = argv[1];
 	std::string sourcePath = argv[2];
+	findAndReplaceAll(sourcePath, "\\", "/");
 
 	int dbVersion = 0;
 	if (argc == 4)
@@ -39,6 +51,13 @@ int main(int argc, const char *argv[])
 	// open database by passing .srctrldb or .srctrldb_tmp path
 	std::cout << "Opening Database: " << dbPath << std::endl;
 	if (!dbWriter.open(dbPath))
+	{
+		std::cerr << "error: " << dbWriter.getLastError() << std::endl;
+		return 1;
+	}
+
+	std::cout << "Clearing Database... " << std::endl;
+	if (!dbWriter.clear())
 	{
 		std::cerr << "error: " << dbWriter.getLastError() << std::endl;
 		return 1;
@@ -83,7 +102,7 @@ int main(int argc, const char *argv[])
 
 	// record inheritance reference to "BaseType"
 	int baseId = dbWriter.recordSymbol( { "::", { { "", "BaseType", "" } } } );
-	int inheritanceId = dbWriter.recordReference(baseId, classId, sourcetrail::ReferenceKind::INHERITANCE);
+	int inheritanceId = dbWriter.recordReference(classId, baseId, sourcetrail::ReferenceKind::INHERITANCE);
 	dbWriter.recordReferenceLocation(inheritanceId, { fileId, 12, 14, 12, 21 });
 
 
@@ -98,7 +117,7 @@ int main(int argc, const char *argv[])
 	dbWriter.recordSymbolSignatureLocation(methodId, { fileId, 15, 5, 15, 45 }); // used in tooltip
 
 
-	// record parameter type "bool"
+	// record usage of parameter type "bool"
 	int typeId = dbWriter.recordSymbol({ "::", { { "", "bool", "" } } });
 	int typeuseId = dbWriter.recordReference(methodId, typeId, sourcetrail::ReferenceKind::TYPE_USAGE);
 	dbWriter.recordReferenceLocation(typeuseId, { fileId, 15, 20, 15, 23 });
