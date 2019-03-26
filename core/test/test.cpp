@@ -276,6 +276,57 @@ namespace sourcetrail
 		REQUIRE(writer.getLastError() == "");
 	}
 
+	TEST_CASE("Testing SourcetrailDBWriter records qualifier locations")
+	{
+		const std::string databasePath = "testing.db";
+
+		std::shared_ptr<DatabaseStorage> storage = DatabaseStorage::openDatabase(databasePath);
+
+		SourcetrailDBWriter writer;
+		REQUIRE(writer.getLastError() == "");
+
+		writer.open(databasePath);
+		REQUIRE(writer.getLastError() == "");
+
+		writer.clear();
+		REQUIRE(writer.getLastError() == "");
+
+		const NameHierarchy nameSymbol1({ "." ,{ { "", "Foo", "" } } });
+		const int idSymbol1 = writer.recordSymbol(nameSymbol1);
+		REQUIRE(idSymbol1 != 0);
+		REQUIRE(writer.getLastError() == "");
+
+		const std::string filePath = "path/to/non_existing_file.cpp";
+		const int fileId = writer.recordFile(filePath);
+		const int startLine = 1;
+		const int startCol = 2;
+		const int endLine = 3;
+		const int endCol = 4;
+
+		const bool success = writer.recordQualifierLocation(idSymbol1, { fileId, startLine, startCol, endLine, endCol });
+		REQUIRE(success);
+		REQUIRE(writer.getLastError() == "");
+
+		SECTION("database contains qualifier location after recording qualifier location")
+		{
+			const std::vector<StorageSourceLocation> sourceLocations = storage->getAll<StorageSourceLocation>();
+			REQUIRE(sourceLocations.size() == 1);
+			REQUIRE(sourceLocations.front().locationKind == locationKindToInt(LocationKind::QUALIFIER));
+			REQUIRE(sourceLocations.front().startLineNumber == startLine);
+			REQUIRE(sourceLocations.front().startColumnNumber == startCol);
+			REQUIRE(sourceLocations.front().endLineNumber == endLine);
+			REQUIRE(sourceLocations.front().endColumnNumber == endCol);
+
+			const std::vector<StorageFile> files = storage->getAll<StorageFile>();
+			REQUIRE(files.size() == 1);
+			REQUIRE(files.front().filePath == filePath);
+			REQUIRE(sourceLocations.front().fileNodeId == files.front().id);
+		}
+
+		writer.close();
+		REQUIRE(writer.getLastError() == "");
+	}
+
 	TEST_CASE("Testing SourcetrailDBWriter records file")
 	{
 		const std::string databasePath = "testing.db";

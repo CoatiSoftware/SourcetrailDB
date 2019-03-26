@@ -220,6 +220,11 @@ bool recordReferenceLocation(int referenceId, int fileId, int startLine, int sta
 	return dbWriter.recordReferenceLocation(referenceId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
+bool recordQualifierLocation(int referencedSymbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn)
+{
+	return dbWriter.recordQualifierLocation(referencedSymbolId, { fileId, startLine, startColumn, endLine, endColumn });
+}
+
 int recordFile(std::string filePath)
 {
 	return dbWriter.recordFile(filePath);

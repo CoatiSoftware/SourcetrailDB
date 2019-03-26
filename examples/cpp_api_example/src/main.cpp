@@ -129,11 +129,16 @@ int main(int argc, const char *argv[])
 	dbWriter.recordLocalSymbolLocation(localId, { fileId, 17, 13, 17, 26 });
 
 
+	// record source range of "Client" as qualifier location
+	int qualifierId = dbWriter.recordSymbol({ "::",{ { "", "Client", "" } } });
+	dbWriter.recordQualifierLocation(qualifierId, { fileId, 19, 13, 19, 18 });
+
+
 	// record function call reference to "send_signal()"
 	int funcId = dbWriter.recordSymbol({ "::", { { "", "Client", "" }, { "", "send_signal", "()" } } });
 	dbWriter.recordSymbolKind(funcId, sourcetrail::SymbolKind::FUNCTION);
 	int callId = dbWriter.recordReference(methodId, funcId, sourcetrail::ReferenceKind::CALL);
-	dbWriter.recordReferenceLocation(callId, { fileId, 19, 13, 19, 33 });
+	dbWriter.recordReferenceLocation(callId, { fileId, 19, 21, 19, 31 });
 
 
 	// record error
