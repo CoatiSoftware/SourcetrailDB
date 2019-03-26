@@ -13,7 +13,7 @@ def main():
 
 	args = parser.parse_args()
 	databaseFilePath = args.database_file_path
-	sourceFilePath = args.source_file_path
+	sourceFilePath = args.source_file_path.replace("\\", "/")
 	dbVersion = args.database_version
 
 	print("SourcetrailDB Python API Example")
@@ -28,10 +28,8 @@ def main():
 		print("ERROR: " + srctrl.getLastError())
 		return 1
 
-	if srctrl.isEmpty():
-		print("Loaded database is empty.")
-	else:
-		print("Loaded database contains data.")
+	print("Clearing loaded database now...")
+	srctrl.clear()
 
 	print("start indexing")
 	srctrl.beginTransaction()
