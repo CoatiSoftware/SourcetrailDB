@@ -446,13 +446,33 @@ namespace sourcetrail
 	{
 		if (!m_storage)
 		{
-			m_lastError = "Unable to record symbol signature location, because no database is currently open.";
+			m_lastError = "Unable to record symbol reference location, because no database is currently open.";
 			return false;
 		}
 
 		try
 		{
 			addSourceLocation(referenceId, location, LocationKind::TOKEN);
+			return true;
+		}
+		catch (const SourcetrailException e)
+		{
+			m_lastError = e.getMessage();
+			return false;
+		}
+	}
+
+	bool SourcetrailDBWriter::recordQualifierLocation(int referencedSymbolId, const SourceRange& location)
+	{
+		if (!m_storage)
+		{
+			m_lastError = "Unable to record symbol qualifier location, because no database is currently open.";
+			return false;
+		}
+
+		try
+		{
+			addSourceLocation(referencedSymbolId, location, LocationKind::QUALIFIER);
 			return true;
 		}
 		catch (const SourcetrailException e)

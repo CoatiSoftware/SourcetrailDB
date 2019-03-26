@@ -93,6 +93,8 @@ int recordReference(int contextSymbolId, int referencedSymbolId, ReferenceKind r
 
 bool recordReferenceLocation(int referenceId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
+bool recordQualifierLocation(int referencedSymbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
+
 int recordFile(std::string filePath);
 
 bool recordFileLanguage(int fileId, std::string languageIdentifier);

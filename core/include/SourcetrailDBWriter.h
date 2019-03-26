@@ -350,6 +350,26 @@ namespace sourcetrail
 		bool recordReferenceLocation(int referenceId, const SourceRange& location);
 
 		/**
+		* Stores a location for the usage of a symbol's name as qualifier to the database
+		*
+		* This method allows to store a location where a specific symbol is used as a qualifier to the
+		* database. Calling this method with the same referencedSymbolId multiple times adds multiple locations
+		* for the respective reference. The stored location will be clickable but not displayable: When the
+		* reference location is clicked Sourcetrail will activate the symbol referenced by the respective
+		* reference. When the symbol with the specified id is activated, this location will NOT be displayed and
+		* highlighted by Sourcetrail.
+		*
+		*  param: referencedSymbolId - the id of the symbol that is used as qualifier at the current location.
+		*  param: location - the SourceRange that shall be recorded as location for the symbol's occurrence as
+		*    qualifier
+		*
+		*  return: true if successful. false on failure. getLastError() provides the error message.
+		*
+		*  see: SourceRange
+		*/
+		bool recordQualifierLocation(int referencedSymbolId, const SourceRange& location);
+
+		/**
 		 * Stores a file to the database
 		 *
 		 *  note: Calling this method multiple times with the same input on the same Sourcetrail database
