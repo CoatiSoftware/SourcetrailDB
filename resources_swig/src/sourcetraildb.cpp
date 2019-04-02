@@ -108,6 +108,11 @@ namespace
 
 sourcetrail::SourcetrailDBWriter dbWriter;
 
+std::string getVersionString()
+{
+	return dbWriter.getVersionString();
+}
+
 int getSupportedDatabaseVersion()
 {
 	return dbWriter.getSupportedDatabaseVersion();

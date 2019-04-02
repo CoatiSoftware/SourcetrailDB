@@ -51,6 +51,8 @@ enum ReferenceKind
 	REFERENCE_ANNOTATION_USAGE
 };
 
+std::string getVersionString();
+
 int getSupportedDatabaseVersion();
 
 std::string getLastError();
