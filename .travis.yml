@@ -111,7 +111,8 @@ before_deploy:
   - |
     cd $TRAVIS_BUILD_DIR
 
-    VERSION=$(head -1 build/version.txt)
+    VERSION=$(head -1 version.txt)
+    VERSION=${VERSION//./_}
 
     if [[ "$PYTHON_BINDING" == "1" ]]; then
       PYTHON_VERSION=${PYTHON//.}

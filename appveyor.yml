@@ -69,9 +69,10 @@ before_build:
     - cd build
     - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=ON -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python%PYTHON_VERSION%.lib"
     - cd ../
-    - ps: $env:CORE_VERSION = Get-Content -Path ./build/version.txt
+    - ps: $env:CORE_VERSION = Get-Content -Path ./version.txt
+    - ps: $env:UNDERSCORED_CORE_VERSION = $env:CORE_VERSION.Replace(".", "_")
     - ps: echo "Core version is $env:CORE_VERSION"
-# TODO: convert the core version into dotted format and update appveyor version here
+# TODO: use the core version to update appveyor version here
 #    - ps: $env:BUILD_VERSION = "0.0.1." + $env:APPVEYOR_BUILD_NUMBER 
 #    - ps: echo update build version to $env:BUILD_VERSION
 #    - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
@@ -84,8 +85,8 @@ build_script:
 
 
 after_build:
-    - ps: $env:CORE_PACKAGE_NAME = 'sourcetraildb_core_' + $env:CORE_VERSION + '-windows-' + $env:MBITS + 'bit-msvc' + $env:MSVC_VERSION
-    - ps: $env:PYTHON_PACKAGE_NAME = 'sourcetrailbd_python' + $env:PYTHON_VERSION + '_' + $env:CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
+    - ps: $env:CORE_PACKAGE_NAME = 'sourcetraildb_core_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit-msvc' + $env:MSVC_VERSION
+    - ps: $env:PYTHON_PACKAGE_NAME = 'sourcetrailbd_python' + $env:PYTHON_VERSION + '_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
     - ps: echo $env:CORE_PACKAGE_NAME
     - ps: echo $env:PYTHON_PACKAGE_NAME
     - mkdir artifacts_core

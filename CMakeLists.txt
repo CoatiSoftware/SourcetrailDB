@@ -22,39 +22,17 @@ endif()
 
 # --- Version ---
 
-if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
-	find_package(Git)
+file (STRINGS "version.txt" VERSION_STRING)
 
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE} describe --long
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE GIT_VERSION_NUMBER
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-else()
-    set(GIT_VERSION_NUMBER "")
-endif()
-
-if("${GIT_VERSION_NUMBER}" STREQUAL "")
-	message(WARNING "Unable to derive SourcetrailDB version number from most recent Git tag.")
-    set(GIT_VERSION_NUMBER "v0.db0.p0-0-a")
-endif()
-
-string(REGEX REPLACE "v([0-9]+)\\..*" "\\1" INTERFACE_VERSION "${GIT_VERSION_NUMBER}")
-string(REGEX REPLACE "v[0-9]+\\.db([0-9]+)\\..*" "\\1" DATABASE_VERSION "${GIT_VERSION_NUMBER}")
-string(REGEX REPLACE "v[0-9]+\\.db[0-9]+\\.p([0-9]+)-.*" "\\1" PATCH_VERSION "${GIT_VERSION_NUMBER}")
-set(VERSION_STRING "v${INTERFACE_VERSION}.db${DATABASE_VERSION}.p${PATCH_VERSION}")
+string(REGEX REPLACE "v([0-9]+)\\..*" "\\1" INTERFACE_VERSION "${VERSION_STRING}")
+string(REGEX REPLACE "v[0-9]+\\.db([0-9]+)\\..*" "\\1" DATABASE_VERSION "${VERSION_STRING}")
+string(REGEX REPLACE "v[0-9]+\\.db[0-9]+\\.p([0-9]+).*" "\\1" PATCH_VERSION "${VERSION_STRING}")
 set(VERSION_STRING_UNDERSCORE "v${INTERFACE_VERSION}_db${DATABASE_VERSION}_p${PATCH_VERSION}")
 
 message(STATUS "SourcetrailDB Version: ${VERSION_STRING}")
 message(STATUS "Interface Version: ${INTERFACE_VERSION}")
 message(STATUS "Database Version: ${DATABASE_VERSION}")
 message(STATUS "Patch Version: ${PATCH_VERSION}")
-
-configure_file(
-	${CMAKE_CURRENT_SOURCE_DIR}/version.txt.in
-	"${CMAKE_CURRENT_BINARY_DIR}/version.txt"
-)
 
 
 # --- Core ---
