@@ -225,6 +225,16 @@ bool recordReferenceLocation(int referenceId, int fileId, int startLine, int sta
 	return dbWriter.recordReferenceLocation(referenceId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
+bool recordReferenceIsAmbiuous(int referenceId)
+{
+	return dbWriter.recordReferenceIsAmbiuous(referenceId);
+}
+
+int recordReferenceToUnsolvedSymhol(int contextSymbolId, ReferenceKind referenceKind, int fileId, int startLine, int startColumn, int endLine, int endColumn)
+{
+	return dbWriter.recordReferenceToUnsolvedSymhol(contextSymbolId, convertReferenceKind(referenceKind), { fileId, startLine, startColumn, endLine, endColumn });
+}
+
 bool recordQualifierLocation(int referencedSymbolId, int fileId, int startLine, int startColumn, int endLine, int endColumn)
 {
 	return dbWriter.recordQualifierLocation(referencedSymbolId, { fileId, startLine, startColumn, endLine, endColumn });

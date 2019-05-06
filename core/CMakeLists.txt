@@ -16,6 +16,7 @@ set(LIB_SRC_FILES
 	src/DatabaseStorage.cpp
 	src/DefinitionKind.cpp
 	src/EdgeKind.cpp
+	src/ElementComponentKind.cpp
 	src/LocationKind.cpp
 	src/NameHierarchy.cpp
 	src/NodeKind.cpp
@@ -32,6 +33,7 @@ set(LIB_HDR_FILES
 	include/DatabaseStorage.h
 	include/DefinitionKind.h
 	include/EdgeKind.h
+	include/ElementComponentKind.h
 	include/LocationKind.h
 	include/NameHierarchy.h
 	include/NodeKind.h
@@ -40,6 +42,7 @@ set(LIB_HDR_FILES
 	include/SourcetrailDBWriter.h
 	include/SourcetrailException.h
 	include/StorageEdge.h
+	include/StorageElementComponent.h
 	include/StorageError.h
 	include/StorageFile.h
 	include/StorageLocalSymbol.h

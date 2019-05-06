@@ -36,7 +36,8 @@ namespace sourcetrail
 			LocationKind::ATOMIC_RANGE,
 			LocationKind::INDEXER_ERROR,
 			LocationKind::FULLTEXT_SEARCH,
-			LocationKind::SCREEN_SEARCH
+			LocationKind::SCREEN_SEARCH,
+			LocationKind::UNSOLVED
 		};
 
 		for (LocationKind kind : kinds)

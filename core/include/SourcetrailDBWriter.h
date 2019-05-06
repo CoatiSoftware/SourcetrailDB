@@ -22,6 +22,7 @@
 
 #include "DefinitionKind.h"
 #include "EdgeKind.h"
+#include "ElementComponentKind.h"
 #include "LocationKind.h"
 #include "NameHierarchy.h"
 #include "ReferenceKind.h"
@@ -350,6 +351,42 @@ namespace sourcetrail
 		bool recordReferenceLocation(int referenceId, const SourceRange& location);
 
 		/**
+		* Marks a reference that is stored in the database as "ambiguous"
+		*
+		* This method allows to additional information for a reference to the database. Sourcetrail will
+		* display an "ambiguous" reference with a special style to emphasize that the existance of the
+		* reference is questionable. This method is intended to be called in situations when an indexed
+		* token may have meanings, all of which shall be recorded.
+		*
+		*  param: referenceId - the id of the reference that shall be marked as ambiguous.
+		*
+		*  return: true if successful. false on failure. getLastError() provides the error message.
+		*/
+		bool recordReferenceIsAmbiuous(int referenceId);
+
+		/**
+		* Stores a location between a specific context and an "unsolved" symbol to the database
+		*
+		* This method allows to store all available information to the database in the case that a symbol
+		* is referenced in a certain context but the referenced symbol could not be resolved to a concrete
+		* name. For each reference recorded by this method, Sourcetrail's graph view will display an edge
+		* that originates at the recorded context symbol and points to a node called "unsolved symbol".
+		* Furthermore Sourcetrail's code view will use a different highlight when the provided source range
+		* gets hovered.
+		*
+		*  param: contextSymbolId - the id of the source of the recorded reference edge
+		*  param: referenceKind - kind of the recorded reference edge
+		*  param: location - the SourceRange that shall be recorded as location for the respective
+		*    reference.
+		*
+		*  return: referenceId - integer id of the stored reference. 0 on failure. getLastError()
+		*    provides the error message.
+		*
+		*  see: SourceRange
+		*/
+		int recordReferenceToUnsolvedSymhol(int contextSymbolId, ReferenceKind referenceKind, const SourceRange& location);
+
+		/**
 		* Stores a location for the usage of a symbol's name as qualifier to the database
 		*
 		* This method allows to store a location where a specific symbol is used as a qualifier to the
@@ -475,6 +512,7 @@ namespace sourcetrail
 		int addFile(const std::string& filePath);
 		int addEdge(int sourceId, int targetId, EdgeKind edgeKind);
 		void addSourceLocation(int elementId, const SourceRange& location, LocationKind kind);
+		void addElementComponent(int elementId, ElementComponentKind kind, const std::string& data);
 
 		std::string m_projectFilePath;
 		std::string m_databaseFilePath;

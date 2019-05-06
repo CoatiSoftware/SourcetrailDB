@@ -428,7 +428,7 @@ namespace sourcetrail
 		if (!m_storage)
 		{
 			m_lastError = "Unable to record reference, because no database is currently open.";
-			return false;
+			return 0;
 		}
 
 		try
@@ -459,6 +459,52 @@ namespace sourcetrail
 		{
 			m_lastError = e.getMessage();
 			return false;
+		}
+	}
+
+	bool SourcetrailDBWriter::recordReferenceIsAmbiuous(int referenceId)
+	{
+		if (!m_storage)
+		{
+			m_lastError = "Unable to record ambiguity of reference, because no database is currently open.";
+			return false;
+		}
+
+		try
+		{
+			addElementComponent(referenceId, ElementComponentKind::IS_AMBIGUOUS, "");
+			return false;
+		}
+		catch (const SourcetrailException e)
+		{
+			m_lastError = e.getMessage();
+			return false;
+		}
+	}
+
+	int SourcetrailDBWriter::recordReferenceToUnsolvedSymhol(int contextSymbolId, ReferenceKind referenceKind, const SourceRange& location)
+	{
+		if (!m_storage)
+		{
+			m_lastError = "Unable to record symbol reference, because no database is currently open.";
+			return 0;
+		}
+
+		try
+		{
+			NameHierarchy unsolvedSymbolName;
+			NameElement unsolvedSymbolNameElement;
+			unsolvedSymbolNameElement.name = "unsolved symbol";
+			unsolvedSymbolName.nameElements.push_back(unsolvedSymbolNameElement);
+			int unsolvedSymbolId = addNodeHierarchy(unsolvedSymbolName);
+			int referenceId = addEdge(contextSymbolId, unsolvedSymbolId, referenceKindToEdgeKind(referenceKind));
+			addSourceLocation(referenceId, location, LocationKind::UNSOLVED);
+			return referenceId;
+		}
+		catch (const SourcetrailException e)
+		{
+			m_lastError = e.getMessage();
+			return 0;
 		}
 	}
 
@@ -783,6 +829,15 @@ namespace sourcetrail
 		m_storage->addOccurrence(StorageOccurrence(
 			elementId,
 			sourceLocationId
+		));
+	}
+
+	void SourcetrailDBWriter::addElementComponent(int elementId, ElementComponentKind kind, const std::string& data)
+	{
+		const int sourceLocationId = m_storage->addElementComponent(StorageElementComponentData(
+			elementId,
+			elementComponentKindToInt(kind),
+			data
 		));
 	}
 }

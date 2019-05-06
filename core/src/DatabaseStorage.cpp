@@ -151,6 +151,17 @@ namespace sourcetrail
 		executeStatement("VACUUM;");
 	}
 
+	int DatabaseStorage::addElementComponent(const StorageElementComponentData& storageElementComponentData)
+	{
+		m_insertElementComponentStatement.bind(1, storageElementComponentData.elementId);
+		m_insertElementComponentStatement.bind(2, storageElementComponentData.componentKind);
+		m_insertElementComponentStatement.bind(3, storageElementComponentData.data.c_str());
+		executeStatement(m_insertElementComponentStatement);
+		int id = m_database.lastRowId();
+		m_insertElementComponentStatement.reset();
+		return id;
+	}
+
 	int DatabaseStorage::addNode(const StorageNodeData& storageNodeData)
 	{
 		int id = 0;
@@ -394,6 +405,17 @@ namespace sourcetrail
 		);
 
 		executeStatement(
+			"CREATE TABLE IF NOT EXISTS element_component("
+			"	id INTEGER, "
+			"	element_id INTEGER, "
+			"	type INTEGER, "
+			"	data TEXT, "
+			"	PRIMARY KEY(id), "
+			"	FOREIGN KEY(element_id) REFERENCES element(id) ON DELETE CASCADE"
+			");"
+		);
+
+		executeStatement(
 			"CREATE TABLE IF NOT EXISTS edge("
 			"	id INTEGER NOT NULL, "
 			"	type INTEGER NOT NULL, "
@@ -518,6 +540,7 @@ namespace sourcetrail
 			"symbol",
 			"node",
 			"edge",
+			"element_component"
 			"element"
 		};
 
@@ -555,6 +578,10 @@ namespace sourcetrail
 	{
 		m_insertElementStatement = compileStatement(
 			"INSERT INTO element(id) VALUES(NULL);"
+		);
+
+		m_insertElementComponentStatement = compileStatement(
+			"INSERT INTO element_component(id, element_id, type, data) VALUES(NULL, ?, ?, ?);"
 		);
 
 		m_findNodeStatement = compileStatement(
@@ -648,6 +675,7 @@ namespace sourcetrail
 	void DatabaseStorage::clearPrecompiledStatements()
 	{
 		m_insertElementStatement.finalize();
+		m_insertElementComponentStatement.finalize();
 		m_findNodeStatement.finalize();
 		m_insertNodeStatement.finalize();
 		m_setNodeTypeStmt.finalize();
