@@ -14,30 +14,31 @@
 * limitations under the License.
 */
 
-#ifndef SOURCETRAIL_LOCATION_KIND_H
-#define SOURCETRAIL_LOCATION_KIND_H
+#include "ElementComponentKind.h"
+
+#include "SourcetrailException.h"
 
 namespace sourcetrail
 {
-	/**
-	* Enum providing all possible values for kinds of locations that can be stored to the Sourcetrail database.
-	*/
-	enum class LocationKind : int
+	int elementComponentKindToInt(ElementComponentKind kind)
 	{
-		TOKEN = 0,
-		SCOPE = 1,
-		QUALIFIER = 2,
-		LOCAL_SYMBOL = 3,
-		SIGNATURE = 4,
-		ATOMIC_RANGE = 5,
-		INDEXER_ERROR = 6,
-		FULLTEXT_SEARCH = 7,
-		SCREEN_SEARCH = 8,
-		UNSOLVED = 9
-	};
+		return static_cast<int>(kind);
+	}
 
-	int locationKindToInt(LocationKind kind);
-	LocationKind intToLocationKind(int i);
+	ElementComponentKind intToElementComponentKind(int i)
+	{
+		const ElementComponentKind kinds[] = {
+			ElementComponentKind::IS_AMBIGUOUS
+		};
+
+		for (ElementComponentKind kind : kinds)
+		{
+			if (i == elementComponentKindToInt(kind))
+			{
+				return kind;
+			}
+		}
+
+		throw SourcetrailException("Unable to convert integer \"" + std::to_string(i) + "\" to element component kind.");
+	}
 }
-
-#endif // SOURCETRAIL_LOCATION_KIND_H

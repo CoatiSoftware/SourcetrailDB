@@ -14,30 +14,21 @@
 * limitations under the License.
 */
 
-#ifndef SOURCETRAIL_LOCATION_KIND_H
-#define SOURCETRAIL_LOCATION_KIND_H
+#ifndef SOURCETRAIL_ELEMENT_COMPONENT_KIND_H
+#define SOURCETRAIL_ELEMENT_COMPONENT_KIND_H
 
 namespace sourcetrail
 {
 	/**
-	* Enum providing all possible values for kinds of locations that can be stored to the Sourcetrail database.
+	* Enum providing all possible values for kinds of node and edge components that can be stored to the Sourcetrail database.
 	*/
-	enum class LocationKind : int
+	enum class ElementComponentKind : int
 	{
-		TOKEN = 0,
-		SCOPE = 1,
-		QUALIFIER = 2,
-		LOCAL_SYMBOL = 3,
-		SIGNATURE = 4,
-		ATOMIC_RANGE = 5,
-		INDEXER_ERROR = 6,
-		FULLTEXT_SEARCH = 7,
-		SCREEN_SEARCH = 8,
-		UNSOLVED = 9
+		IS_AMBIGUOUS = 1 << 0
 	};
 
-	int locationKindToInt(LocationKind kind);
-	LocationKind intToLocationKind(int i);
+	int elementComponentKindToInt(ElementComponentKind kind);
+	ElementComponentKind intToElementComponentKind(int i);
 }
 
-#endif // SOURCETRAIL_LOCATION_KIND_H
+#endif // SOURCETRAIL_ELEMENT_COMPONENT_KIND_H

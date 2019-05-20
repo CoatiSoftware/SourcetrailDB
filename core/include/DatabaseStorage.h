@@ -24,6 +24,7 @@
 #include "CppSQLite3.h"
 
 #include "StorageEdge.h"
+#include "StorageElementComponent.h"
 #include "StorageError.h"
 #include "StorageFile.h"
 #include "StorageLocalSymbol.h"
@@ -61,6 +62,7 @@ namespace sourcetrail
 		void rollbackTransaction();
 		void optimizeDatabaseMemory();
 
+		int addElementComponent(const StorageElementComponentData& storageElementComponentData);
 		int addNode(const StorageNodeData& storageNodeData);
 		void addSymbol(const StorageSymbol& storageSymbol);
 		void addFile(const StorageFile& storageFile);
@@ -102,6 +104,7 @@ namespace sourcetrail
 		mutable CppSQLite3DB m_database;
 
 		CppSQLite3Statement m_insertElementStatement;
+		CppSQLite3Statement m_insertElementComponentStatement;
 		CppSQLite3Statement m_findNodeStatement;
 		CppSQLite3Statement m_insertNodeStatement;
 		CppSQLite3Statement m_setNodeTypeStmt;
