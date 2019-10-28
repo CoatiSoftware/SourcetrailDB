@@ -43,7 +43,6 @@ namespace sourcetrail
 			NodeKind::ENUM,
 			NodeKind::ENUM_CONSTANT,
 			NodeKind::TYPEDEF,
-			NodeKind::TEMPLATE_PARAMETER,
 			NodeKind::TYPE_PARAMETER,
 			NodeKind::FILE,
 			NodeKind::MACRO,

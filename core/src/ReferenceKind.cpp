@@ -34,16 +34,10 @@ namespace sourcetrail
 			return EdgeKind::INHERITANCE;
 		case ReferenceKind::OVERRIDE:
 			return EdgeKind::OVERRIDE;
-		case ReferenceKind::TEMPLATE_ARGUMENT:
-			return EdgeKind::TEMPLATE_ARGUMENT;
 		case ReferenceKind::TYPE_ARGUMENT:
 			return EdgeKind::TYPE_ARGUMENT;
-		case ReferenceKind::TEMPLATE_DEFAULT_ARGUMENT:
-			return EdgeKind::TEMPLATE_DEFAULT_ARGUMENT;
 		case ReferenceKind::TEMPLATE_SPECIALIZATION:
 			return EdgeKind::TEMPLATE_SPECIALIZATION;
-		case ReferenceKind::TEMPLATE_MEMBER_SPECIALIZATION:
-			return EdgeKind::TEMPLATE_MEMBER_SPECIALIZATION;
 		case ReferenceKind::INCLUDE:
 			return EdgeKind::INCLUDE;
 		case ReferenceKind::IMPORT:

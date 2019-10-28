@@ -41,11 +41,10 @@ namespace sourcetrail
 		ENUM = 1 << 14,
 		ENUM_CONSTANT = 1 << 15,
 		TYPEDEF = 1 << 16,
-		TEMPLATE_PARAMETER = 1 << 17,
-		TYPE_PARAMETER = 1 << 18,
-		FILE = 1 << 19,
-		MACRO = 1 << 20,
-		UNION = 1 << 21
+		TYPE_PARAMETER = 1 << 17,
+		FILE = 1 << 18,
+		MACRO = 1 << 19,
+		UNION = 1 << 20
 	};
 
 	int nodeKindToInt(NodeKind kind);

@@ -56,8 +56,6 @@ namespace sourcetrail
 			return NodeKind::ENUM_CONSTANT;
 		case SymbolKind::TYPEDEF:
 			return NodeKind::TYPEDEF;
-		case SymbolKind::TEMPLATE_PARAMETER:
-			return NodeKind::TEMPLATE_PARAMETER;
 		case SymbolKind::TYPE_PARAMETER:
 			return NodeKind::TYPE_PARAMETER;
 		case SymbolKind::MACRO:
