@@ -37,7 +37,7 @@ message(STATUS "Patch Version: ${PATCH_VERSION}")
 
 # --- Core ---
 
-set(LIB_CORE "lib_core")
+set(LIB_CORE_TARGET_NAME "lib_core")
 set(CORE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/core") # can be accessed in subdirectory CMake files
 set(CORE_BINARY_DIR "${CMAKE_BINARY_DIR}/core") # can be accessed in subdirectory CMake files
 
@@ -49,6 +49,7 @@ add_subdirectory(${CORE_SOURCE_DIR} ${CORE_BINARY_DIR})
 if (BUILD_BINDINGS_PYTHON)
 	message(STATUS "The SourcetrailDB Python bindings will be built.")
 
+	set(PYTHON_BINDING_TARGET_NAME "bindings_python")
 	set(PYTHON_BINDING_OUTPUT_DIR "")
 	add_subdirectory("${CMAKE_SOURCE_DIR}/bindings_python" "${CMAKE_BINARY_DIR}/bindings_python")
 else()

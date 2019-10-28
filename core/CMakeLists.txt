@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 
-set(TEST_CORE "test_core")
+set(TEST_CORE_TARGET_NAME "test_core")
 
 set(GENERATED_INCLUDE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/include")
 set(GENERATED_VERSION_FILE "${GENERATED_INCLUDE_DIRECTORY}/version.h")
@@ -55,11 +55,11 @@ set(LIB_HDR_FILES
 	${GENERATED_VERSION_FILE}
 )
 
-add_library(${LIB_CORE} STATIC ${LIB_SRC_FILES} ${LIB_HDR_FILES})
+add_library(${LIB_CORE_TARGET_NAME} STATIC ${LIB_SRC_FILES} ${LIB_HDR_FILES})
 
-set_target_properties(${LIB_CORE} PROPERTIES OUTPUT_NAME "sourcetraildb")
+set_target_properties(${LIB_CORE_TARGET_NAME} PROPERTIES OUTPUT_NAME "sourcetraildb")
 
-target_include_directories(${LIB_CORE} PUBLIC
+target_include_directories(${LIB_CORE_TARGET_NAME} PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	"${CMAKE_SOURCE_DIR}/external/json/include"
 	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include"
@@ -71,9 +71,9 @@ set(TEST_SRC_FILES
 	test/test.cpp
 )
 
-add_executable(${TEST_CORE} ${TEST_SRC_FILES})
+add_executable(${TEST_CORE_TARGET_NAME} ${TEST_SRC_FILES})
 
-target_include_directories(${TEST_CORE} PUBLIC
+target_include_directories(${TEST_CORE_TARGET_NAME} PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	"${CMAKE_SOURCE_DIR}/external/catch/include"
 	"${CMAKE_SOURCE_DIR}/external/json/include"
@@ -81,4 +81,4 @@ target_include_directories(${TEST_CORE} PUBLIC
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 
-target_link_libraries(${TEST_CORE} ${LIB_CORE} "-ldl")
+target_link_libraries(${TEST_CORE_TARGET_NAME} ${LIB_CORE_TARGET_NAME} "-ldl")
