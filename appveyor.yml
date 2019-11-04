@@ -14,37 +14,17 @@ environment:
           MSVC_VERSION: 15
           DEPLOY_CORE: 1
           DEPLOY_PYTHON_BINDINGS: 1
-        - MBITS: 32
-          PYTHON_VERSION: 36
-          MSVC_VERSION: 15
-          DEPLOY_CORE: 0
-          DEPLOY_PYTHON_BINDINGS: 1
-        - MBITS: 64
-          PYTHON_VERSION: 36
-          MSVC_VERSION: 15
-          DEPLOY_CORE: 0
-          DEPLOY_PYTHON_BINDINGS: 1
-        - MBITS: 32
-          PYTHON_VERSION: 35
-          MSVC_VERSION: 15
-          DEPLOY_CORE: 0
-          DEPLOY_PYTHON_BINDINGS: 1
-        - MBITS: 64
-          PYTHON_VERSION: 35
-          MSVC_VERSION: 15
-          DEPLOY_CORE: 0
-          DEPLOY_PYTHON_BINDINGS: 1
-          
+        
         - MBITS: 32
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
           DEPLOY_CORE: 1
-          DEPLOY_PYTHON_BINDINGS: 1
+          DEPLOY_PYTHON_BINDINGS: 0
         - MBITS: 64
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
           DEPLOY_CORE: 1
-          DEPLOY_PYTHON_BINDINGS: 1
+          DEPLOY_PYTHON_BINDINGS: 0
 
 
 install:
