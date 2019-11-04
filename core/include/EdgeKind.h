@@ -37,16 +37,13 @@ namespace sourcetrail
 		CALL = 1 << 3,
 		INHERITANCE = 1 << 4,
 		OVERRIDE = 1 << 5,
-		TEMPLATE_ARGUMENT = 1 << 6,
-		TYPE_ARGUMENT = 1 << 7,
-		TEMPLATE_DEFAULT_ARGUMENT = 1 << 8,
-		TEMPLATE_SPECIALIZATION = 1 << 9,
-		TEMPLATE_MEMBER_SPECIALIZATION = 1 << 10,
-		INCLUDE = 1 << 11,
-		IMPORT = 1 << 12,
-		AGGREGATION = 1 << 13,
-		MACRO_USAGE = 1 << 14,
-		ANNOTATION_USAGE = 1 << 15
+		TYPE_ARGUMENT = 1 << 6,
+		TEMPLATE_SPECIALIZATION = 1 << 7,
+		INCLUDE = 1 << 8,
+		IMPORT = 1 << 9,
+		AGGREGATION = 1 << 10,
+		MACRO_USAGE = 1 << 11,
+		ANNOTATION_USAGE = 1 << 12
 	};
 
 	int edgeKindToInt(EdgeKind kind);

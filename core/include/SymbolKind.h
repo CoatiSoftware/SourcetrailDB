@@ -42,7 +42,6 @@ namespace sourcetrail
 		ENUM,
 		ENUM_CONSTANT,
 		TYPEDEF,
-		TEMPLATE_PARAMETER,
 		TYPE_PARAMETER,
 		MACRO,
 		UNION

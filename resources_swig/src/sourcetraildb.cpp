@@ -57,8 +57,6 @@ namespace
 			return sourcetrail::SymbolKind::ENUM_CONSTANT;
 		case SYMBOL_TYPEDEF:
 			return sourcetrail::SymbolKind::TYPEDEF;
-		case SYMBOL_TEMPLATE_PARAMETER:
-			return sourcetrail::SymbolKind::TEMPLATE_PARAMETER;
 		case SYMBOL_TYPE_PARAMETER:
 			return sourcetrail::SymbolKind::TYPE_PARAMETER;
 		case SYMBOL_MACRO:
@@ -83,16 +81,10 @@ namespace
 			return sourcetrail::ReferenceKind::INHERITANCE;
 		case REFERENCE_OVERRIDE:
 			return sourcetrail::ReferenceKind::OVERRIDE;
-		case REFERENCE_TEMPLATE_ARGUMENT:
-			return sourcetrail::ReferenceKind::TEMPLATE_ARGUMENT;
 		case REFERENCE_TYPE_ARGUMENT:
 			return sourcetrail::ReferenceKind::TYPE_ARGUMENT;
-		case REFERENCE_TEMPLATE_DEFAULT_ARGUMENT:
-			return sourcetrail::ReferenceKind::TEMPLATE_DEFAULT_ARGUMENT;
 		case REFERENCE_TEMPLATE_SPECIALIZATION:
 			return sourcetrail::ReferenceKind::TEMPLATE_SPECIALIZATION;
-		case REFERENCE_TEMPLATE_MEMBER_SPECIALIZATION:
-			return sourcetrail::ReferenceKind::TEMPLATE_MEMBER_SPECIALIZATION;
 		case REFERENCE_INCLUDE:
 			return sourcetrail::ReferenceKind::INCLUDE;
 		case REFERENCE_IMPORT:
