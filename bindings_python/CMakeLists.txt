@@ -30,8 +30,6 @@ include_directories(
 	${PYTHON_INCLUDE_DIRS}
 )
 
-set (UseSWIG_TARGET_NAME_PREFERENCE STANDARD)
-
 swig_add_library(
 	${PYTHON_BINDING_TARGET_NAME}
 	TYPE SHARED
@@ -41,7 +39,7 @@ swig_add_library(
 	SOURCES ${SWIG_INTERFACE_FILE} ${RESOURCES_SWIG_DIR}/src/sourcetraildb.cpp
 )
 
-set_target_properties(${PYTHON_BINDING_TARGET_NAME}
-                      PROPERTIES OUTPUT_NAME sourcetraildb)
+set_target_properties(_${PYTHON_BINDING_TARGET_NAME}
+                      PROPERTIES OUTPUT_NAME _sourcetraildb)
 
-TARGET_LINK_LIBRARIES(${PYTHON_BINDING_TARGET_NAME} ${PYTHON_LIBRARIES} ${LIB_CORE_TARGET_NAME})
+swig_link_libraries(${PYTHON_BINDING_TARGET_NAME} ${PYTHON_LIBRARIES} ${LIB_CORE_TARGET_NAME})
