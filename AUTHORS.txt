@@ -1,0 +1,11 @@
+Main Authors
+============
+
+Malte Langkabel (@mlangkabel) <mlangkabel@coati.io>
+
+Code Contributors
+=================
+
+
+
+Note: (@user) means a github user name.

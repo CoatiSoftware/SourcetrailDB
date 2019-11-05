@@ -40,6 +40,20 @@ The SourcetrailDB version format consists of three numbers in the format `vXX.db
 You can find a complete list of available releases on the [GitHub release page](https://github.com/CoatiSoftware/SourcetrailDB/releases). If you are interested in the actual changes of every release, please take a look at the [Changelog](CHANGELOG.md).
 
 
+## Contributing
+If you like this project and want to get involved, there are lots of ways you can help:
+
+* __Spread the word.__ The more people want this project to grow, the greater the motivation for the developers to get things done.
+* __Write some code.__ Don't be shy here. You can implement whole new language bindings, add a features or fix some bugs, but you can also do some refactoring if you think that it benefits the readability or the maintainability of the code. Still, no matter if you just want to work on cosmetics or implement new features, it would be best if you create an issue here on the issue tracker before you actually start handing in pull requests, so that we can discuss those changes first and thus raise the probability that those changes will get pulled quickly.
+
+To create a pull request, follow these steps:
+* Fork the Repo on GitHub.
+* Make your commits.
+* If you added functionality or fixed a bug, please add a test.
+* Add your name to the "Code Contributors" section in AUTHORS.txt file.
+* Push to your fork and submit a pull request.
+
+
 ## Building
 
 Take a look at [Appveyor (for Windows)](appveyor.yml) or [Travis (for Linux and macOs)](.travis.yml) CI scripts for reference.
