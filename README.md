@@ -21,7 +21,7 @@ The SourcetrailDB project provides write access to [Sourcetrail](https://www.sou
 
 The following list of projects already use SourcetrailDB API to extend the language support of Sourcetrail.
 * [SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer)
-
+* [SourcetrailTypescriptIndexer](https://github.com/LouisStAmour/SourcetrailTypescriptIndexer) (*prototype stage*)
 
 ## Adding new Language Support
 
