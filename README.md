@@ -1,4 +1,5 @@
 # SourcetrailDB
+
 Library to export [Sourcetrail](https://www.sourcetrail.com/) compatible database files for writing custom indexers
 
 
@@ -17,8 +18,14 @@ The SourcetrailDB project provides write access to [Sourcetrail](https://www.sou
 
 
 ## Projects Using SourcetrailDB
-The following list of projects already use SourcetrailDB API to extend the language support of Sourcetrail. If you plan on starting a language package on your own, take a look at our [Language Extension Guide](LANGUAGE_EXTENSION_GUIDE.md).
+
+The following list of projects already use SourcetrailDB API to extend the language support of Sourcetrail.
 * [SourcetrailPythonIndexer](https://github.com/CoatiSoftware/SourcetrailPythonIndexer)
+
+
+## Adding new Language Support
+
+When you plan on starting a Sourcetrail language package on your own, you can use whatever programming language you like for this task. The only requirement is: you need to make calls to SourectrailDB to enter the information your indexer records to the Sourcetrail database. To get an overview on everythign involved, please take a look at our [Language Extension Guide](LANGUAGE_EXTENSION_GUIDE.md).
 
 
 ## Supported Language Bindings
