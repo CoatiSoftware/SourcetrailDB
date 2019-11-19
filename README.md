@@ -27,7 +27,7 @@ The following list of projects already use SourcetrailDB API to extend the langu
 
 When you plan on starting a Sourcetrail language package on your own, you can use whatever programming language you like for this task. The only requirement is: you need to make calls to SourectrailDB to enter the information your indexer records to the Sourcetrail database.
 
-__To get an overview on everythign involved, please take a look at our [Language Extension Guide](LANGUAGE_EXTENSION_GUIDE.md).__
+__To get an overview on everything involved, please take a look at our [Language Extension Guide](LANGUAGE_EXTENSION_GUIDE.md).__
 
 
 ## Supported Language Bindings
