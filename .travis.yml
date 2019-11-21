@@ -150,7 +150,7 @@ before_deploy:
 
       mkdir -p $BUNDLE_NAME
       cp build/bindings_java/SourcetrailDB.jar $BUNDLE_NAME
-      cp build/bindings_java/lib_sourcetraildb* $BUNDLE_NAME/lib_sourcetraildb.so
+      cp build/bindings_java/lib_sourcetraildb* $BUNDLE_NAME
     else
       BUNDLE_NAME=sourcetraildb_core_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
 

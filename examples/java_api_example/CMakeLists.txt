@@ -38,13 +38,6 @@ else()
 		TARGET ${EXAMPLE_NAME} POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy ${JAVA_BINDING_OUTPUT_DIR}/lib_sourcetraildb* ${CMAKE_CURRENT_BINARY_DIR}
 	)
-
-	if (APPLE)
-		add_custom_command(
-			TARGET ${EXAMPLE_NAME} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/lib_sourcetraildb.jnilib ${CMAKE_CURRENT_BINARY_DIR}/lib_sourcetraildb.so
-		)
-	endif()
 endif()
 
 set(JAVA_API_EXAMPLE_DATA_PATH "${CMAKE_CURRENT_SOURCE_DIR}/data")
