@@ -31,7 +31,7 @@ if (MSVC)
 
 	add_custom_command(
 		TARGET ${EXAMPLE_NAME} POST_BUILD
-		COMMAND xcopy \"${BACKSLASHED_JAVA_BINDING_OUTPUT_DIR}\\$(Configuration)\\lib_sourcetraildb*\" \"${BACKSLASHED_CMAKE_CURRENT_BINARY_DIR}\" /Y
+		COMMAND xcopy \"${BACKSLASHED_JAVA_BINDING_OUTPUT_DIR}\\$(Configuration)\\_sourcetraildb*\" \"${BACKSLASHED_CMAKE_CURRENT_BINARY_DIR}\" /Y
 	)
 else()
 	add_custom_command(
