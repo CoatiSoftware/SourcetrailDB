@@ -42,7 +42,7 @@ else()
 	if (APPLE)
 		add_custom_command(
 			TARGET ${EXAMPLE_NAME} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/lib_sourcetraildb.dylib ${CMAKE_CURRENT_BINARY_DIR}/lib_sourcetraildb.so
+			COMMAND ${CMAKE_COMMAND} -E rename ${CMAKE_CURRENT_BINARY_DIR}/lib_sourcetraildb.jnilib ${CMAKE_CURRENT_BINARY_DIR}/lib_sourcetraildb.so
 		)
 	endif()
 endif()

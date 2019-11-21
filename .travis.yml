@@ -84,6 +84,8 @@ matrix:
 
     - os: osx
       compiler: clang
+      jdk:
+        - openjdk8
       env:
         - JAVA_BINDING=1
 
@@ -98,12 +100,6 @@ before_install:
       #   brew install python$PYTHON
       #   python --version
       # fi
-
-      if [[ "$JAVA_BINDING" == "1" ]]; then
-        brew tap AdoptOpenJDK/openjdk
-        brew cask install adoptopenjdk8
-        javac -version
-      fi
 
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get update

@@ -1,9 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-	set(CMAKE_MACOSX_RPATH 1)
-endif()
-
 # --- Setup Paths ---
 
 set(RESOURCES_SWIG_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../resources_swig")

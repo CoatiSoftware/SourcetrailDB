@@ -15,7 +15,7 @@
 * Copy shared library from the `bindings_java` build directory into `SourcetrailDB/examples/java_api_example/src`:
 	- Windows: `lib_sourcetraildb.dll`
 	- Linux: `lib_sourcetraildb.so`
-	- macOS: `lib_sourcetraildb.dylib` and rename to `lib_sourcetraildb.so`
+	- macOS: `lib_sourcetraildb.jnilib` and rename to `lib_sourcetraildb.so`
 * Run example from the directory `SourcetrailDB/examples/java_api_example/src` with:
 
 ```
