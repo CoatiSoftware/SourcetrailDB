@@ -50,6 +50,18 @@ matrix:
     #   env:
     #     - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1 PYTHON=3.7
 
+    - os: linux
+      compiler: gcc
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env:
+        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 JAVA_BINDING=1
+
     - os: osx
       compiler: clang
       env:
@@ -70,6 +82,11 @@ matrix:
     #   env:
     #     - PYTHON_BINDING=1 PYTHON=3.7
 
+    - os: osx
+      compiler: clang
+      env:
+        - JAVA_BINDING=1
+
 before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -82,6 +99,12 @@ before_install:
       #   python --version
       # fi
 
+      if [[ "$JAVA_BINDING" == "1" ]]; then
+        brew tap AdoptOpenJDK/openjdk
+        brew cask install adoptopenjdk8
+        javac -version
+      fi
+
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get update
       sudo apt-get install -qq swig
@@ -93,6 +116,11 @@ before_install:
         alias python="/usr/bin/python$PYTHON"
         python --version
       fi
+
+      if [[ "$JAVA_BINDING" == "1" ]]; then
+        sudo apt-get install openjdk-8-jdk
+        javac -version
+      fi
     fi
 
 install:
@@ -103,7 +131,7 @@ script:
   - |
     mkdir build
     cd build
-    cmake -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDING -DPYTHON_VERSION=$PYTHON ..
+    cmake -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDING -DPYTHON_VERSION=$PYTHON -DBUILD_BINDINGS_JAVA=$JAVA_BINDING ..
     make
     ./core/test_core
 
@@ -122,6 +150,12 @@ before_deploy:
       mkdir -p $BUNDLE_NAME
       cp build/bindings_python/sourcetraildb.py $BUNDLE_NAME
       cp build/bindings_python/_sourcetraildb* $BUNDLE_NAME/_sourcetraildb.so
+    else if [[ "$JAVA_BINDING" == "1" ]]; then
+      BUNDLE_NAME=sourcetraildb_java_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
+
+      mkdir -p $BUNDLE_NAME
+      cp build/bindings_java/SourcetrailDB.jar $BUNDLE_NAME
+      cp build/bindings_java/lib_sourcetraildb* $BUNDLE_NAME/lib_sourcetraildb.so
     else
       BUNDLE_NAME=sourcetraildb_core_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
 

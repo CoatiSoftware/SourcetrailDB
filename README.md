@@ -35,6 +35,7 @@ __To get an overview on everything involved, please take a look at our [Language
 Even though the core implementation is written in C++, this does not require you to write your indexer in C++ as well. Instead you can use a language binding (e.g. see [SWIG](http://www.swig.org/)). These language bindings are already available:
 
 * Python (via [SWIG](http://www.swig.org/))
+* Java (via [SWIG](http://www.swig.org/))
 
 If the language of your choice is not covered by this list, feel free to [open an issue](https://github.com/CoatiSoftware/SourcetrailDB/issues) or provide a pull request.
 
@@ -110,6 +111,24 @@ $ make _sourcetraildb
 
 Swig is configured to generate the Python binding code as a pre-build event, so you don't need to bother with updating manually.
 
+### Java Bindings
+
+Requirements:
+* [Java JDK](https://openjdk.java.net/) needs to be included and linked against when building the Java bindings. CMake will auto-detect your Java installation.
+
+* [SWIG 3.0.12](http://www.swig.org/) is used to automatically generate Java binding code. Make sure that SWIG is added to your path environment variable.
+
+If you want to build the Java bindings run:
+```
+$ cd path/to/SourcetrailDB
+$ mkdir build
+$ cd build
+$ cmake -DBUILD_BINDINGS_JAVA=ON ..
+$ make
+```
+
+Swig is configured to generate the Java binding code as a pre-build event, so you don't need to bother with updating manually.
+
 ### Examples
 
 The examples help you to understand SourcetrailDB usage in practice. Please take a look at each examples README file for build and use instructions. Each example also provides a Sourcetrail project file `.srctrlprj` showing you how to use a custom indexer directly from Sourcetrail (see [Integrating with Sourcetrail](#integrating-with-sourcetrail)).
@@ -117,6 +136,7 @@ The examples help you to understand SourcetrailDB usage in practice. Please take
 * [C++ API Example](examples/cpp_api_example)
 * [C++ Poetry Indexer](examples/cpp_poetry_indexer)
 * [Python API Example](examples/python_api_example)
+* [Java API Example](examples/java_api_example)
 
 
 ## SourcetrailDB API
