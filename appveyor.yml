@@ -102,6 +102,8 @@ after_build:
         copy external/catch/license_catch.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
         copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
         copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+    - mkdir artifacts_bindings_java
+    - cd artifacts_bindings_java
     - mkdir %JAVA_PACKAGE_NAME%
     - cd %JAVA_PACKAGE_NAME%
     - mkdir license
