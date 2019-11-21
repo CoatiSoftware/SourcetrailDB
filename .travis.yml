@@ -52,7 +52,7 @@ matrix:
 
     - os: linux
       compiler: gcc
-      dist: trusty
+      dist: bionic
       addons:
         apt:
           sources:
