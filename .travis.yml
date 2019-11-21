@@ -84,8 +84,7 @@ matrix:
 
     - os: osx
       compiler: clang
-      jdk:
-        - openjdk8
+      osx_image: xcode11.2
       env:
         - JAVA_BINDING=1
 
