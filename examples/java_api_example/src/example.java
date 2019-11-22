@@ -41,7 +41,7 @@ public class example {
       }
 
       System.out.println("SourcetrailDB Java API Example");
-	    System.out.println("Supported database version: " + sourcetraildb.getSupportedDatabaseVersion());
+      System.out.println("Supported database version: " + sourcetraildb.getSupportedDatabaseVersion());
 
       if (example.DBVersion > 0 && example.DBVersion != sourcetraildb.getSupportedDatabaseVersion()) {
         System.out.println("ERROR: Only supports database version: " + sourcetraildb.getSupportedDatabaseVersion() +
@@ -60,7 +60,7 @@ public class example {
       sourcetraildb.clear();
       
       System.out.println("start indexing");
-	    sourcetraildb.beginTransaction();
+      sourcetraildb.beginTransaction();
     
       int fileId = sourcetraildb.recordFile(example.SourceFilePath);
       sourcetraildb.recordFileLanguage(fileId, "python");
