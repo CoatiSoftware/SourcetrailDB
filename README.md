@@ -260,7 +260,7 @@ int contextSymbolId = writer.recordSymbol({ "::", { { "", "Bar", "" }, { "void",
 int referencedSymbolId = writer.recordSymbol({ "::", { { "void", "foo", "()" } } });
 
 // edges always go from the context to the referenced symbol
-int referenceId = writer.recordReference(contextSymbolId, referencedSymbolId, sourcetrail::REFERENCE_CALL);
+int referenceId = writer.recordReference(contextSymbolId, referencedSymbolId, sourcetrail::ReferenceKind::CALL);
 
 // add a location to the reference - highlights the location in the code view when clicking the edge in the graph view
 int fileId = writer.recordFile("C:/example/Bar.cpp");
