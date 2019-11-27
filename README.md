@@ -35,6 +35,7 @@ __To get an overview on everything involved, please take a look at our [Language
 
 Even though the core implementation is written in C++, this does not require you to write your indexer in C++ as well. Instead you can use a language binding (e.g. see [SWIG](http://www.swig.org/)). These language bindings are already available:
 
+* Perl (via [SWIG](http://www.swig.org/))
 * Python (via [SWIG](http://www.swig.org/))
 * Java (via [SWIG](http://www.swig.org/))
 
@@ -93,6 +94,24 @@ To run the tests, just build and execute the test executable:
 $ make test_core
 $ ./core/test_core
 ```
+
+### Perl Bindings
+
+Requirements:
+* [Perl](https://www.perl.org/) needs to be included and linked against when building the Perl bindings. CMake will auto-detect your Perl installation. If you want to build against a specific version of Perl, please define the `PERL_LIBRARY` variable accordingly when running CMake. Make sure to link to the correct Perl version when building for different architectures (32bit/64bit).
+
+* [SWIG 3.0.12](http://www.swig.org/) is used to automatically generate Perl binding code. Make sure that SWIG is added to your path environment variable.
+
+If you want to build the Perl bindings run:
+```
+$ cd path/to/SourcetrailDB
+$ mkdir build
+$ cd build
+$ cmake -DBUILD_BINDINGS_PERL=ON ..
+$ make sourcetraildb
+```
+
+Swig is configured to generate the Perl binding code as a pre-build event, so you don't need to bother with updating manually.
 
 ### Python Bindings
 
