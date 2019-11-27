@@ -12,7 +12,19 @@ matrix:
           packages:
             - g++-5
       env:
-        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=0
+        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PERL_BINDING=0 PYTHON_BINDING=0
+
+    - os: linux
+      compiler: gcc
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env:
+        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PERL_BINDING=1
 
     - os: linux
       compiler: gcc
@@ -67,6 +79,11 @@ matrix:
       env:
         - PYTHON_BINDING=0
 
+    - os: osx
+      compiler: clang
+      env:
+        - PERL_BINDING=1
+
     # - os: osx
     #   compiler: clang
     #   env:
@@ -94,6 +111,11 @@ before_install:
       HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
       brew link --force swig
 
+      if [[ "$PERL_BINDING" == "1" ]]; then
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install perl
+        perl --version
+      fi
+
       # TODO: find way to install specific python versions on osx
       # if [[ "$PYTHON_BINDING" == "1" ]]; then
       #   brew install python$PYTHON
@@ -103,6 +125,12 @@ before_install:
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get update
       sudo apt-get install -qq swig
+
+      if [[ "$PERL_BINDING" == "1" ]]; then
+        sudo apt-get install perl
+        alias perl="/usr/bin/perl"
+        perl --version
+      fi
 
       # TODO: this is only working for python3.5, not above
       if [[ "$PYTHON_BINDING" == "1" ]]; then
@@ -126,7 +154,7 @@ script:
   - |
     mkdir build
     cd build
-    cmake -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDING -DPYTHON_VERSION=$PYTHON -DBUILD_BINDINGS_JAVA=$JAVA_BINDING ..
+    cmake -DBUILD_BINDINGS_PERL=$PERL_BINDING -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDING -DPYTHON_VERSION=$PYTHON -DBUILD_BINDINGS_JAVA=$JAVA_BINDING ..
     make
     ./core/test_core
 
@@ -137,6 +165,12 @@ before_deploy:
     VERSION=$(head -1 version.txt)
     VERSION=${VERSION//./_}
 
+    if [[ "$PERL_BINDING" == "1" ]]; then
+      BUNDLE_NAME=sourcetraildb_perl_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
+
+      mkdir -p $BUNDLE_NAME
+      cp build/bindings_perl/sourcetraildb.* $BUNDLE_NAME
+    else
     if [[ "$PYTHON_BINDING" == "1" ]]; then
       PYTHON_VERSION=${PYTHON//.}
       PYTHON_VERSION=${PYTHON_VERSION:0:2}
