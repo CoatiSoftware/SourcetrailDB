@@ -20,7 +20,7 @@
 * Run example from the directory `SourcetrailDB/examples/perl_api_example/src` with:
 
 ```
-$ perl example.pl --database-file-path=absolute/path/to/SourcetrailDB/examples/perl_api_example/src/example.srctrldb --source-file-path=absolute/path/to/SourcetrailDB/examples/perl_api_example/data/file.pl
+$ perl example.pl --database-file-path=absolute/path/to/SourcetrailDB/examples/perl_api_example/src/example.srctrldb --source-file-path=absolute/path/to/SourcetrailDB/examples/perl_api_example/data/file.pm
 ```
 
 ### Running with Sourcetrail

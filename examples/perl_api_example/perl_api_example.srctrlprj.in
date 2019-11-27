@@ -10,7 +10,7 @@
                 <source_extension>.pm</source_extension>
             </source_extensions>
             <source_paths>
-                <source_path>@PERL_API_EXAMPLE_DATA_PATH@/file.pl</source_path>
+                <source_path>@PERL_API_EXAMPLE_DATA_PATH@/file.pm</source_path>
             </source_paths>
             <status>enabled</status>
             <type>Custom Command Source Group</type>
