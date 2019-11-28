@@ -11,6 +11,11 @@ set(EXAMPLE_NAME "java_api_example")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/za/co/spazzymoto/example.java ${CMAKE_CURRENT_BINARY_DIR}/za/co/spazzymoto/example.java COPYONLY)
 
+add_custom_target(
+	CopyJar ALL
+	COMMAND ${CMAKE_COMMAND} -E copy ${JAVA_BINDING_OUTPUT_DIR}/SourcetrailDB.jar ${CMAKE_CURRENT_BINARY_DIR}/SourcetrailDB.jar
+)
+
 add_jar(
 	${EXAMPLE_NAME}
 	SOURCES 
@@ -21,12 +26,6 @@ add_jar(
 )
 
 add_dependencies( ${EXAMPLE_NAME} CopyJar )
-
-add_custom_target(
-	CopyJar ALL
-	COMMAND ${CMAKE_COMMAND} -E copy ${JAVA_BINDING_OUTPUT_DIR}/SourcetrailDB.jar ${CMAKE_CURRENT_BINARY_DIR}/SourcetrailDB.jar
-)
-
 add_dependencies( CopyJar ${JAVA_BINDING_TARGET_NAME} )
 
 if (MSVC)

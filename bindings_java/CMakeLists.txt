@@ -33,7 +33,7 @@ include_directories(
 )
 
 swig_add_library(
-	${JAVA_BINDING_TARGET_NAME}
+	SharedLibrary
 	TYPE SHARED
 	LANGUAGE java
 	OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/com/sourcetrail
@@ -41,15 +41,16 @@ swig_add_library(
 	SOURCES ${SWIG_INTERFACE_FILE} ${RESOURCES_SWIG_DIR}/src/sourcetraildb.cpp
 )
 
-swig_link_libraries(${JAVA_BINDING_TARGET_NAME} ${JNI_LIBRARIES} ${LIB_CORE_TARGET_NAME})
+swig_link_libraries(SharedLibrary ${JNI_LIBRARIES} ${LIB_CORE_TARGET_NAME})
 
-set_target_properties(${JAVA_BINDING_TARGET_NAME}
+set_target_properties(SharedLibrary
                       PROPERTIES OUTPUT_NAME _sourcetraildb)
 
 
 set(CMAKE_JNI_TARGET TRUE)
 add_jar(
-    SourcetrailDB
+  ${JAVA_BINDING_TARGET_NAME}
+	OUTPUT_NAME SourcetrailDB
     SOURCES
 		${CMAKE_CURRENT_BINARY_DIR}/com/sourcetrail/DefinitionKind.java
 		${CMAKE_CURRENT_BINARY_DIR}/com/sourcetrail/ReferenceKind.java
@@ -58,4 +59,4 @@ add_jar(
 		${CMAKE_CURRENT_BINARY_DIR}/com/sourcetrail/SymbolKind.java
 )
 
-add_dependencies( SourcetrailDB ${JAVA_BINDING_TARGET_NAME} )
+add_dependencies( ${JAVA_BINDING_TARGET_NAME} SharedLibrary )
