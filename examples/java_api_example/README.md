@@ -12,14 +12,23 @@
 
 * Run cmake with `BUILD_BINDINGS_JAVA=ON`
 * Build `make`
-* Copy shared library from the `bindings_java` build directory into `SourcetrailDB/examples/java_api_example/src`:
-	- Windows: `lib_sourcetraildb.dll`
+* Copy two files from the `bindings_java` build directory into `SourcetrailDB/examples/java_api_example`:
+	- SourcetrailDB.jar
+	- Windows: `_sourcetraildb.dll`
 	- Linux: `lib_sourcetraildb.so`
-	- macOS: `lib_sourcetraildb.jnilib` and rename to `lib_sourcetraildb.so`
-* Run example from the directory `SourcetrailDB/examples/java_api_example/src` with:
+	- macOS: `lib_sourcetraildb.jnilib`
+* Run example from the directory `SourcetrailDB/examples/java_api_example` with:
 
+## Windows
 ```
-$ java -Djava.library.path=. -jar java_api_example.jar --database-file-path=absolute/path/to/SourcetrailDB/examples/java_api_example/src/example.srctrldb --source-file-path=absolute/path/to/SourcetrailDB/examples/java_api_example/data/file.py
+$ javac -cp SourcetrailDB.jar src/za/co/spazzymoto/example.java
+$ java -cp "SourcetrailDB.jar;src" -Djava.library.path=. za.co.spazzymoto.example --database-file-path=absolute/path/to/SourcetrailDB/examples/java_api_example/src/example.srctrldb --source-file-path=absolute/path/to/SourcetrailDB/examples/java_api_example/data/file.py
+```
+
+## Unix/macOS
+```
+$ javac -cp SourcetrailDB.jar src/za/co/spazzymoto/example.java
+$ java -cp "SourcetrailDB.jar:src" -Djava.library.path=. za.co.spazzymoto.example --database-file-path=absolute/path/to/SourcetrailDB/examples/java_api_example/src/example.srctrldb --source-file-path=absolute/path/to/SourcetrailDB/examples/java_api_example/data/file.py
 ```
 
 ### Running with Sourcetrail

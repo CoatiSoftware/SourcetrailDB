@@ -1,3 +1,5 @@
+package za.co.spazzymoto;
+
 import com.sourcetrail.*;
 
 public class example {

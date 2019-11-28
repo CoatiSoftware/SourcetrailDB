@@ -9,21 +9,25 @@ set(EXAMPLE_NAME "java_api_example")
 
 # --- Configure Sourcetrail Project File ---
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/example.java ${CMAKE_CURRENT_BINARY_DIR}/example.java COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/za/co/spazzymoto/example.java ${CMAKE_CURRENT_BINARY_DIR}/za/co/spazzymoto/example.java COPYONLY)
 
 add_jar(
 	${EXAMPLE_NAME}
 	SOURCES 
-	${CMAKE_CURRENT_BINARY_DIR}/example.java
-	${JAVA_BINDING_OUTPUT_DIR}/com/sourcetrail/DefinitionKind.java
-	${JAVA_BINDING_OUTPUT_DIR}/com/sourcetrail/ReferenceKind.java
-	${JAVA_BINDING_OUTPUT_DIR}/com/sourcetrail/sourcetraildb.java
-	${JAVA_BINDING_OUTPUT_DIR}/com/sourcetrail/sourcetraildbJNI.java
-	${JAVA_BINDING_OUTPUT_DIR}/com/sourcetrail/SymbolKind.java
-	ENTRY_POINT example
+	${CMAKE_CURRENT_BINARY_DIR}/za/co/spazzymoto/example.java
+	INCLUDE_JARS
+	${CMAKE_CURRENT_BINARY_DIR}/SourcetrailDB.jar
+	ENTRY_POINT za.co.spazzymoto.example
 )
 
-add_dependencies( ${EXAMPLE_NAME} ${JAVA_BINDING_TARGET_NAME} )
+add_dependencies( ${EXAMPLE_NAME} CopyJar )
+
+add_custom_target(
+	CopyJar ALL
+	COMMAND ${CMAKE_COMMAND} -E copy ${JAVA_BINDING_OUTPUT_DIR}/SourcetrailDB.jar ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_dependencies( CopyJar ${JAVA_BINDING_TARGET_NAME} )
 
 if (MSVC)
 	STRING(REGEX REPLACE "/" "\\\\" BACKSLASHED_JAVA_BINDING_OUTPUT_DIR ${JAVA_BINDING_OUTPUT_DIR})
