@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 2.6)
 # --- Options ---
 
 set(BUILD_BINDINGS_PYTHON OFF CACHE BOOL "Build the SourcetrailDB Python bindings.")
+set(BUILD_BINDINGS_JAVA OFF CACHE BOOL "Build the SourcetrailDB Java bindings.")
 set(BUILD_EXAMPLES ON CACHE BOOL "Build the examples.")
 
 set(PROJECT_NAME "SourcetrailDB")
@@ -56,6 +57,18 @@ else()
 	message(STATUS "Building the SourcetrailDB Python bindings will be skipped. You can enable building this target by setting 'BUILD_BINDINGS_PYTHON' to 'ON'.")
 endif()
 
+# --- Java Binding ---
+
+if (BUILD_BINDINGS_JAVA)
+	message(STATUS "The SourcetrailDB Java bindings will be built.")
+
+	set(JAVA_BINDING_TARGET_NAME "bindings_java")
+	set(JAVA_BINDING_OUTPUT_DIR "")
+	add_subdirectory("${CMAKE_SOURCE_DIR}/bindings_java" "${CMAKE_BINARY_DIR}/bindings_java")
+else()
+	message(STATUS "Building the SourcetrailDB Java bindings will be skipped. You can enable building this target by setting 'BUILD_BINDINGS_JAVA' to 'ON'.")
+endif()
+
 
 # --- Examples ---
 
@@ -68,6 +81,12 @@ if (BUILD_EXAMPLES)
 		add_subdirectory("${CMAKE_SOURCE_DIR}/examples/python_api_example")
 	else()
 		message(STATUS "Skip python binding sample. You can enable building it by setting 'BUILD_BINDINGS_PYTHON' to 'ON'.")
+	endif()
+
+	if (BUILD_BINDINGS_JAVA)
+		add_subdirectory("${CMAKE_SOURCE_DIR}/examples/java_api_example")
+	else()
+		message(STATUS "Skip java binding sample. You can enable building it by setting 'BUILD_BINDINGS_JAVA' to 'ON'.")
 	endif()
 else()
 	message(STATUS "Building examples will be skipped. You can enable building examples by setting 'BUILD_EXAMPLES' to 'ON'.")

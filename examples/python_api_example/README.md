@@ -27,4 +27,4 @@ $ python example.py --database-file-path=absolute/path/to/SourcetrailDB/examples
 
 * Run cmake with `BUILD_EXAMPLES=ON` and `BUILD_BINDINGS_PYTHON=ON`
 * Build target `_sourcetraildb` and `python_api_example`.
-* Open `python_api_exampl.srctrlprj` located in the build directory of `python_api_example` with Sourcetrail and index the project.
+* Open `python_api_example.srctrlprj` located in the build directory of `python_api_example` with Sourcetrail and index the project.
