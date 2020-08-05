@@ -43,7 +43,8 @@ install:
             echo "No architecture set. Build will be canceled."
         }
         # Install SWIG by Choco
-        choco install -y --no-progress swig openjdk
+        choco install -y --no-progress swig --version 4.0.1
+        choco install -y --no-progress openjdk
 
 
 before_build:
