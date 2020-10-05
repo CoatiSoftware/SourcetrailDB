@@ -100,8 +100,8 @@ after_build:
         mkdir artifacts_bindings_python
         if ($env:DEPLOY_PYTHON_BINDINGS -eq "1") {
             cd artifacts_bindings_python
-            mkdir %PYTHON_PACKAGE_NAME%
-            cd %PYTHON_PACKAGE_NAME%
+            mkdir $env:PYTHON_PACKAGE_NAME
+            cd $env:PYTHON_PACKAGE_NAME
             mkdir license
             cd ../..
         
@@ -118,8 +118,8 @@ after_build:
         mkdir artifacts_bindings_java
         if ($env:DEPLOY_JAVA_BINDINGS -eq "1") {
             cd artifacts_bindings_java
-            mkdir %JAVA_PACKAGE_NAME%
-            cd %JAVA_PACKAGE_NAME%
+            mkdir $env:JAVA_PACKAGE_NAME
+            cd $env:JAVA_PACKAGE_NAME
             mkdir license
             cd ../..
         
