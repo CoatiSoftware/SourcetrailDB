@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 
 # --- Options ---
 
+set(BUILD_BINDINGS_PERL OFF CACHE BOOL "Build the SourcetrailDB Perl bindings.")
 set(BUILD_BINDINGS_PYTHON OFF CACHE BOOL "Build the SourcetrailDB Python bindings.")
 set(BUILD_BINDINGS_JAVA OFF CACHE BOOL "Build the SourcetrailDB Java bindings.")
 set(BUILD_EXAMPLES ON CACHE BOOL "Build the examples.")
@@ -43,6 +44,19 @@ set(CORE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/core") # can be accessed in subdirector
 set(CORE_BINARY_DIR "${CMAKE_BINARY_DIR}/core") # can be accessed in subdirectory CMake files
 
 add_subdirectory(${CORE_SOURCE_DIR} ${CORE_BINARY_DIR})
+
+
+# --- Perl Binding ---
+
+if (BUILD_BINDINGS_PERL)
+	message(STATUS "The SourcetrailDB Perl bindings will be built.")
+
+	set(PERL_BINDING_TARGET_NAME "bindings_perl")
+	set(PERL_BINDING_OUTPUT_DIR "")
+	add_subdirectory("${CMAKE_SOURCE_DIR}/bindings_perl" "${CMAKE_BINARY_DIR}/bindings_perl")
+else()
+	message(STATUS "Building the SourcetrailDB Perl bindings will be skipped. You can enable building this target by setting 'BUILD_BINDINGS_PERL' to 'ON'.")
+endif()
 
 
 # --- Python Binding ---

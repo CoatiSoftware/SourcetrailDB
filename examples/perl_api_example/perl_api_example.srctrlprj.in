@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <source_groups>
+        <source_group_2e83e5fa-b0f8-453b-a1fc-2abdb66bd967>
+            <custom_command>perl example.pl --database-file-path=%{DATABASE_FILE_PATH} --source-file-path=%{SOURCE_FILE_PATH} --database-version=%{DATABASE_VERSION}</custom_command>
+            <name>Custom Command Source Group</name>
+            <run_in_parallel>0</run_in_parallel>
+            <source_extensions>
+                <source_extension>.pl</source_extension>
+                <source_extension>.pm</source_extension>
+            </source_extensions>
+            <source_paths>
+                <source_path>@PERL_API_EXAMPLE_DATA_PATH@/file.pm</source_path>
+            </source_paths>
+            <status>enabled</status>
+            <type>Custom Command Source Group</type>
+        </source_group_2e83e5fa-b0f8-453b-a1fc-2abdb66bd967>
+    </source_groups>
+    <version>7</version>
+</config>
