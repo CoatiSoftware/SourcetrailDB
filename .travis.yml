@@ -12,7 +12,7 @@ matrix:
           packages:
             - g++-5
       env:
-        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PERL_BINDING=0 PYTHON_BINDING=0
+        - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5
 
     - os: linux
       compiler: gcc
@@ -38,30 +38,6 @@ matrix:
       env:
         - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1 PYTHON=3.5
 
-    # - os: linux
-    #   compiler: gcc
-    #   dist: trusty
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #       packages:
-    #         - g++-5
-    #   env:
-    #     - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1 PYTHON=3.6
-
-    # - os: linux
-    #   compiler: gcc
-    #   dist: trusty
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #       packages:
-    #         - g++-5
-    #   env:
-    #     - CC_COMPILER=gcc-5 CXX_COMPILER=g++-5 PYTHON_BINDING=1 PYTHON=3.7
-
     - os: linux
       compiler: gcc
       dist: bionic
@@ -76,28 +52,16 @@ matrix:
 
     - os: osx
       compiler: clang
-      env:
-        - PYTHON_BINDING=0
 
     - os: osx
       compiler: clang
       env:
         - PERL_BINDING=1
 
-    # - os: osx
-    #   compiler: clang
-    #   env:
-    #     - PYTHON_BINDING=1 PYTHON=3.5
-
     - os: osx
       compiler: clang
       env:
         - PYTHON_BINDING=1 PYTHON=3.6
-
-    # - os: osx
-    #   compiler: clang
-    #   env:
-    #     - PYTHON_BINDING=1 PYTHON=3.7
 
     - os: osx
       compiler: clang
@@ -116,12 +80,6 @@ before_install:
         perl --version
       fi
 
-      # TODO: find way to install specific python versions on osx
-      # if [[ "$PYTHON_BINDING" == "1" ]]; then
-      #   brew install python$PYTHON
-      #   python --version
-      # fi
-
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       sudo apt-get update
       sudo apt-get install -qq swig
@@ -132,7 +90,7 @@ before_install:
         perl --version
       fi
 
-      # TODO: this is only working for python3.5, not above
+      # this is only working for python3.5
       if [[ "$PYTHON_BINDING" == "1" ]]; then
         sudo apt-get install python$PYTHON
         sudo apt-get install python$PYTHON-dev
@@ -167,33 +125,35 @@ before_deploy:
 
     if [[ "$PERL_BINDING" == "1" ]]; then
       BUNDLE_NAME=sourcetraildb_perl_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
-
+      
       mkdir -p $BUNDLE_NAME
       cp build/bindings_perl/sourcetraildb.* $BUNDLE_NAME
-    else
-    if [[ "$PYTHON_BINDING" == "1" ]]; then
+      
+    else if [[ "$PYTHON_BINDING" == "1" ]]; then
       PYTHON_VERSION=${PYTHON//.}
       PYTHON_VERSION=${PYTHON_VERSION:0:2}
       BUNDLE_NAME=sourcetraildb_python${PYTHON_VERSION}_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
-
+      
       mkdir -p $BUNDLE_NAME
       cp build/bindings_python/sourcetraildb.py $BUNDLE_NAME
       cp build/bindings_python/_sourcetraildb* $BUNDLE_NAME/_sourcetraildb.so
+      
     else if [[ "$JAVA_BINDING" == "1" ]]; then
       BUNDLE_NAME=sourcetraildb_java_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
-
+      
       mkdir -p $BUNDLE_NAME
       cp build/bindings_java/SourcetrailDB.jar $BUNDLE_NAME
       cp build/bindings_java/lib_sourcetraildb* $BUNDLE_NAME
+      
     else
       BUNDLE_NAME=sourcetraildb_core_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
-
+      
       mkdir -p $BUNDLE_NAME/include
       mkdir -p $BUNDLE_NAME/lib
-
       cp build/core/*.a $BUNDLE_NAME/lib
       cp core/include/* $BUNDLE_NAME/include
       cp build/core/include/* $BUNDLE_NAME/include
+      
     fi
 
     mkdir -p $BUNDLE_NAME/license
