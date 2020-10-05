@@ -95,40 +95,44 @@ after_build:
             copy external/json/license_json.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
             
             $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY + "," + $env:CORE_PACKAGE_NAME
-        }        
-    - mkdir artifacts_bindings_python
-    - cd artifacts_bindings_python
-    - mkdir %PYTHON_PACKAGE_NAME%
-    - cd %PYTHON_PACKAGE_NAME%
-    - mkdir license
-    - cd ../..
+        }
     - ps: |
-        copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
-        copy build/bindings_python/sourcetraildb.py artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
-        copy LICENSE.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/license_sourcetraildb.txt
-        copy external/catch/license_catch.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
-        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
-        copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
-    - mkdir artifacts_bindings_java
-    - cd artifacts_bindings_java
-    - mkdir %JAVA_PACKAGE_NAME%
-    - cd %JAVA_PACKAGE_NAME%
-    - mkdir license
-    - cd ../..
-    - ps: |
-        copy build/bindings_java/release/_sourcetraildb.dll artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
-        copy build/bindings_java/SourcetrailDB.jar artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
-        copy LICENSE.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/license_sourcetraildb.txt
-        copy external/catch/license_catch.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
-        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
-        copy external/json/license_json.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
-    - ps: |
+        mkdir artifacts_bindings_python
         if ($env:DEPLOY_PYTHON_BINDINGS -eq "1") {
+            cd artifacts_bindings_python
+            mkdir %PYTHON_PACKAGE_NAME%
+            cd %PYTHON_PACKAGE_NAME%
+            mkdir license
+            cd ../..
+        
+            copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
+            copy build/bindings_python/sourcetraildb.py artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
+            copy LICENSE.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/license_sourcetraildb.txt
+            copy external/catch/license_catch.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+            copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+            copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+            
             $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY + "," + $env:PYTHON_PACKAGE_NAME
         }
+    - ps: |
+        mkdir artifacts_bindings_java
         if ($env:DEPLOY_JAVA_BINDINGS -eq "1") {
+            cd artifacts_bindings_java
+            mkdir %JAVA_PACKAGE_NAME%
+            cd %JAVA_PACKAGE_NAME%
+            mkdir license
+            cd ../..
+        
+            copy build/bindings_java/release/_sourcetraildb.dll artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
+            copy build/bindings_java/SourcetrailDB.jar artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
+            copy LICENSE.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/license_sourcetraildb.txt
+            copy external/catch/license_catch.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
+            copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
+            copy external/json/license_json.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
+            
             $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY + "," + $env:JAVA_PACKAGE_NAME
         }
+    - ps: |
         $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY.substring(1)
         echo $env:ARTIFACTS_TO_DEPLOY
 
