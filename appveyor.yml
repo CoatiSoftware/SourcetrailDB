@@ -21,12 +21,10 @@ environment:
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
           DEPLOY_CORE: 1
-          DEPLOY_PYTHON_BINDINGS: 0
         - MBITS: 64
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
           DEPLOY_CORE: 1
-          DEPLOY_PYTHON_BINDINGS: 0
 
 
 install:
@@ -50,7 +48,7 @@ install:
 before_build:
     - mkdir build
     - cd build
-    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=ON -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python%PYTHON_VERSION%.lib" -DBUILD_BINDINGS_JAVA=ON
+    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=%DEPLOY_PYTHON_BINDINGS% -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python%PYTHON_VERSION%.lib" -DBUILD_BINDINGS_JAVA=%DEPLOY_JAVA_BINDINGS%
     - cd ../
     - ps: $env:CORE_VERSION = Get-Content -Path ./version.txt
     - ps: $env:UNDERSCORED_CORE_VERSION = $env:CORE_VERSION.Replace(".", "_")
@@ -74,61 +72,69 @@ after_build:
     - ps: echo $env:CORE_PACKAGE_NAME
     - ps: echo $env:PYTHON_PACKAGE_NAME
     - ps: echo $env:JAVA_PACKAGE_NAME
-    - mkdir artifacts_core
-    - cd artifacts_core
-    - mkdir %CORE_PACKAGE_NAME%
-    - cd %CORE_PACKAGE_NAME%
-    - mkdir lib
-    - mkdir include
-    - mkdir license
-    - cd ../..
+    
+    - ps: $env:ARTIFACTS_TO_DEPLOY = ""
+    
     - ps: |
-        copy build/core/release/sourcetraildb.lib artifacts_core/$env:CORE_PACKAGE_NAME/lib/
-        copy build/core/include/version.h artifacts_core/$env:CORE_PACKAGE_NAME/include/
-        copy core/include/* artifacts_core/$env:CORE_PACKAGE_NAME/include/
-        copy LICENSE.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/license_sourcetraildb.txt
-        copy external/catch/license_catch.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
-        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
-        copy external/json/license_json.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
-    - mkdir artifacts_bindings_python
-    - cd artifacts_bindings_python
-    - mkdir %PYTHON_PACKAGE_NAME%
-    - cd %PYTHON_PACKAGE_NAME%
-    - mkdir license
-    - cd ../..
-    - ps: |
-        copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
-        copy build/bindings_python/sourcetraildb.py artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
-        copy LICENSE.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/license_sourcetraildb.txt
-        copy external/catch/license_catch.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
-        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
-        copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
-    - mkdir artifacts_bindings_java
-    - cd artifacts_bindings_java
-    - mkdir %JAVA_PACKAGE_NAME%
-    - cd %JAVA_PACKAGE_NAME%
-    - mkdir license
-    - cd ../..
-    - ps: |
-        copy build/bindings_java/release/_sourcetraildb.dll artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
-        copy build/bindings_java/SourcetrailDB.jar artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
-        copy LICENSE.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/license_sourcetraildb.txt
-        copy external/catch/license_catch.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
-        copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
-        copy external/json/license_json.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
-    - ps: |
-        $env:ARTIFACTY_TO_DEPLOY = ""
+        mkdir artifacts_core
         if ($env:DEPLOY_CORE -eq "1") {
-            $env:ARTIFACTY_TO_DEPLOY = $env:ARTIFACTY_TO_DEPLOY + "," + $env:CORE_PACKAGE_NAME
+            cd artifacts_core
+            mkdir $env:CORE_PACKAGE_NAME
+            cd $env:CORE_PACKAGE_NAME
+            mkdir lib
+            mkdir include
+            mkdir license
+            cd ../..
+            
+            copy build/core/release/sourcetraildb.lib artifacts_core/$env:CORE_PACKAGE_NAME/lib/
+            copy build/core/include/version.h artifacts_core/$env:CORE_PACKAGE_NAME/include/
+            copy core/include/* artifacts_core/$env:CORE_PACKAGE_NAME/include/
+            copy LICENSE.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/license_sourcetraildb.txt
+            copy external/catch/license_catch.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
+            copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
+            copy external/json/license_json.txt artifacts_core/$env:CORE_PACKAGE_NAME/license/
+            
+            $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY + "," + $env:CORE_PACKAGE_NAME
         }
+    - ps: |
+        mkdir artifacts_bindings_python
         if ($env:DEPLOY_PYTHON_BINDINGS -eq "1") {
-            $env:ARTIFACTY_TO_DEPLOY = $env:ARTIFACTY_TO_DEPLOY + "," + $env:PYTHON_PACKAGE_NAME
+            cd artifacts_bindings_python
+            mkdir $env:PYTHON_PACKAGE_NAME
+            cd $env:PYTHON_PACKAGE_NAME
+            mkdir license
+            cd ../..
+        
+            copy build/bindings_python/release/_sourcetraildb.pyd artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
+            copy build/bindings_python/sourcetraildb.py artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/
+            copy LICENSE.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/license_sourcetraildb.txt
+            copy external/catch/license_catch.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+            copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+            copy external/json/license_json.txt artifacts_bindings_python/$env:PYTHON_PACKAGE_NAME/license/
+            
+            $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY + "," + $env:PYTHON_PACKAGE_NAME
         }
+    - ps: |
+        mkdir artifacts_bindings_java
         if ($env:DEPLOY_JAVA_BINDINGS -eq "1") {
-            $env:ARTIFACTY_TO_DEPLOY = $env:ARTIFACTY_TO_DEPLOY + "," + $env:JAVA_PACKAGE_NAME
+            cd artifacts_bindings_java
+            mkdir $env:JAVA_PACKAGE_NAME
+            cd $env:JAVA_PACKAGE_NAME
+            mkdir license
+            cd ../..
+        
+            copy build/bindings_java/release/_sourcetraildb.dll artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
+            copy build/bindings_java/SourcetrailDB.jar artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/
+            copy LICENSE.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/license_sourcetraildb.txt
+            copy external/catch/license_catch.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
+            copy external/cpp_sqlite/license_cpp_sqlite.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
+            copy external/json/license_json.txt artifacts_bindings_java/$env:JAVA_PACKAGE_NAME/license/
+            
+            $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY + "," + $env:JAVA_PACKAGE_NAME
         }
-        $env:ARTIFACTY_TO_DEPLOY = $env:ARTIFACTY_TO_DEPLOY.substring(1)
-        echo $env:ARTIFACTY_TO_DEPLOY
+    - ps: |
+        $env:ARTIFACTS_TO_DEPLOY = $env:ARTIFACTS_TO_DEPLOY.substring(1)
+        echo $env:ARTIFACTS_TO_DEPLOY
 
 
 test_script:
@@ -149,7 +155,7 @@ artifacts:
 
 deploy:
     provider: GitHub
-    artifact: $(ARTIFACTY_TO_DEPLOY)
+    artifact: $(ARTIFACTS_TO_DEPLOY)
     auth_token:
         secure: 8UwbjFrtR19GxLgL3O3efUT0Su2mp3+X23YioThJITupEvexmQJPAf3Whmmb3eeL
     on:
