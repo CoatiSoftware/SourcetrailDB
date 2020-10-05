@@ -21,12 +21,10 @@ environment:
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
           DEPLOY_CORE: 1
-          DEPLOY_PYTHON_BINDINGS: 0
         - MBITS: 64
           PYTHON_VERSION: 37
           MSVC_VERSION: 14
           DEPLOY_CORE: 1
-          DEPLOY_PYTHON_BINDINGS: 0
 
 
 install:
@@ -50,7 +48,7 @@ install:
 before_build:
     - mkdir build
     - cd build
-    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=ON -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python%PYTHON_VERSION%.lib" -DBUILD_BINDINGS_JAVA=ON
+    - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=%DEPLOY_PYTHON_BINDINGS% -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python%PYTHON_VERSION%.lib" -DBUILD_BINDINGS_JAVA=%DEPLOY_JAVA_BINDINGS%
     - cd ../
     - ps: $env:CORE_VERSION = Get-Content -Path ./version.txt
     - ps: $env:UNDERSCORED_CORE_VERSION = $env:CORE_VERSION.Replace(".", "_")
