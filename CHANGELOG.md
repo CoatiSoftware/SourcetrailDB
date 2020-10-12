@@ -5,6 +5,8 @@
 **2020-10-12**
 
 * Interface Change: fix "Ambiuous" typo in interface instead of "Ambiguous" (issue #8)
+* Added Java bindings for API
+* Added Perl bindings for API
 
 
 ## v3.db25.p0
