@@ -462,7 +462,7 @@ namespace sourcetrail
 		}
 	}
 
-	bool SourcetrailDBWriter::recordReferenceIsAmbiuous(int referenceId)
+	bool SourcetrailDBWriter::recordReferenceIsAmbiguous(int referenceId)
 	{
 		if (!m_storage)
 		{

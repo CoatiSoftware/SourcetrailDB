@@ -91,7 +91,7 @@ int recordReference(int contextSymbolId, int referencedSymbolId, ReferenceKind r
 
 bool recordReferenceLocation(int referenceId, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
-bool recordReferenceIsAmbiuous(int referenceId);
+bool recordReferenceIsAmbiguous(int referenceId);
 
 int recordReferenceToUnsolvedSymhol(int contextSymbolId, ReferenceKind referenceKind, int fileId, int startLine, int startColumn, int endLine, int endColumn);
 
