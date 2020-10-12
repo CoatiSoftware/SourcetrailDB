@@ -41,8 +41,7 @@ namespace sourcetrail
 		TEMPLATE_SPECIALIZATION = 1 << 7,
 		INCLUDE = 1 << 8,
 		IMPORT = 1 << 9,
-		AGGREGATION = 1 << 10,
-		MACRO_USAGE = 1 << 11,
+		MACRO_USAGE = 1 << 11, // needs new db version if decremented
 		ANNOTATION_USAGE = 1 << 12
 	};
 
