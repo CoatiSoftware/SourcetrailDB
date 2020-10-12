@@ -129,7 +129,7 @@ before_deploy:
       mkdir -p $BUNDLE_NAME
       cp build/bindings_perl/sourcetraildb.* $BUNDLE_NAME
       
-    else if [[ "$PYTHON_BINDING" == "1" ]]; then
+    elif [[ "$PYTHON_BINDING" == "1" ]]; then
       PYTHON_VERSION=${PYTHON//.}
       PYTHON_VERSION=${PYTHON_VERSION:0:2}
       BUNDLE_NAME=sourcetraildb_python${PYTHON_VERSION}_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
@@ -138,7 +138,7 @@ before_deploy:
       cp build/bindings_python/sourcetraildb.py $BUNDLE_NAME
       cp build/bindings_python/_sourcetraildb* $BUNDLE_NAME/_sourcetraildb.so
       
-    else if [[ "$JAVA_BINDING" == "1" ]]; then
+    elif [[ "$JAVA_BINDING" == "1" ]]; then
       BUNDLE_NAME=sourcetraildb_java_${VERSION}-${TRAVIS_OS_NAME}-64bit-${TRAVIS_COMPILER}
       
       mkdir -p $BUNDLE_NAME
