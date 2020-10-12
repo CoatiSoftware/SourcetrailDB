@@ -38,7 +38,6 @@ namespace sourcetrail
 			EdgeKind::TEMPLATE_SPECIALIZATION,
 			EdgeKind::INCLUDE,
 			EdgeKind::IMPORT,
-			EdgeKind::AGGREGATION,
 			EdgeKind::MACRO_USAGE
 		};
 
