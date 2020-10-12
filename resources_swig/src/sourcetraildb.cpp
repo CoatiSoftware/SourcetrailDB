@@ -217,9 +217,9 @@ bool recordReferenceLocation(int referenceId, int fileId, int startLine, int sta
 	return dbWriter.recordReferenceLocation(referenceId, { fileId, startLine, startColumn, endLine, endColumn });
 }
 
-bool recordReferenceIsAmbiuous(int referenceId)
+bool recordReferenceIsAmbiguous(int referenceId)
 {
-	return dbWriter.recordReferenceIsAmbiuous(referenceId);
+	return dbWriter.recordReferenceIsAmbiguous(referenceId);
 }
 
 int recordReferenceToUnsolvedSymhol(int contextSymbolId, ReferenceKind referenceKind, int fileId, int startLine, int startColumn, int endLine, int endColumn)

@@ -362,7 +362,7 @@ namespace sourcetrail
 		*
 		*  return: true if successful. false on failure. getLastError() provides the error message.
 		*/
-		bool recordReferenceIsAmbiuous(int referenceId);
+		bool recordReferenceIsAmbiguous(int referenceId);
 
 		/**
 		* Stores a location between a specific context and an "unsolved" symbol to the database
