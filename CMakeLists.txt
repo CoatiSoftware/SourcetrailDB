@@ -5,6 +5,7 @@ cmake_minimum_required (VERSION 2.6)
 set(BUILD_BINDINGS_PERL OFF CACHE BOOL "Build the SourcetrailDB Perl bindings.")
 set(BUILD_BINDINGS_PYTHON OFF CACHE BOOL "Build the SourcetrailDB Python bindings.")
 set(BUILD_BINDINGS_JAVA OFF CACHE BOOL "Build the SourcetrailDB Java bindings.")
+set(BUILD_BINDINGS_CSHARP OFF CACHE BOOL "Build the SourcetrailDB C# bindings.")
 set(BUILD_EXAMPLES ON CACHE BOOL "Build the examples.")
 
 set(PROJECT_NAME "SourcetrailDB")
@@ -83,6 +84,16 @@ else()
 	message(STATUS "Building the SourcetrailDB Java bindings will be skipped. You can enable building this target by setting 'BUILD_BINDINGS_JAVA' to 'ON'.")
 endif()
 
+# --- C# Binding ---
+if (BUILD_BINDINGS_CSHARP)
+	message(STATUS "The SourcetrailDB C# bindings will be built.")
+
+	set(CSHARP_BINDING_TARGET_NAME "bindings_csharp")
+	set(CSHARP_BINDING_OUTPUT_DIR "")
+	add_subdirectory("${CMAKE_SOURCE_DIR}/bindings_csharp" "${CMAKE_BINARY_DIR}/bindings_csharp")
+else()
+	message(STATUS "Building the SourcetrailDB C# bindings will be skipped. You can enable building this target by setting 'BUILD_BINDINGS_CSHARP' to 'ON'.")
+endif()
 
 # --- Examples ---
 
