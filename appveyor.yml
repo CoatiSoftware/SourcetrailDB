@@ -94,9 +94,9 @@ build_script:
 
 after_build:
     - ps: $env:CORE_PACKAGE_NAME = 'sourcetraildb_core_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit-msvc' + $env:MSVC_VERSION
-    - ps: $env:PYTHON_PACKAGE_NAME = 'sourcetrailbd_python' + $env:PYTHON_VERSION + '_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
-    - ps: $env:JAVA_PACKAGE_NAME = 'sourcetrailbd_java_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
-    - ps: $env:PERL_PACKAGE_NAME = 'sourcetrailbd_strawberry-perl-' + $env:PERL_VERSION + '_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
+    - ps: $env:PYTHON_PACKAGE_NAME = 'sourcetraildb_python' + $env:PYTHON_VERSION + '_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
+    - ps: $env:JAVA_PACKAGE_NAME = 'sourcetraildb_java_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
+    - ps: $env:PERL_PACKAGE_NAME = 'sourcetraildb_strawberry-perl-' + $env:PERL_VERSION + '_' + $env:UNDERSCORED_CORE_VERSION + '-windows-' + $env:MBITS + 'bit'
     - ps: echo $env:CORE_PACKAGE_NAME
     - ps: echo $env:PYTHON_PACKAGE_NAME
     - ps: echo $env:JAVA_PACKAGE_NAME
