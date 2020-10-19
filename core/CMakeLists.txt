@@ -81,4 +81,4 @@ target_include_directories(${TEST_CORE_TARGET_NAME} PUBLIC
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 
-target_link_libraries(${TEST_CORE_TARGET_NAME} ${LIB_CORE_TARGET_NAME} "-ldl")
+target_link_libraries(${TEST_CORE_TARGET_NAME} ${LIB_CORE_TARGET_NAME} ${CMAKE_DL_LIBS})

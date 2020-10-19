@@ -17,7 +17,7 @@ target_include_directories(${EXAMPLE_NAME} PUBLIC
 	"${CORE_SOURCE_DIR}/include"
 )
 
-target_link_libraries(${EXAMPLE_NAME} ${LIB_CORE_TARGET_NAME} "-ldl")
+target_link_libraries(${EXAMPLE_NAME} ${LIB_CORE_TARGET_NAME} ${CMAKE_DL_LIBS})
 
 
 # --- Configure Sourcetrail Project File ---
