@@ -39,3 +39,5 @@ set_target_properties(${CSHARP_BINDING_TARGET_NAME}
 	SWIG_FLAGS ${CSHARP_BINDINGS_NAMESPACE})
 
 swig_link_libraries(${CSHARP_BINDING_TARGET_NAME} ${CSHARP_LIBRARIES} ${LIB_CORE_TARGET_NAME})
+
+configure_file("CoatiSoftware.SourcetrailDB.csproj" "CoatiSoftware.SourcetrailDB.csproj" COPYONLY)
