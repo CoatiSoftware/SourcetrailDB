@@ -39,9 +39,9 @@ Even though the core implementation is written in C++, this does not require you
 * Perl (via [SWIG](http://www.swig.org/))
 * Python (via [SWIG](http://www.swig.org/))
 * Java (via [SWIG](http://www.swig.org/))
+* C# (via [SWIG](http://www.swig.org/))
 
 If the language of your choice is not covered by this list, feel free to [open an issue](https://github.com/CoatiSoftware/SourcetrailDB/issues) or provide a pull request.
-
 
 ## Versioning
 
@@ -149,6 +149,20 @@ $ make
 ```
 
 Swig is configured to generate the Java binding code as a pre-build event, so you don't need to bother with updating manually.
+
+### C# Bindings
+
+Requirements:
+* [SWIG 3.0.12](http://www.swig.org/) is used to automatically generate C# binding code. Make sure that SWIG is added to your path environment variable.
+
+If you want to build the C# bindings run:
+```
+$ cd path/to/SourcetrailDB
+$ mkdir build
+$ cd build
+$ cmake -DBUILD_BINDINGS_CSHARP=ON ..
+$ make
+```
 
 ### Examples
 
