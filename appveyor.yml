@@ -19,7 +19,7 @@ environment:
           DEPLOY_PYTHON_BINDINGS: 1
           DEPLOY_JAVA_BINDINGS: 1
           DEPLOY_PERL_BINDINGS: 1
-          DEPLOY_PERL_BINDINGS: 1
+          DEPLOY_CSHARP_BINDINGS: 1
         
         - MBITS: 32
           PYTHON_VERSION: 37
