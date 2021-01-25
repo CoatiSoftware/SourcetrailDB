@@ -56,7 +56,10 @@ std::string getFileContent(const std::string& filePath)
 
 std::string getDateTimeString(const time_t& time)
 {
+#pragma warning(push)
+#pragma warning(disable : 4996)
 	std::tm* ptm = std::localtime(&time);
+#pragma warning(pop)
 	char buffer[32];
 	std::strftime(buffer, 32, "%Y-%m-%d %H:%M:%S", ptm);
 	return buffer;
@@ -64,7 +67,7 @@ std::string getDateTimeString(const time_t& time)
 
 int getLineCount(const std::string s)
 {
-	return std::count(s.begin(), s.end(), '\n');
+	return static_cast<int>(std::count(s.begin(), s.end(), '\n'));
 }
 }	 // namespace utility
 }	 // namespace sourcetrail

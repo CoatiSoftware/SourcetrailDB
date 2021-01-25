@@ -10,9 +10,21 @@ configure_file(
 	${GENERATED_VERSION_FILE}
 )
 
+set(EXTERNAL_FILES
+	../external/cpp_sqlite/src/CppSQLite3.cpp
+	../external/json/include/json.hpp
+	../external/cpp_sqlite/include/CppSQLite3.h
+)
+
+set(EXTERNAL_C_FILES
+	../external/cpp_sqlite/src/sqlite3.c
+	../external/cpp_sqlite/include/sqlite3.h
+)
+	
+set_source_files_properties(${EXTERNAL_FILES} PROPERTIES COMPILE_FLAGS "-w")
+set_source_files_properties(${EXTERNAL_C_FILES} PROPERTIES COMPILE_FLAGS "-std=gnu89 -w")
+
 set(LIB_SRC_FILES
-	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/src/CppSQLite3.cpp"
-	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/src/sqlite3.c"
 	src/DatabaseStorage.cpp
 	src/DefinitionKind.cpp
 	src/EdgeKind.cpp
@@ -27,9 +39,6 @@ set(LIB_SRC_FILES
 )
 
 set(LIB_HDR_FILES
-	"${CMAKE_SOURCE_DIR}/external/json/include/json.hpp"
-	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include/CppSQLite3.h"
-	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include/sqlite3.h"
 	include/DatabaseStorage.h
 	include/DefinitionKind.h
 	include/EdgeKind.h
@@ -55,17 +64,21 @@ set(LIB_HDR_FILES
 	${GENERATED_VERSION_FILE}
 )
 
-add_library(${LIB_CORE_TARGET_NAME} STATIC ${LIB_SRC_FILES} ${LIB_HDR_FILES})
+add_library(${LIB_CORE_TARGET_NAME} STATIC ${LIB_SRC_FILES} ${LIB_HDR_FILES} ${EXTERNAL_FILES} ${EXTERNAL_C_FILES})
 
 set_target_properties(${LIB_CORE_TARGET_NAME} PROPERTIES OUTPUT_NAME "sourcetraildb")
 
-target_include_directories(${LIB_CORE_TARGET_NAME} PUBLIC
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	"${CMAKE_SOURCE_DIR}/external/json/include"
-	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include"
-	"${GENERATED_INCLUDE_DIRECTORY}"
+set_property(
+	TARGET ${LIB_CORE_TARGET_NAME}
+	PROPERTY INCLUDE_DIRECTORIES
+		"${CMAKE_CURRENT_SOURCE_DIR}/include"
+		"${GENERATED_INCLUDE_DIRECTORY}"
 )
 
+target_include_directories(${LIB_CORE_TARGET_NAME} SYSTEM
+	PUBLIC ../external/json/include
+	PUBLIC ../external/cpp_sqlite/include
+)
 
 set(TEST_SRC_FILES
 	test/test.cpp
@@ -75,9 +88,9 @@ add_executable(${TEST_CORE_TARGET_NAME} ${TEST_SRC_FILES})
 
 target_include_directories(${TEST_CORE_TARGET_NAME} PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	"${CMAKE_SOURCE_DIR}/external/catch/include"
-	"${CMAKE_SOURCE_DIR}/external/json/include"
-	"${CMAKE_SOURCE_DIR}/external/cpp_sqlite/include"
+	../external/catch/include
+	../external/json/include
+	../external/cpp_sqlite/include
 	"${GENERATED_INCLUDE_DIRECTORY}"
 )
 

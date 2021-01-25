@@ -26,7 +26,7 @@ set_source_files_properties(${SWIG_INTERFACE_FILE} PROPERTIES CPLUSPLUS ON)
 
 include_directories(
 	"${RESOURCES_SWIG_DIR}/include"
-	"${CORE_SOURCE_DIR}/include"
+	"../core/include"
 	${PYTHON_INCLUDE_DIRS}
 )
 

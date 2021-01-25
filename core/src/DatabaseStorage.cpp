@@ -155,7 +155,7 @@ int DatabaseStorage::addElementComponent(const StorageElementComponentData& stor
 	m_insertElementComponentStatement.bind(2, storageElementComponentData.componentKind);
 	m_insertElementComponentStatement.bind(3, storageElementComponentData.data.c_str());
 	executeStatement(m_insertElementComponentStatement);
-	int id = m_database.lastRowId();
+	const int id = static_cast<int>(m_database.lastRowId());
 	m_insertElementComponentStatement.reset();
 	return id;
 }
@@ -322,7 +322,7 @@ int DatabaseStorage::addSourceLocation(const StorageSourceLocationData& storageS
 		m_insertSourceLocationStmt.bind(5, storageSourceLocationData.endColumnNumber);
 		m_insertSourceLocationStmt.bind(6, storageSourceLocationData.locationKind);
 		executeStatement(m_insertSourceLocationStmt);
-		id = m_database.lastRowId();
+		id = static_cast<int>(m_database.lastRowId());
 		m_insertSourceLocationStmt.reset();
 	}
 	return id;
@@ -360,7 +360,7 @@ int DatabaseStorage::addError(const StorageErrorData& storageErrorData)
 		m_insertErrorStatement.bind(4, storageErrorData.indexed);
 		m_insertErrorStatement.bind(5, storageErrorData.translationUnit.c_str());
 		executeStatement(m_insertErrorStatement);
-		id = m_database.lastRowId();
+		id = static_cast<int>(m_database.lastRowId());
 		m_insertErrorStatement.reset();
 	}
 	return id;
@@ -641,7 +641,7 @@ void DatabaseStorage::clearPrecompiledStatements()
 int DatabaseStorage::insertElement()
 {
 	executeStatement(m_insertElementStatement);
-	int id = m_database.lastRowId();
+	const int id = static_cast<int>(m_database.lastRowId());
 	m_insertElementStatement.reset();
 	return id;
 }
