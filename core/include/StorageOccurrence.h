@@ -1,39 +1,33 @@
 /*
-* Copyright 2018 Coati Software KG
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2018 Coati Software KG
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef SOURCETRAIL_STORAGE_OCCURRENCE_H
 #define SOURCETRAIL_STORAGE_OCCURRENCE_H
 
 namespace sourcetrail
 {
-	struct StorageOccurrence
-	{
-		StorageOccurrence()
-			: elementId(0)
-			, sourceLocationId(0)
-		{}
+struct StorageOccurrence
+{
+	StorageOccurrence(): elementId(0), sourceLocationId(0) {}
 
-		StorageOccurrence(int elementId, int sourceLocationId)
-			: elementId(elementId)
-			, sourceLocationId(sourceLocationId)
-		{}
+	StorageOccurrence(int elementId, int sourceLocationId): elementId(elementId), sourceLocationId(sourceLocationId) {}
 
-		int elementId;
-		int sourceLocationId;
-	};
-}
+	int elementId;
+	int sourceLocationId;
+};
+}	 // namespace sourcetrail
 
-#endif // SOURCETRAIL_STORAGE_OCCURRENCE_H
+#endif	  // SOURCETRAIL_STORAGE_OCCURRENCE_H

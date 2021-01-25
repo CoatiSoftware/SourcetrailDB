@@ -1,40 +1,40 @@
 /*
-* Copyright 2018 Coati Software KG
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2018 Coati Software KG
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include "DefinitionKind.h"
 
 namespace sourcetrail
 {
-	int definitionKindToInt(DefinitionKind kind)
-	{
-		return static_cast<int>(kind);
-	}
-
-	DefinitionKind intToDefinitionKind(int i)
-	{
-		const DefinitionKind kinds[] = { DefinitionKind::IMPLICIT, DefinitionKind::EXPLICIT };
-
-		for (DefinitionKind kind : kinds)
-		{
-			if (i == definitionKindToInt(kind))
-			{
-				return kind;
-			}
-		}
-
-		return DefinitionKind::EXPLICIT;
-	}
+int definitionKindToInt(DefinitionKind kind)
+{
+	return static_cast<int>(kind);
 }
+
+DefinitionKind intToDefinitionKind(int i)
+{
+	const DefinitionKind kinds[] = {DefinitionKind::IMPLICIT, DefinitionKind::EXPLICIT};
+
+	for (DefinitionKind kind: kinds)
+	{
+		if (i == definitionKindToInt(kind))
+		{
+			return kind;
+		}
+	}
+
+	return DefinitionKind::EXPLICIT;
+}
+}	 // namespace sourcetrail
