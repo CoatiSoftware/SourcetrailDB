@@ -28,6 +28,7 @@ int main(int argc, const char *argv[])
 	if (argc < 3 || argc > 4)
 	{
 		std::cout << "usage: cpp_api_example <database_path> <source_path> <optional:database_version>";
+		return 1;
 	}
 
 	std::string dbPath = argv[1];
