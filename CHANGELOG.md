@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.db25.p1
+
+**2021-03-08**
+
+* Added C# bindings for API
+* Fixed typo in package names of Windows build artifacts
+* Changed implementation of getFileContent() to match Sourcetrail code
+
+
 ## v4.db25.p0
 
 **2020-10-12**
