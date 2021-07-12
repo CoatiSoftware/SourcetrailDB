@@ -7,7 +7,7 @@ Library to export [Sourcetrail](https://www.sourcetrail.com/) compatible databas
 
 Windows: [![Build status](https://ci.appveyor.com/api/projects/status/gbblx1l790vm952c/branch/master?svg=true)](https://ci.appveyor.com/project/mlangkabel/sourcetraildb/branch/master)
 
-Linux and macOS: [![Build Status](https://travis-ci.org/CoatiSoftware/SourcetrailDB.svg?branch=master)](https://travis-ci.org/CoatiSoftware/SourcetrailDB)
+Linux and macOS: [![Build Status](https://travis-ci.com/CoatiSoftware/SourcetrailDB.svg?branch=master)](https://travis-ci.com/CoatiSoftware/SourcetrailDB)
 
 
 ## Introduction
