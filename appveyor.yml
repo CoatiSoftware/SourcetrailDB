@@ -56,6 +56,10 @@ for:
             alias python="/usr/bin/python3.5"
             python --version
         fi
+        if [[ "$JAVA_BINDINGS" == "1" ]]; then
+            #sudo apt-get install openjdk-8-jdk
+            javac -version
+        fi
         if [[ "$PERL_BINDING" == "1" ]]; then
             sudo apt-get install perl
             alias perl="/usr/bin/perl"
