@@ -36,7 +36,7 @@ for:
     - sh: |
         echo foo
     build_script:
-    - sh: echo Python - $PYTHON_BINDING
+    - sh: echo Python - $PYTHON_BINDINGS
     - sh: echo building on Ubuntu!
 -
     matrix:
@@ -47,7 +47,7 @@ for:
         echo foo
 
     build_script:
-    - sh: echo Python - $PYTHON_BINDING
+    - sh: echo Python - $PYTHON_BINDINGS
     - sh: echo building on Mac OS!
 
 
