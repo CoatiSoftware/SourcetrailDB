@@ -90,7 +90,7 @@ for:
     - sh: |
         HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
         brew link --force swig
-        if [[ "$PERL_BINDING" == "1" ]]; then
+        if [[ "$JAVA_BINDINGS" == "1" ]]; then
             HOMEBREW_NO_AUTO_UPDATE=1 brew install openjdk
         fi
 
