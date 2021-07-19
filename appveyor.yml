@@ -8,7 +8,7 @@ image:
 
 
 environment:
-    PYTHON_BINDINGS: 1
+    PYTHON_BINDINGS: 0
 
 platform: x64
 
@@ -26,7 +26,7 @@ for:
         echo foo
         
     build_script:
-    - echo Python - %PYTHON_BINDINGS%
+    - cmd: echo Python - %PYTHON_BINDINGS%
     - cmd: echo building on Windows!
 -
     matrix:
@@ -36,7 +36,7 @@ for:
     - sh: |
         echo foo
     build_script:
-    - echo Python - %PYTHON_BINDINGS%
+    - sh: echo Python - $PYTHON_BINDING
     - sh: echo building on Ubuntu!
 -
     matrix:
@@ -47,7 +47,7 @@ for:
         echo foo
 
     build_script:
-    - echo Python - %PYTHON_BINDINGS%
+    - sh: echo Python - $PYTHON_BINDING
     - sh: echo building on Mac OS!
 
 
