@@ -39,14 +39,11 @@ for:
             - image: Ubuntu
     install:
     - sh: |
-        PYTHON_BINDINGS=0
-        JAVA_BINDINGS=0
-        PERL_BINDINGS=1
-    - sh: |
         echo Building on Ubuntu!
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
+    - sh: |
         sudo add-apt-repository ppa:deadsnakes/ppa
         sudo apt-get update
         sudo apt-get install -qq swig
@@ -62,6 +59,7 @@ for:
             javac -version
         fi
         if [[ "$PERL_BINDINGS" == "1" ]]; then
+            #installing Perl not required, as image already comes with Perl 5
             #sudo apt-get install perl
             #alias perl="/usr/bin/perl"
             perl --version
@@ -81,7 +79,7 @@ for:
             - image: macos
     install:
     - sh: |
-        PYTHON_BINDINGS=0
+        PYTHON_BINDINGS=1
         JAVA_BINDINGS=0
         PERL_BINDINGS=0
     - sh: |
@@ -92,7 +90,6 @@ for:
         #brew link --force swig
         which python
         python --version
-    - exit 1
 
     build_script:
     - sh: echo Building on Mac OS!
@@ -101,6 +98,8 @@ for:
         cd build  
         cmake -DBUILD_BINDINGS_PERL=$PERL_BINDINGS -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDINGS  -DPYTHON_VERSION=3.5 -DBUILD_BINDINGS_JAVA=$JAVA_BINDINGS ..
         make
+    test_script:
+    - sh: |
         ./core/test_core
 
 
