@@ -23,32 +23,43 @@ for:
             - image: Visual Studio 2017
     install:
     - cmd: |
+        #choco install -y --no-progress swig --version 4.0.1
         echo foo
         
     build_script:
+    - cmd: echo Building on Windows!
     - cmd: echo Python - %PYTHON_BINDINGS%
-    - cmd: echo building on Windows!
 -
     matrix:
         only:
             - image: Ubuntu
     install:
     - sh: |
+        #sudo apt-get update
+        #sudo apt-get install -qq swig
         echo foo
     build_script:
+    - sh: echo Building on Ubuntu!
     - sh: echo Python - $PYTHON_BINDINGS
-    - sh: echo building on Ubuntu!
+    - sh: |
+        mkdir build
+        cd build
+        cmake ..
+        make
+        ./core/test_core
 -
     matrix:
         only:
             - image: macos
     install:
     - sh: |
+        #HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
+        #brew link --force swig
         echo foo
 
     build_script:
+    - sh: echo Building on Mac OS!
     - sh: echo Python - $PYTHON_BINDINGS
-    - sh: echo building on Mac OS!
 
 
 build_script:
