@@ -47,6 +47,7 @@ for:
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
+        sudo add-apt-repository ppa:deadsnakes/ppa
         sudo apt-get update
         sudo apt-get install -qq swig
         
