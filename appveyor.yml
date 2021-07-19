@@ -2,6 +2,8 @@ version: 0.0.0.{build}
 
 
 image: 
+    - Visual Studio 2017
+    - Ubuntu
     - macos
 
 
@@ -41,6 +43,7 @@ for:
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
+    - exit 0
     - sh: |
         sudo add-apt-repository ppa:deadsnakes/ppa
         sudo apt-get update
@@ -84,6 +87,7 @@ for:
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
+    - sh: |
         HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
         brew link --force swig
         which python
