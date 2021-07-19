@@ -9,6 +9,13 @@ platform: x64
 
 configuration: Release
 
+for:
+-
+    matrix:
+        only:
+            - image: Ubuntu
+    build_script:
+    - sh: echo running on Ubuntu!
 
 build_script:
     - echo running!
