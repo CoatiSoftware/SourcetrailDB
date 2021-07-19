@@ -1,13 +1,17 @@
 version: 0.0.0.{build}
 
+
 image: 
     - Visual Studio 2017
     - Ubuntu
     - macos
 
+
 platform: x64
 
+
 configuration: Release
+
 
 for:
 -
@@ -15,7 +19,10 @@ for:
         only:
             - image: Visual Studio 2017
     install:
-    - cmd: echo installing on Windows!
+    - cmd: |
+        choco install -y --no-progress swig --version 4.0.1
+        echo foo
+        
     build_script:
     - cmd: echo building on Windows!
 -
@@ -23,7 +30,10 @@ for:
         only:
             - image: Ubuntu
     install:
-    - sh: echo installing on Ubuntu!
+    - sh: |
+        sudo apt-get update
+        sudo apt-get install -qq swig
+        echo foo
     build_script:
     - sh: echo running on Ubuntu!
 -
@@ -31,7 +41,11 @@ for:
         only:
             - image: macos
     install:
-    - sh: echo installing on Mac OS!
+    - sh: |
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
+        brew link --force swig
+        echo foo
+
     build_script:
     - sh: echo running on Mac OS!
 
