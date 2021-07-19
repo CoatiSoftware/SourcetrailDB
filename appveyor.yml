@@ -9,6 +9,9 @@ image:
 
 environment:
     PYTHON_BINDINGS: 0
+    JAVA_BINDINGS: 0
+    PERL_BINDINGS: 0
+    
 
 platform: x64
 
@@ -23,11 +26,12 @@ for:
             - image: Visual Studio 2017
     install:
     - cmd: |
-        #choco install -y --no-progress swig --version 4.0.1
-        echo foo
+        echo Building on Windows!
+        echo Python: %PYTHON_BINDINGS%
+        echo Java: %JAVA_BINDINGS%
+        echo Perl: %PERL_BINDINGS%
         
     build_script:
-    - cmd: echo Building on Windows!
     - cmd: echo Python - %PYTHON_BINDINGS%
 -
     matrix:
@@ -35,16 +39,17 @@ for:
             - image: Ubuntu
     install:
     - sh: |
+        echo Building on Ubuntu!
+        echo Python: $PYTHON_BINDINGS
+        echo Java: $JAVA_BINDINGS
+        echo Perl: $PERL_BINDINGS
         #sudo apt-get update
         #sudo apt-get install -qq swig
-        echo foo
     build_script:
-    - sh: echo Building on Ubuntu!
-    - sh: echo Python - $PYTHON_BINDINGS
     - sh: |
         mkdir build
-        cd build
-        cmake ..
+        cd build  
+        cmake -DBUILD_BINDINGS_PERL=$PERL_BINDINGS -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDINGS  -DBUILD_BINDINGS_JAVA=$JAVA_BINDINGS ..
         make
         ./core/test_core
 -
@@ -53,13 +58,20 @@ for:
             - image: macos
     install:
     - sh: |
+        echo Python: $PYTHON_BINDINGS
+        echo Java: $JAVA_BINDINGS
+        echo Perl: $PERL_BINDINGS
         #HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
         #brew link --force swig
-        echo foo
 
     build_script:
     - sh: echo Building on Mac OS!
-    - sh: echo Python - $PYTHON_BINDINGS
+    - sh: |
+        mkdir build
+        cd build  
+        cmake -DBUILD_BINDINGS_PERL=$PERL_BINDINGS -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDINGS  -DBUILD_BINDINGS_JAVA=$JAVA_BINDINGS ..
+        make
+        ./core/test_core
 
 
 build_script:
