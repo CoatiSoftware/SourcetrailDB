@@ -39,8 +39,8 @@ for:
             - image: Ubuntu
     install:
     - sh: |
-        PYTHON_BINDINGS=1
-        JAVA_BINDINGS=0
+        PYTHON_BINDINGS=0
+        JAVA_BINDINGS=1
         PERL_BINDINGS=0
     - sh: |
         echo Building on Ubuntu!
@@ -55,6 +55,10 @@ for:
             sudo apt-get -y install python3.5-dev
             alias python="/usr/bin/python3.5"
             python --version
+        fi
+        if [[ "$JAVA_BINDINGS" == "1" ]]; then
+            sudo apt-get install openjdk-8-jdk
+            javac -version
         fi
         which python
         python --version
