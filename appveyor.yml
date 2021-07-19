@@ -15,7 +15,7 @@ for:
         only:
             - image: Visual Studio 2017
     build_script:
-    - sh: echo running on Windows!
+    - echo running on Windows!
 -
     matrix:
         only:
@@ -28,3 +28,7 @@ for:
             - image: macos
     build_script:
     - sh: echo running on Mac OS!
+
+
+build_script:
+    - echo ERROR - Empty default script was executed!
