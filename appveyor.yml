@@ -47,18 +47,25 @@ for:
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
-        #sudo apt-get update
-        #sudo apt-get install -qq swig
+        sudo apt-get update
+        sudo apt-get install -qq swig
+        
+        if [[ "$PYTHON_BINDING" == "1" ]]; then
+            sudo apt-get install python3.5
+            sudo apt-get install python3.5-dev
+            alias python="/usr/bin/python3.5"
+            python --version
+        fi
         which python
         python --version
-    - exit 1
-    
     build_script:
     - sh: |
         mkdir build
         cd build  
         cmake -DBUILD_BINDINGS_PERL=$PERL_BINDINGS -DBUILD_BINDINGS_PYTHON=$PYTHON_BINDINGS  -DBUILD_BINDINGS_JAVA=$JAVA_BINDINGS ..
         make
+    test_script:
+    - sh: |
         ./core/test_core
 -
     matrix:
