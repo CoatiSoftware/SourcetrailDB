@@ -23,7 +23,6 @@ for:
             - image: Visual Studio 2017
     install:
     - cmd: |
-#        choco install -y --no-progress swig --version 4.0.1
         echo foo
         
     build_script:
@@ -35,8 +34,6 @@ for:
             - image: Ubuntu
     install:
     - sh: |
-#        sudo apt-get update
-#        sudo apt-get install -qq swig
         echo foo
     build_script:
     - echo Python - %PYTHON_BINDINGS%
@@ -47,8 +44,6 @@ for:
             - image: macos
     install:
     - sh: |
-#        HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
-#        brew link --force swig
         echo foo
 
     build_script:
