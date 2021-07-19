@@ -50,7 +50,7 @@ for:
         sudo apt-get update
         sudo apt-get install -qq swig
         
-        if [[ "$PYTHON_BINDING" == "1" ]]; then
+        if [[ "$PYTHON_BINDINGS" == "1" ]]; then
             sudo apt-get install python3.5
             sudo apt-get install python3.5-dev
             alias python="/usr/bin/python3.5"
