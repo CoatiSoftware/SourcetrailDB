@@ -19,6 +19,7 @@ find_package(PythonLibs ${PYTHON_VERSION} REQUIRED)
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
+message("pppp: ${PYTHON_INCLUDE_DIRS}")
 
 # --- Configure Target ---
 
