@@ -50,6 +50,7 @@ for:
         #sudo apt-get update
         #sudo apt-get install -qq swig
         which python
+        python --version
     - exit 1
     
     build_script:
@@ -75,6 +76,7 @@ for:
         #HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
         #brew link --force swig
         which python
+        python --version
     - exit 1
 
     build_script:
