@@ -27,7 +27,7 @@ for:
         echo foo
         
     build_script:
-    - echo Python - %PYTHON_BINDING%
+    - echo Python - %PYTHON_BINDINGS%
     - cmd: echo building on Windows!
 -
     matrix:
@@ -39,7 +39,7 @@ for:
 #        sudo apt-get install -qq swig
         echo foo
     build_script:
-    - echo Python - %PYTHON_BINDING%
+    - echo Python - %PYTHON_BINDINGS%
     - sh: echo building on Ubuntu!
 -
     matrix:
@@ -52,7 +52,7 @@ for:
         echo foo
 
     build_script:
-    - echo Python - %PYTHON_BINDING%
+    - echo Python - %PYTHON_BINDINGS%
     - sh: echo building on Mac OS!
 
 
