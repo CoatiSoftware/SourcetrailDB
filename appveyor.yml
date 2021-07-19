@@ -39,7 +39,7 @@ for:
             - image: Ubuntu
     install:
     - sh: |
-        PYTHON_BINDINGS=0
+        PYTHON_BINDINGS=1
         JAVA_BINDINGS=0
         PERL_BINDINGS=0
     - sh: |
@@ -49,6 +49,9 @@ for:
         echo Perl: $PERL_BINDINGS
         #sudo apt-get update
         #sudo apt-get install -qq swig
+        which python
+    - exit 1
+    
     build_script:
     - sh: |
         mkdir build
@@ -71,6 +74,8 @@ for:
         echo Perl: $PERL_BINDINGS
         #HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
         #brew link --force swig
+        which python
+    - exit 1
 
     build_script:
     - sh: echo Building on Mac OS!
