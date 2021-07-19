@@ -40,8 +40,8 @@ for:
     install:
     - sh: |
         PYTHON_BINDINGS=0
-        JAVA_BINDINGS=1
-        PERL_BINDINGS=0
+        JAVA_BINDINGS=0
+        PERL_BINDINGS=1
     - sh: |
         echo Building on Ubuntu!
         echo Python: $PYTHON_BINDINGS
@@ -57,13 +57,9 @@ for:
             python --version
         fi
         if [[ "$JAVA_BINDINGS" == "1" ]]; then
+            #installing Java not required, as image already comes with Java 9
             #sudo apt-get install openjdk-8-jdk
             javac -version
-        fi
-        if [[ "$PERL_BINDING" == "1" ]]; then
-            sudo apt-get install perl
-            alias perl="/usr/bin/perl"
-            perl --version
         fi
     build_script:
     - sh: |
