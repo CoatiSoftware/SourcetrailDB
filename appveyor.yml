@@ -9,26 +9,8 @@ platform: x64
 
 configuration: Release
 
-for:
--
-    matrix:
-        only:
-            - image: Visual Studio 2017
-    build_script:
-    - echo running on Windows!
--
-    matrix:
-        only:
-            - image: macos
-    build_script:
-    - sh: echo running on macos!
--
-    matrix:
-        only:
-            - image: macos
-    build_script:
-    - sh: echo running on Mac OS!
 
 
 build_script:
     - echo ERROR - Empty default script was executed!
+    - exit 1
