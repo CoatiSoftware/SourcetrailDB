@@ -47,14 +47,10 @@ for:
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
-        sudo add-apt-repository ppa:deadsnakes/ppa
         sudo apt-get update
         sudo apt-get install -qq swig
         
         if [[ "$PYTHON_BINDINGS" == "1" ]]; then
-            sudo apt-get -y install python3.5
-            sudo apt-get -y install python3.5-dev
-            alias python="/usr/bin/python3.5"
             python --version
         fi
         which python
