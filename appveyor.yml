@@ -58,7 +58,6 @@ for:
         }
         $env:PATH="C:\strawberry\perl\bin;C:\strawberry\perl\site\bin;C:\strawberry\c\bin;$env:PATH"
         $env:PERL_VERSION=$(perl -e 'print $^V')
-        
     before_build:
         - mkdir build
         - cd build
@@ -80,7 +79,6 @@ for:
 #    - ps: $env:BUILD_VERSION = "0.0.1." + $env:APPVEYOR_BUILD_NUMBER 
 #    - ps: echo update build version to $env:BUILD_VERSION
 #    - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
-
     build_script:
         - cd build
         - msbuild /p:configuration=Release /v:m ALL_BUILD.vcxproj
@@ -92,7 +90,6 @@ for:
                 if ($LastExitCode -ne 0) { throw "Perl bindings: gmake failed with exit code $LastExitCode" }
                 cd ../
             }
-            
     test_script:
         - "build\\core\\release\\test_core.exe"
     
@@ -106,7 +103,6 @@ for:
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
-    - exit 0
     - sh: |
         sudo add-apt-repository ppa:deadsnakes/ppa
         sudo apt-get update
@@ -143,14 +139,13 @@ for:
             - image: macos
     install:
     - sh: |
-        # Java bindings are currently disabled because JNI cannot be found by CMake
+        echo Building the Java bindings is currently disabled in CI because JNI cannot be found by CMake
         JAVA_BINDINGS=0
     - sh: |
         echo Building on Mac OS!
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
-    - exit 0
     - sh: |
         HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
         brew link --force swig
