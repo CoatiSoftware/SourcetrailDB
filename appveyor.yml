@@ -31,12 +31,71 @@ for:
         echo Java: %JAVA_BINDINGS%
         echo Perl: %PERL_BINDINGS%
     - ps: |
-        echo "p1: $env:PLATFORM"
-        echo "p2: $env:platform" 
+        $env:PYTHON_VERSION=37
+        $env:MSVC_VERSION=15
+    - ps: |
+        if ($env:PLATFORM -eq "x86") {
+            echo "Architecture set to 32 bit."
+            $env:CMAKE_GENERATOR="Visual Studio $env:MSVC_VERSION"
+            $env:PYTHON_PATH="C:/Python$env:PYTHON_VERSION"
+        } elseif ($env:PLATFORM -eq "x64") {
+            echo "Architecture set to 64 bit."
+            $env:CMAKE_GENERATOR="Visual Studio $env:MSVC_VERSION Win64"
+            $env:PYTHON_PATH="C:/Python$env:PYTHON_VERSION-x64"
+        } else {
+            echo "No architecture set. Build will be canceled."
+        }
+        # Install SWIG by Choco
+        choco install -y --no-progress swig --version 4.0.1
+        choco install -y --no-progress openjdk
+        # Install Strawberry Perl and put before any other Perls in %PATH%
+        if ($env:PLATFORM -eq "x86") {
+            choco install -y --no-progress --forcex86 strawberryperl
+        } elseif ($env:PLATFORM -eq "x64") {
+            choco install -y --no-progress strawberryperl
+        } else {
+            echo "No architecture set. Build will be canceled."
+        }
+        $env:PATH="C:\strawberry\perl\bin;C:\strawberry\perl\site\bin;C:\strawberry\c\bin;$env:PATH"
+        $env:PERL_VERSION=$(perl -e 'print $^V')
         
-        
+    before_build:
+        - mkdir build
+        - cd build
+        - cmake -G "%CMAKE_GENERATOR%" ../ -DBUILD_BINDINGS_PYTHON=%DEPLOY_PYTHON_BINDINGS% -DPYTHON_LIBRARY="%PYTHON_PATH%/libs/python%PYTHON_VERSION%.lib" -DBUILD_BINDINGS_JAVA=%DEPLOY_JAVA_BINDINGS% -DBUILD_BINDINGS_CSHARP=%DEPLOY_CSHARP_BINDINGS%
+        - cd ../
+        - ps: |
+            if ($Env:PERL_BINDINGS -eq "1") {
+                mkdir build-perl
+                cd build-perl
+                # Need to use Unix Makefiles because Strawberry Perl is a MinGW environment
+                cmake -G "Unix Makefiles" ../ -DBUILD_BINDINGS_PERL=$Env:PERL_BINDINGS
+                if ($LastExitCode -ne 0) { throw "Perl bindings: cmake failed with exit code $LastExitCode" }
+                cd ../
+            }
+        - ps: $env:CORE_VERSION = Get-Content -Path ./version.txt
+        - ps: $env:UNDERSCORED_CORE_VERSION = $env:CORE_VERSION.Replace(".", "_")
+        - ps: echo "Core version is $env:CORE_VERSION"
+# TODO: use the core version to update appveyor version here
+#    - ps: $env:BUILD_VERSION = "0.0.1." + $env:APPVEYOR_BUILD_NUMBER 
+#    - ps: echo update build version to $env:BUILD_VERSION
+#    - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
+
     build_script:
-    - cmd: echo Python - %PYTHON_BINDINGS%
+        - cd build
+        - msbuild /p:configuration=Release /v:m ALL_BUILD.vcxproj
+        - cd ../
+        - ps: |
+            if ($Env:PERL_BINDINGS -eq "1") {
+                cd build-perl
+                gmake
+                if ($LastExitCode -ne 0) { throw "Perl bindings: gmake failed with exit code $LastExitCode" }
+                cd ../
+            }
+            
+    test_script:
+        - "build\\core\\release\\test_core.exe"
+    
 -
     matrix:
         only:
