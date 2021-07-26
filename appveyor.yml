@@ -81,8 +81,8 @@ for:
     install:
     - sh: |
         PYTHON_BINDINGS=0
-        JAVA_BINDINGS=1
-        PERL_BINDINGS=0
+        JAVA_BINDINGS=0
+        PERL_BINDINGS=1
     - sh: |
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
@@ -92,6 +92,10 @@ for:
         brew link --force swig
         if [[ "$JAVA_BINDINGS" == "1" ]]; then
             HOMEBREW_NO_AUTO_UPDATE=1 brew install openjdk
+        fi
+        if [[ "$PERL_BINDINGS" == "1" ]]; then
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install perl
+            perl --version
         fi
 
     build_script:
