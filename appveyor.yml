@@ -30,6 +30,10 @@ for:
         echo Python: %PYTHON_BINDINGS%
         echo Java: %JAVA_BINDINGS%
         echo Perl: %PERL_BINDINGS%
+    - ps: |
+        echo "p1: $env:PLATFORM"
+        echo "p2: $env:platform" 
+        
         
     build_script:
     - cmd: echo Python - %PYTHON_BINDINGS%
@@ -80,13 +84,14 @@ for:
             - image: macos
     install:
     - sh: |
-        PYTHON_BINDINGS=0
+        # Java bindings are currently disabled because JNI cannot be found by CMake
         JAVA_BINDINGS=0
-        PERL_BINDINGS=1
     - sh: |
+        echo Building on Mac OS!
         echo Python: $PYTHON_BINDINGS
         echo Java: $JAVA_BINDINGS
         echo Perl: $PERL_BINDINGS
+    - exit 0
     - sh: |
         HOMEBREW_NO_AUTO_UPDATE=1 brew install swig
         brew link --force swig
@@ -94,12 +99,12 @@ for:
             HOMEBREW_NO_AUTO_UPDATE=1 brew install openjdk
         fi
         if [[ "$PERL_BINDINGS" == "1" ]]; then
-            HOMEBREW_NO_AUTO_UPDATE=1 brew install perl
+            # installing Perl not required, as image already comes with Perl 5
+            #HOMEBREW_NO_AUTO_UPDATE=1 brew install perl
             perl --version
         fi
 
     build_script:
-    - sh: echo Building on Mac OS!
     - sh: |
         mkdir build
         cd build  
