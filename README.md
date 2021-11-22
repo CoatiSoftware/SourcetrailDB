@@ -23,6 +23,7 @@ The following list of projects already use SourcetrailDB API to extend the langu
 * [SourcetrailPerlIndexer](https://github.com/xanni/SourcetrailPerlIndexer) is a Sourcetrail language extension that brings Perl support to Sourcetrail. This project is still in a prototype state, but you can already run it on your Perl code via the Custom Source Group.
 * [stacktraceflow_sourcetrail](https://github.com/Baranowski/stacktraceflow_sourcetrail) combines the power of Valgrind and Sourcetrail to quickly produce interactive callgraph of software written in any language, as long as it's compiled to ELF/DWARF format (e.g. Rust and Go).
 * [SourcetrailTypescriptIndexer](https://github.com/LouisStAmour/SourcetrailTypescriptIndexer) is a Typescript Indexer for Sourcetrail using the TypeScript compiler and node bindings contributed to SourcetrailDB (*prototype stage*).
+* [SourcetrailGolangIndexer](https://github.com/TOMATOFAQ/SourcetrailGolangIndexer) is a Golang Indexer for Sourcetrail (*prototype stage*).
 
 ## Adding new Language Support
 
